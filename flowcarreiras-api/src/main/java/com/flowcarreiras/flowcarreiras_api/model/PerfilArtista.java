@@ -1,0 +1,88 @@
+package com.flowcarreiras.flowcarreiras_api.model;
+
+import jakarta.persistence.*;
+import lombok.*;
+
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.UUID;
+
+@Entity
+@Table(name = "perfis_artistas")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+public class PerfilArtista {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID id;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "usuario_id", nullable = false, unique = true)
+    private Usuario usuario;
+
+    @Column(length = 1000)
+    private String bio;
+
+    private String fotoPerfil;
+
+    private String cidade;
+
+    private String areaArtisticaPrincipal;
+
+    @Column(nullable = false)
+    @Builder.Default
+    private Integer percentualCompletude = 0;
+
+    private LocalDateTime dataEntradaFila;
+
+    @Column(nullable = false)
+    @Builder.Default
+    private Boolean disponivelParaMentorar = false;
+
+    @Column(nullable = false)
+    @Builder.Default
+    private Boolean onboardingConcluido = false;
+
+    @Column(unique = true, nullable = false)
+    private String urlPublica;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+        name = "perfil_tags_necessidade",
+        joinColumns = @JoinColumn(name = "perfil_id"),
+        inverseJoinColumns = @JoinColumn(name = "tag_id")
+    )
+    @Builder.Default
+    private Set<Tag> tagsNecessidade = new HashSet<>();
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+        name = "perfil_tags_expertise",
+        joinColumns = @JoinColumn(name = "perfil_id"),
+        inverseJoinColumns = @JoinColumn(name = "tag_id")
+    )
+    @Builder.Default
+    private Set<Tag> tagsExpertise = new HashSet<>();
+
+    @OneToMany(mappedBy = "artista", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @Builder.Default
+    private List<Obra> obras = new ArrayList<>();
+
+    public int calcularPercentualCompletude() {
+        int pontos = 0;
+        if (bio != null && !bio.isBlank()) pontos += 20;
+        if (fotoPerfil != null && !fotoPerfil.isBlank()) pontos += 20;
+        if (cidade != null && !cidade.isBlank()) pontos += 15;
+        if (areaArtisticaPrincipal != null && !areaArtisticaPrincipal.isBlank()) pontos += 15;
+        if (!obras.isEmpty()) pontos += 20;
+        if (Boolean.TRUE.equals(onboardingConcluido)) pontos += 10;
+        return pontos;
+    }
+}
