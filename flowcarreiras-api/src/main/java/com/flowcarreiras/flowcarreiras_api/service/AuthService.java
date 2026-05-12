@@ -67,8 +67,10 @@ public class AuthService {
                 new UsernamePasswordAuthenticationToken(dto.getEmail(), dto.getSenha())
         );
 
-        Usuario usuario = usuarioRepository.findByEmail(dto.getEmail()).orElseThrow();
-        PerfilArtista perfil = perfilArtistaRepository.findByUsuarioEmail(dto.getEmail()).orElseThrow();
+        Usuario usuario = usuarioRepository.findByEmail(dto.getEmail())
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado após autenticação"));
+        PerfilArtista perfil = perfilArtistaRepository.findByUsuarioEmail(dto.getEmail())
+                .orElseThrow(() -> new RuntimeException("Perfil não encontrado após autenticação"));
 
         String token = gerarToken(usuario.getEmail());
         return AuthResponseDTO.builder()
