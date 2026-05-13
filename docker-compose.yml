@@ -1,0 +1,86 @@
+services:
+
+  # ============================================================
+  # PostgreSQL — banco de dados principal
+  # ============================================================
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-flowcarreiras}
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres} -d ${POSTGRES_DB:-flowcarreiras}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 15s
+    restart: unless-stopped
+    networks:
+      - flowcarreiras-net
+    # PostgreSQL NÃO é exposto ao host — apenas acessível internamente.
+
+  # ============================================================
+  # Backend — Spring Boot API
+  # ============================================================
+  backend:
+    build:
+      context: ./flowcarreiras-api
+      dockerfile: Dockerfile
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      DATABASE_URL: jdbc:postgresql://db:5432/${POSTGRES_DB:-flowcarreiras}
+      DB_USERNAME: ${POSTGRES_USER:-postgres}
+      DB_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+      UPLOAD_DIR: /app/uploads
+      JWT_SECRET: ${JWT_SECRET:-Zmxvd2NhcnJlaXJhcy1zZWNyZXQta2V5LWZvci1qd3QtdG9rZW5zLTI1NmJpdA==}
+      SEED_PASSWORD: ${SEED_PASSWORD:-senha123}
+    volumes:
+      # Bind mount: uploads acessíveis no host em ./uploads/
+      - ./uploads:/app/uploads
+    ports:
+      - "8080:8080"
+    depends_on:
+      db:
+        condition: service_healthy
+    healthcheck:
+      # /api/tags é público (GET sem autenticação) — ideal para health check
+      test: ["CMD-SHELL", "wget -qO /dev/null http://localhost:8080/api/tags || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 90s
+    restart: unless-stopped
+    networks:
+      - flowcarreiras-net
+
+  # ============================================================
+  # Frontend — React/Vite via Nginx
+  # ============================================================
+  frontend:
+    build:
+      context: ./flowcarreiras-web
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+    depends_on:
+      backend:
+        condition: service_healthy
+    restart: unless-stopped
+    networks:
+      - flowcarreiras-net
+
+# ============================================================
+# Volumes nomeados — dados persistentes entre restarts
+# ============================================================
+volumes:
+  postgres_data:
+
+# ============================================================
+# Rede isolada — containers se comunicam pelo nome do serviço
+# ============================================================
+networks:
+  flowcarreiras-net:
+    driver: bridge

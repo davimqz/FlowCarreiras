@@ -1,0 +1,40 @@
+# Overlay de desenvolvimento — use junto com docker-compose.yml:
+#   docker-compose -f docker-compose.yml -f docker-compose.dev.yml up
+#
+# Diferenças em relação à produção:
+# - Backend: sem build, usando imagem pré-compilada (dev via IDE/mvn local)
+# - Frontend: Vite dev server com hot-reload (porta 5173)
+# - PostgreSQL: porta exposta para acesso com DBeaver / psql local
+
+services:
+
+  db:
+    ports:
+      - "5432:5432"
+
+  backend:
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      DATABASE_URL: jdbc:postgresql://db:5432/${POSTGRES_DB:-flowcarreiras}
+      DB_USERNAME: ${POSTGRES_USER:-postgres}
+      DB_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+      UPLOAD_DIR: /app/uploads
+      JWT_SECRET: ${JWT_SECRET:-Zmxvd2NhcnJlaXJhcy1zZWNyZXQta2V5LWZvci1qd3QtdG9rZW5zLTI1NmJpdA==}
+      SEED_PASSWORD: ${SEED_PASSWORD:-senha123}
+
+  # Frontend substituído pelo Vite dev server com hot-reload
+  frontend:
+    build:
+      context: ./flowcarreiras-web
+      dockerfile: Dockerfile.dev
+    volumes:
+      # Bind mount: mudanças no código refletem instantaneamente
+      - ./flowcarreiras-web:/app
+      # Mantém node_modules do container (não sobrescreve com o do host)
+      - /app/node_modules
+    ports:
+      - "5173:5173"
+      - "80:80"   # mantém para não dar erro de porta já em uso no compose base
+    command: npm run dev -- --host
+    environment:
+      VITE_API_URL: http://localhost:8080

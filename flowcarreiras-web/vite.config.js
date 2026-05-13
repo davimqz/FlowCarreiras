@@ -25,7 +25,8 @@ export default defineConfig({
         // Network-first para obras (dados frescos quando online)
         runtimeCaching: [
           {
-            urlPattern: /^https?:\/\/localhost:8080\/api\/obras/,
+            // Padrão relativo funciona em dev (via proxy Vite) e prod (via proxy Nginx)
+            urlPattern: /\/api\/obras/,
             handler: 'NetworkFirst',
             options: {
               cacheName: 'obras-cache',
@@ -33,7 +34,7 @@ export default defineConfig({
             }
           },
           {
-            urlPattern: /^https?:\/\/localhost:8080\/uploads\//,
+            urlPattern: /\/uploads\//,
             handler: 'CacheFirst',
             options: {
               cacheName: 'media-cache',
@@ -41,7 +42,7 @@ export default defineConfig({
             }
           },
           {
-            urlPattern: /^https?:\/\/localhost:8080\/api\/tags/,
+            urlPattern: /\/api\/tags/,
             handler: 'StaleWhileRevalidate',
             options: { cacheName: 'tags-cache' }
           }
@@ -50,6 +51,7 @@ export default defineConfig({
     })
   ],
   server: {
+    host: '0.0.0.0', // Necessário para acessar o Vite dev server de fora do container
     port: 5173,
     proxy: {
       '/api': 'http://localhost:8080',
