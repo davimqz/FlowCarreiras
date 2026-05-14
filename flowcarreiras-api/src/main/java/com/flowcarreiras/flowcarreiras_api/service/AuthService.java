@@ -59,6 +59,7 @@ public class AuthService {
                 .email(usuario.getEmail())
                 .perfilArtistaId(perfil.getId())
                 .urlPublica(urlPublica)
+                .onboardingConcluido(perfil.getOnboardingConcluido())
                 .build();
     }
 
@@ -81,6 +82,7 @@ public class AuthService {
                 .email(usuario.getEmail())
                 .perfilArtistaId(perfil.getId())
                 .urlPublica(perfil.getUrlPublica())
+                .onboardingConcluido(perfil.getOnboardingConcluido())
                 .build();
     }
 

@@ -21,7 +21,7 @@ function Thumbnail({ obra }) {
           alt={obra.titulo}
           loading="lazy"
           onLoad={() => setCarregou(true)}
-          onError={() => setErro(true)}
+          onError={() => { setErro(true); setCarregou(true) }}
           className={`w-full h-full object-cover transition-opacity duration-300 ${carregou ? 'opacity-100' : 'opacity-0'}`}
         />
         {erro && (

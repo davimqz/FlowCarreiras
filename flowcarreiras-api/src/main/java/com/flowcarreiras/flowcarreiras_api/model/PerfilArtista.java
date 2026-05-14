@@ -1,5 +1,6 @@
 package com.flowcarreiras.flowcarreiras_api.model;
 
+import com.flowcarreiras.flowcarreiras_api.model.enums.StatusEtapaOnboarding;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -49,6 +50,26 @@ public class PerfilArtista {
     @Column(nullable = false)
     @Builder.Default
     private Boolean onboardingConcluido = false;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    @Builder.Default
+    private StatusEtapaOnboarding statusEtapaArea = StatusEtapaOnboarding.PENDENTE;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    @Builder.Default
+    private StatusEtapaOnboarding statusEtapaCidade = StatusEtapaOnboarding.PENDENTE;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    @Builder.Default
+    private StatusEtapaOnboarding statusEtapaBio = StatusEtapaOnboarding.PENDENTE;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    @Builder.Default
+    private StatusEtapaOnboarding statusEtapaTags = StatusEtapaOnboarding.PENDENTE;
 
     @Column(unique = true, nullable = false)
     private String urlPublica;

@@ -1,6 +1,7 @@
 package com.flowcarreiras.flowcarreiras_api.dto;
 
 import com.flowcarreiras.flowcarreiras_api.model.PerfilArtista;
+import com.flowcarreiras.flowcarreiras_api.model.Tag;
 import lombok.Builder;
 import lombok.Data;
 
@@ -24,6 +25,9 @@ public class PortfolioPublicoDTO {
         private String areaArtisticaPrincipal;
         private String fotoPerfil;
         private String urlPublica;
+        private Boolean disponivelParaMentorar;
+        private List<String> tagsExpertise;
+        private List<String> tagsNecessidade;
 
         public static ArtistaResumoDTO from(PerfilArtista perfil) {
             return ArtistaResumoDTO.builder()
@@ -34,6 +38,9 @@ public class PortfolioPublicoDTO {
                     .areaArtisticaPrincipal(perfil.getAreaArtisticaPrincipal())
                     .fotoPerfil(perfil.getFotoPerfil())
                     .urlPublica(perfil.getUrlPublica())
+                    .disponivelParaMentorar(perfil.getDisponivelParaMentorar())
+                    .tagsExpertise(perfil.getTagsExpertise().stream().map(Tag::getNome).toList())
+                    .tagsNecessidade(perfil.getTagsNecessidade().stream().map(Tag::getNome).toList())
                     .build();
         }
     }

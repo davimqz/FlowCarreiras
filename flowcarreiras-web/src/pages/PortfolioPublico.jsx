@@ -4,6 +4,18 @@ import api from '../api/client'
 import GridPortfolio from '../components/GridPortfolio'
 import { useAuth } from '../context/AuthContext'
 
+const GRADIENTES = [
+  'from-violet-900 via-purple-800 to-indigo-900',
+  'from-indigo-900 via-blue-800 to-violet-900',
+  'from-purple-900 via-fuchsia-800 to-violet-900',
+  'from-slate-800 via-purple-900 to-indigo-800',
+]
+
+function gradientePorNome(nome) {
+  if (!nome) return GRADIENTES[0]
+  return GRADIENTES[nome.charCodeAt(0) % GRADIENTES.length]
+}
+
 export default function PortfolioPublico() {
   const { urlPublica } = useParams()
   const navigate = useNavigate()
@@ -18,9 +30,6 @@ export default function PortfolioPublico() {
   const isProprioPortfolio = usuario?.urlPublica === urlPublica
 
   useEffect(() => {
-    // O backend expõe obras por artistaId; para URL pública precisamos
-    // de um endpoint de lookup — aqui usamos uma chamada aproximada.
-    // Em produção, adicione GET /api/perfis/publico/{urlPublica}
     async function carregar() {
       try {
         const { data } = await api.get(`/obras/publico/${urlPublica}`)
@@ -53,47 +62,129 @@ export default function PortfolioPublico() {
     )
   }
 
+  const gradiente = gradientePorNome(artista?.nome)
+  const fotoUrl = artista?.fotoPerfil ?? null
+
   return (
-    <div className="min-h-screen">
-      <header className="bg-card border-b border-gray-800">
-        <div className="max-w-5xl mx-auto px-4 py-4 flex items-center justify-between gap-3">
-          <div className="flex items-center gap-3 min-w-0">
+    <div className="min-h-screen bg-surface">
+      {/* Navbar minimalista */}
+      <header className="bg-card border-b border-gray-800 sticky top-0 z-10">
+        <div className="max-w-4xl mx-auto px-4 py-3 flex items-center justify-between gap-3">
+          <div className="flex items-center gap-3">
             {temHistorico && (
               <button
                 onClick={() => navigate(-1)}
-                className="text-gray-400 hover:text-white text-xl shrink-0"
+                className="text-gray-400 hover:text-white text-lg"
                 aria-label="Voltar"
               >
                 ←
               </button>
             )}
-            <div className="min-w-0">
-              <h1 className="text-xl font-bold truncate">{artista?.nome ?? 'Portfólio'}</h1>
-              {artista?.cidade && (
-                <p className="text-gray-400 text-sm">📍 {artista.cidade}</p>
-              )}
-            </div>
+            <span className="font-bold text-brand text-sm">Flow Carreiras</span>
           </div>
-
-          <div className="flex items-center gap-2 shrink-0">
+          <div className="flex items-center gap-2">
             {isProprioPortfolio && (
-              <Link to="/portfolio/minhas-obras" className="btn-secondary text-sm py-1.5 px-3">
-                ✏️ Editar
+              <Link to="/meu-perfil" className="btn-secondary text-xs py-1.5 px-3">
+                Editar perfil
               </Link>
             )}
-            <button onClick={copiarUrl} className="btn-secondary text-sm py-1.5 px-3">
-              {copiado ? '✅ Copiado!' : '🔗 Copiar link'}
+            <button onClick={copiarUrl} className="btn-secondary text-xs py-1.5 px-3">
+              {copiado ? '✅ Copiado!' : '🔗 Compartilhar'}
             </button>
           </div>
         </div>
-        {artista?.bio && (
-          <div className="max-w-5xl mx-auto px-4 pb-4">
-            <p className="text-gray-300 text-sm">{artista.bio}</p>
-          </div>
-        )}
       </header>
 
-      <main className="max-w-5xl mx-auto px-4 py-6">
+      {/* Hero card — perfil */}
+      <div className="max-w-4xl mx-auto px-4 pt-6">
+        <div className="bg-card rounded-2xl overflow-hidden shadow-lg border border-gray-800">
+          {/* Banner */}
+          <div className={`h-32 bg-gradient-to-r ${gradiente}`} />
+
+          {/* Avatar + info principal */}
+          <div className="px-6 pb-6">
+            <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 -mt-10 mb-4">
+              {/* Avatar */}
+              <div className="w-20 h-20 rounded-full border-4 border-card overflow-hidden bg-gray-700 shrink-0">
+                {fotoUrl ? (
+                  <img src={fotoUrl} alt={artista?.nome} className="w-full h-full object-cover" />
+                ) : (
+                  <div className={`w-full h-full bg-gradient-to-br ${gradiente} flex items-center justify-center`}>
+                    <span className="text-2xl font-bold text-white">
+                      {artista?.nome?.[0]?.toUpperCase() ?? '?'}
+                    </span>
+                  </div>
+                )}
+              </div>
+
+              {/* Badges de status */}
+              <div className="flex flex-wrap gap-2">
+                {artista?.disponivelParaMentorar && (
+                  <span className="inline-flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-full bg-emerald-900/50 text-emerald-400 border border-emerald-700/50">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                    Disponível para mentorar
+                  </span>
+                )}
+              </div>
+            </div>
+
+            {/* Nome e área */}
+            <h1 className="text-2xl font-bold text-white">{artista?.nome ?? '—'}</h1>
+            {artista?.areaArtisticaPrincipal && (
+              <p className="text-brand-light font-medium mt-0.5">{artista.areaArtisticaPrincipal}</p>
+            )}
+            {artista?.cidade && (
+              <p className="text-gray-400 text-sm mt-1">📍 {artista.cidade}</p>
+            )}
+
+            {/* Bio */}
+            {artista?.bio && (
+              <p className="text-gray-300 text-sm mt-3 leading-relaxed max-w-prose">
+                {artista.bio}
+              </p>
+            )}
+
+            {/* Tags */}
+            {(artista?.tagsExpertise?.length > 0 || artista?.tagsNecessidade?.length > 0) && (
+              <div className="mt-4 space-y-2">
+                {artista.tagsExpertise?.length > 0 && (
+                  <div className="flex flex-wrap gap-1.5 items-center">
+                    <span className="text-xs text-gray-500 mr-1">Expertise:</span>
+                    {artista.tagsExpertise.map(tag => (
+                      <span
+                        key={tag}
+                        className="text-xs px-2.5 py-1 rounded-full bg-brand/20 text-brand-light border border-brand/30"
+                      >
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                )}
+                {artista.tagsNecessidade?.length > 0 && (
+                  <div className="flex flex-wrap gap-1.5 items-center">
+                    <span className="text-xs text-gray-500 mr-1">Busca:</span>
+                    {artista.tagsNecessidade.map(tag => (
+                      <span
+                        key={tag}
+                        className="text-xs px-2.5 py-1 rounded-full bg-indigo-900/40 text-indigo-300 border border-indigo-700/40"
+                      >
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+
+      {/* Obras */}
+      <main className="max-w-4xl mx-auto px-4 py-6">
+        <h2 className="text-lg font-semibold mb-4">
+          Obras
+          {obras.length > 0 && <span className="text-gray-500 text-sm font-normal ml-2">({obras.length})</span>}
+        </h2>
         <GridPortfolio
           obras={obras}
           carregando={carregando}

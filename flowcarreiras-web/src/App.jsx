@@ -5,6 +5,8 @@ import NovaObra from './pages/NovaObra'
 import EditarObra from './pages/EditarObra'
 import PortfolioPublico from './pages/PortfolioPublico'
 import Login from './pages/Login'
+import Onboarding from './pages/Onboarding'
+import MeuPerfil from './pages/MeuPerfil'
 import NetworkStatus from './components/NetworkStatus'
 
 function RotaProtegida({ children }) {
@@ -20,6 +22,9 @@ export default function App() {
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/portfolio/:urlPublica" element={<PortfolioPublico />} />
+          <Route path="/onboarding" element={
+            <RotaProtegida><Onboarding /></RotaProtegida>
+          } />
           <Route path="/portfolio/minhas-obras" element={
             <RotaProtegida><MinhasObras /></RotaProtegida>
           } />
@@ -28,6 +33,9 @@ export default function App() {
           } />
           <Route path="/portfolio/editar/:id" element={
             <RotaProtegida><EditarObra /></RotaProtegida>
+          } />
+          <Route path="/meu-perfil" element={
+            <RotaProtegida><MeuPerfil /></RotaProtegida>
           } />
           <Route path="/" element={<Navigate to="/portfolio/minhas-obras" replace />} />
         </Routes>

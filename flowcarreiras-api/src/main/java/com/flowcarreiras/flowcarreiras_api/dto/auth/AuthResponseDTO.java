@@ -16,4 +16,5 @@ public class AuthResponseDTO {
     private String email;
     private UUID perfilArtistaId;
     private String urlPublica;
+    private Boolean onboardingConcluido;
 }

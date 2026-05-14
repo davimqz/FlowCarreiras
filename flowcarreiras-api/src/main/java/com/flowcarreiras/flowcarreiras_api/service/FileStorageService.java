@@ -18,9 +18,11 @@ import java.util.UUID;
 @Service
 public class FileStorageService {
 
-    private static final long MAX_TAMANHO_IMAGEM = 10L * 1024 * 1024;  // 10 MB
-    private static final long MAX_TAMANHO_AUDIO  = 30L * 1024 * 1024;  // 30 MB
-    private static final long MAX_TAMANHO_VIDEO  = 30L * 1024 * 1024;  // 30 MB
+    private static final long MAX_TAMANHO_IMAGEM      = 10L * 1024 * 1024;  // 10 MB
+    private static final long MAX_TAMANHO_AUDIO       = 30L * 1024 * 1024;  // 30 MB
+    private static final long MAX_TAMANHO_VIDEO       = 30L * 1024 * 1024;  // 30 MB
+    private static final long MAX_TAMANHO_FOTO_PERFIL =  5L * 1024 * 1024;  //  5 MB
+    private static final Set<String> CONTENT_TYPES_FOTO_PERFIL = Set.of("image/jpeg", "image/png");
 
     private static final Map<TipoMidia, Set<String>> CONTENT_TYPES_PERMITIDOS = Map.of(
         TipoMidia.IMAGEM, Set.of("image/jpeg", "image/png"),
@@ -50,6 +52,28 @@ public class FileStorageService {
 
         } catch (IOException e) {
             throw new ArquivoInvalidoException("Falha ao salvar arquivo. Tente novamente.");
+        }
+    }
+
+    public String salvarFotoPerfil(MultipartFile file) {
+        if (file == null || file.isEmpty()) {
+            throw new ArquivoInvalidoException("Arquivo não pode estar vazio");
+        }
+        if (!CONTENT_TYPES_FOTO_PERFIL.contains(file.getContentType())) {
+            throw new ArquivoInvalidoException("Apenas imagens JPG ou PNG são aceitas para foto de perfil");
+        }
+        if (file.getSize() > MAX_TAMANHO_FOTO_PERFIL) {
+            throw new ArquivoInvalidoException("Foto de perfil deve ter no máximo 5 MB");
+        }
+        try {
+            Path pastaDestino = Paths.get(uploadDir).toAbsolutePath().resolve("perfil");
+            Files.createDirectories(pastaDestino);
+            String extensao = obterExtensao(file.getOriginalFilename());
+            String nomeArquivo = UUID.randomUUID() + "." + extensao;
+            Files.copy(file.getInputStream(), pastaDestino.resolve(nomeArquivo), StandardCopyOption.REPLACE_EXISTING);
+            return "/uploads/perfil/" + nomeArquivo;
+        } catch (IOException e) {
+            throw new ArquivoInvalidoException("Falha ao salvar foto de perfil. Tente novamente.");
         }
     }
 
