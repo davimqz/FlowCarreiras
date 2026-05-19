@@ -60,6 +60,24 @@ export default function MinhasObras() {
             >
               Meu Perfil
             </Link>
+            <Link
+              to="/mentores"
+              className="text-sm text-gray-400 hover:text-white"
+            >
+              Mentores
+            </Link>
+            <Link
+              to="/mentoria/artistas"
+              className="text-sm text-gray-400 hover:text-white"
+            >
+              Mentoria
+            </Link>
+            <Link
+              to="/mentoria/minhas"
+              className="text-sm text-gray-400 hover:text-white"
+            >
+              Minhas
+            </Link>
             <span className="text-gray-600">|</span>
             <span className="text-sm text-gray-400 hidden sm:block">{usuario?.nome}</span>
             <button onClick={logout} className="text-xs text-gray-500 hover:text-white">Sair</button>

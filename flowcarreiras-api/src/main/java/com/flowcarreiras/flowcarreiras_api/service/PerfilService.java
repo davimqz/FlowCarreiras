@@ -43,8 +43,6 @@ public class PerfilService {
             perfil.setCidade(dto.getCidade().isBlank() ? null : dto.getCidade());
         if (dto.getAreaArtisticaPrincipal() != null)
             perfil.setAreaArtisticaPrincipal(dto.getAreaArtisticaPrincipal().isBlank() ? null : dto.getAreaArtisticaPrincipal());
-        if (dto.getDisponivelParaMentorar() != null)
-            perfil.setDisponivelParaMentorar(dto.getDisponivelParaMentorar());
         if (dto.getTagsExpertiseIds() != null)
             perfil.setTagsExpertise(new HashSet<>(tagRepository.findAllById(dto.getTagsExpertiseIds())));
         if (dto.getTagsNecessidadeIds() != null)
@@ -149,6 +147,12 @@ public class PerfilService {
                 .cidade(perfil.getCidade())
                 .areaArtisticaPrincipal(perfil.getAreaArtisticaPrincipal())
                 .disponivelParaMentorar(perfil.getDisponivelParaMentorar())
+                .perfilMentorConfigurado(perfil.getPerfilMentorConfigurado())
+                .mentoriaGratuita(perfil.getMentoriaGratuita())
+                .valorHoraMentoria(perfil.getValorHoraMentoria())
+                .descricaoMentoria(perfil.getDescricaoMentoria())
+                .modalidadeMentoria(perfil.getModalidadeMentoria() != null ? perfil.getModalidadeMentoria().name() : null)
+                .cidadeMentoria(perfil.getCidadeMentoria())
                 .percentualCompletude(perfil.getPercentualCompletude())
                 .onboardingConcluido(perfil.getOnboardingConcluido())
                 .totalObras(perfil.getObras().size())

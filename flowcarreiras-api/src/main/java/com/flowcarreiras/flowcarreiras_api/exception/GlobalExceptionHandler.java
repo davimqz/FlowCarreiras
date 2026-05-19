@@ -58,6 +58,12 @@ public class GlobalExceptionHandler {
                         "Arquivo muito grande. Máximo: 10 MB para imagens, 30 MB para áudio/vídeo"));
     }
 
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<ErroResponse> handleArgumentoInvalido(IllegalArgumentException ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(new ErroResponse(HttpStatus.BAD_REQUEST.value(), ex.getMessage()));
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErroResponse> handleErroGenerico(Exception ex) {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)

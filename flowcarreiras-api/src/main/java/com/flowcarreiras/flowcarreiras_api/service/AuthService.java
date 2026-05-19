@@ -60,6 +60,9 @@ public class AuthService {
                 .perfilArtistaId(perfil.getId())
                 .urlPublica(urlPublica)
                 .onboardingConcluido(perfil.getOnboardingConcluido())
+                .desejaConfigurarMentoria(Boolean.TRUE.equals(dto.getDesejaSerMentor()))
+                .perfilMentorConfigurado(perfil.getPerfilMentorConfigurado())
+                .disponivelParaMentorar(perfil.getDisponivelParaMentorar())
                 .build();
     }
 
@@ -83,6 +86,9 @@ public class AuthService {
                 .perfilArtistaId(perfil.getId())
                 .urlPublica(perfil.getUrlPublica())
                 .onboardingConcluido(perfil.getOnboardingConcluido())
+                .desejaConfigurarMentoria(false)
+                .perfilMentorConfigurado(perfil.getPerfilMentorConfigurado())
+                .disponivelParaMentorar(perfil.getDisponivelParaMentorar())
                 .build();
     }
 

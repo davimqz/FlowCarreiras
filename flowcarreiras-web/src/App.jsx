@@ -7,6 +7,10 @@ import PortfolioPublico from './pages/PortfolioPublico'
 import Login from './pages/Login'
 import Onboarding from './pages/Onboarding'
 import MeuPerfil from './pages/MeuPerfil'
+import ConfigurarMentoria from './pages/ConfigurarMentoria'
+import ArtistasParaMentoria from './pages/ArtistasParaMentoria'
+import Mentores from './pages/Mentores'
+import MinhasMentorias from './pages/MinhasMentorias'
 import NetworkStatus from './components/NetworkStatus'
 
 function RotaProtegida({ children }) {
@@ -36,6 +40,18 @@ export default function App() {
           } />
           <Route path="/meu-perfil" element={
             <RotaProtegida><MeuPerfil /></RotaProtegida>
+          } />
+          <Route path="/mentoria/configurar" element={
+            <RotaProtegida><ConfigurarMentoria /></RotaProtegida>
+          } />
+          <Route path="/mentoria/artistas" element={
+            <RotaProtegida><ArtistasParaMentoria /></RotaProtegida>
+          } />
+          <Route path="/mentores" element={
+            <RotaProtegida><Mentores /></RotaProtegida>
+          } />
+          <Route path="/mentoria/minhas" element={
+            <RotaProtegida><MinhasMentorias /></RotaProtegida>
           } />
           <Route path="/" element={<Navigate to="/portfolio/minhas-obras" replace />} />
         </Routes>

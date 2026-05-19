@@ -5,7 +5,7 @@ import { login as apiLogin, registrar as apiRegistrar } from '../api/auth'
 
 export default function Login() {
   const [modo, setModo] = useState('login')
-  const [form, setForm] = useState({ nome: '', email: '', senha: '' })
+  const [form, setForm] = useState({ nome: '', email: '', senha: '', desejaSerMentor: false })
   const [erros, setErros] = useState({})
   const [erroGeral, setErroGeral] = useState(null)
   const [carregando, setCarregando] = useState(false)
@@ -50,10 +50,12 @@ export default function Login() {
       if (modo === 'login') {
         data = await apiLogin(form.email, form.senha)
       } else {
-        data = await apiRegistrar(form.nome, form.email, form.senha)
+        data = await apiRegistrar(form.nome, form.email, form.senha, form.desejaSerMentor)
       }
       login(data)
-      if (!data.onboardingConcluido) {
+      if (data.desejaConfigurarMentoria) {
+        navigate('/mentoria/configurar', { state: { primeiraConfiguracao: true } })
+      } else if (!data.onboardingConcluido) {
         navigate('/onboarding')
       } else {
         navigate('/portfolio/minhas-obras')
@@ -131,6 +133,23 @@ export default function Login() {
               />
               {erros.senha && <p className="text-red-400 text-xs mt-1">{erros.senha}</p>}
             </div>
+
+            {modo === 'registro' && (
+              <label className="flex items-start gap-3 cursor-pointer select-none rounded-lg border border-gray-800 p-3 hover:border-gray-700 transition-colors">
+                <input
+                  type="checkbox"
+                  checked={form.desejaSerMentor}
+                  onChange={e => set('desejaSerMentor', e.target.checked)}
+                  className="mt-1"
+                />
+                <span>
+                  <span className="block text-sm text-white font-medium">Quero atuar como mentor</span>
+                  <span className="block text-xs text-gray-500 mt-0.5">
+                    Depois do cadastro voce configura preco, modalidade e areas de expertise.
+                  </span>
+                </span>
+              </label>
+            )}
 
             {erroGeral && (
               <div className="bg-red-900/30 border border-red-700 rounded-lg px-3 py-2 text-red-400 text-sm">

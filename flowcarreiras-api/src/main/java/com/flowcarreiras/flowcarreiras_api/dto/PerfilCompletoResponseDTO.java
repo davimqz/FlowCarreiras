@@ -3,6 +3,7 @@ package com.flowcarreiras.flowcarreiras_api.dto;
 import lombok.Builder;
 import lombok.Data;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 
@@ -21,6 +22,12 @@ public class PerfilCompletoResponseDTO {
     private String cidade;
     private String areaArtisticaPrincipal;
     private Boolean disponivelParaMentorar;
+    private Boolean perfilMentorConfigurado;
+    private Boolean mentoriaGratuita;
+    private BigDecimal valorHoraMentoria;
+    private String descricaoMentoria;
+    private String modalidadeMentoria;
+    private String cidadeMentoria;
     private Integer percentualCompletude;
     private Boolean onboardingConcluido;
     private Integer totalObras;

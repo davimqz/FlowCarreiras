@@ -3,6 +3,7 @@ package com.flowcarreiras.flowcarreiras_api.dto;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 
@@ -19,6 +20,20 @@ public class AtualizarPerfilRequestDTO {
     private String areaArtisticaPrincipal;
 
     private Boolean disponivelParaMentorar;
+
+    private Boolean perfilMentorConfigurado;
+
+    private Boolean mentoriaGratuita;
+
+    private BigDecimal valorHoraMentoria;
+
+    @Size(max = 1000, message = "DescriÃ§Ã£o da mentoria deve ter no mÃ¡ximo 1000 caracteres")
+    private String descricaoMentoria;
+
+    private String modalidadeMentoria;
+
+    @Size(max = 100, message = "Cidade da mentoria deve ter no mÃ¡ximo 100 caracteres")
+    private String cidadeMentoria;
 
     private List<UUID> tagsExpertiseIds;
 

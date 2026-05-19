@@ -1,9 +1,11 @@
 package com.flowcarreiras.flowcarreiras_api.model;
 
 import com.flowcarreiras.flowcarreiras_api.model.enums.StatusEtapaOnboarding;
+import com.flowcarreiras.flowcarreiras_api.model.enums.ModalidadeMentoria;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -46,6 +48,26 @@ public class PerfilArtista {
     @Column(nullable = false)
     @Builder.Default
     private Boolean disponivelParaMentorar = false;
+
+    @Column(nullable = false)
+    @Builder.Default
+    private Boolean perfilMentorConfigurado = false;
+
+    @Column(nullable = false)
+    @Builder.Default
+    private Boolean mentoriaGratuita = true;
+
+    @Column(precision = 10, scale = 2)
+    private BigDecimal valorHoraMentoria;
+
+    @Column(length = 1000)
+    private String descricaoMentoria;
+
+    @Enumerated(EnumType.STRING)
+    private ModalidadeMentoria modalidadeMentoria;
+
+    @Column(length = 100)
+    private String cidadeMentoria;
 
     @Column(nullable = false)
     @Builder.Default

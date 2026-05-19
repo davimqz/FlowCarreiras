@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import { obterMeuPerfil, atualizarPerfil, atualizarFotoPerfil } from '../api/perfil'
+import { ativarMentoria, pausarMentoria } from '../api/mentorias'
 import SeletorTags from '../components/SeletorTags'
 
 const GRADIENTES = [
@@ -56,9 +57,11 @@ export default function MeuPerfil() {
   const [editando, setEditando] = useState(null)
   const [salvando, setSalvando] = useState(false)
   const [erroFoto, setErroFoto] = useState(null)
+  const [acaoMentoria, setAcaoMentoria] = useState(null)
+  const [erroMentoria, setErroMentoria] = useState(null)
 
   // Formulários por seção
-  const [formInfo, setFormInfo] = useState({ areaArtisticaPrincipal: '', cidade: '', disponivelParaMentorar: false })
+  const [formInfo, setFormInfo] = useState({ areaArtisticaPrincipal: '', cidade: '' })
   const [formBio, setFormBio] = useState('')
   const [formExpertise, setFormExpertise] = useState([])
   const [formNecessidade, setFormNecessidade] = useState([])
@@ -76,7 +79,6 @@ export default function MeuPerfil() {
     setFormInfo({
       areaArtisticaPrincipal: p.areaArtisticaPrincipal || '',
       cidade: p.cidade || '',
-      disponivelParaMentorar: p.disponivelParaMentorar || false,
     })
     setFormBio(p.bio || '')
     setFormExpertise(p.tagsExpertise || [])
@@ -114,6 +116,41 @@ export default function MeuPerfil() {
       setUploadandoFoto(false)
       e.target.value = ''
     }
+  }
+
+  async function handleAtivarMentoria() {
+    if (!perfil?.perfilMentorConfigurado) {
+      navigate('/mentoria/configurar')
+      return
+    }
+    setErroMentoria(null)
+    setAcaoMentoria('ativar')
+    try {
+      const config = await ativarMentoria()
+      setPerfil(p => ({ ...p, ...config }))
+    } catch (err) {
+      setErroMentoria(err.response?.data?.mensagem ?? 'Complete os dados da mentoria antes de ativar.')
+    } finally {
+      setAcaoMentoria(null)
+    }
+  }
+
+  async function handlePausarMentoria() {
+    setErroMentoria(null)
+    setAcaoMentoria('pausar')
+    try {
+      const config = await pausarMentoria()
+      setPerfil(p => ({ ...p, ...config }))
+    } catch (err) {
+      setErroMentoria(err.response?.data?.mensagem ?? 'Erro ao pausar mentoria.')
+    } finally {
+      setAcaoMentoria(null)
+    }
+  }
+
+  function formatarValorMentoria(valor) {
+    if (valor === null || valor === undefined || valor === '') return null
+    return Number(valor).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })
   }
 
   if (carregando) {
@@ -209,18 +246,9 @@ export default function MeuPerfil() {
                   <label className="text-xs text-gray-400 mb-1 block">Cidade</label>
                   <input className="input" value={formInfo.cidade} onChange={e => setFormInfo(f => ({ ...f, cidade: e.target.value }))} placeholder="Ex: Recife, PE" maxLength={100} />
                 </div>
-                <label className="flex items-center gap-2 cursor-pointer select-none">
-                  <div
-                    onClick={() => setFormInfo(f => ({ ...f, disponivelParaMentorar: !f.disponivelParaMentorar }))}
-                    className={`w-10 h-5 rounded-full transition-colors relative ${formInfo.disponivelParaMentorar ? 'bg-brand' : 'bg-gray-700'}`}
-                  >
-                    <div className={`absolute top-0.5 w-4 h-4 rounded-full bg-white shadow transition-transform ${formInfo.disponivelParaMentorar ? 'translate-x-5' : 'translate-x-0.5'}`} />
-                  </div>
-                  <span className="text-sm text-gray-300">Disponível para mentorar</span>
-                </label>
                 <div className="flex gap-2 pt-1">
                   <button onClick={() => cancelar()} disabled={salvando} className="flex-1 py-2 text-sm text-gray-400 border border-gray-700 rounded-lg hover:border-gray-500 transition-colors">Cancelar</button>
-                  <button onClick={() => salvarSecao({ areaArtisticaPrincipal: formInfo.areaArtisticaPrincipal, cidade: formInfo.cidade, disponivelParaMentorar: formInfo.disponivelParaMentorar })} disabled={salvando} className="flex-1 py-2 text-sm bg-brand hover:bg-brand-dark text-white rounded-lg transition-colors disabled:opacity-50">
+                  <button onClick={() => salvarSecao({ areaArtisticaPrincipal: formInfo.areaArtisticaPrincipal, cidade: formInfo.cidade })} disabled={salvando} className="flex-1 py-2 text-sm bg-brand hover:bg-brand-dark text-white rounded-lg transition-colors disabled:opacity-50">
                     {salvando ? 'Salvando...' : 'Salvar'}
                   </button>
                 </div>
@@ -348,6 +376,96 @@ export default function MeuPerfil() {
             </button>
           )}
         </Secao>
+
+        {/* Mentoria */}
+        <div className="bg-card rounded-xl p-5 md:p-6">
+          <div className="flex items-center justify-between gap-3 mb-3">
+            <div>
+              <h3 className="font-semibold text-white">Mentoria</h3>
+              <p className="text-xs text-gray-500 mt-0.5">
+                Configure sua oferta, modalidade e disponibilidade como mentor.
+              </p>
+            </div>
+            {perfil?.perfilMentorConfigurado && (
+              <button
+                onClick={() => navigate('/mentoria/configurar')}
+                className="text-xs text-brand hover:text-brand-light transition-colors shrink-0"
+              >
+                Editar
+              </button>
+            )}
+          </div>
+
+          {!perfil?.perfilMentorConfigurado ? (
+            <div className="space-y-3">
+              <p className="text-sm text-gray-400">
+                Voce ainda nao configurou seus dados de mentor.
+              </p>
+              <button onClick={() => navigate('/mentoria/configurar')} className="btn-primary text-sm py-2 px-3">
+                Tornar-me mentor
+              </button>
+            </div>
+          ) : (
+            <div className="space-y-4">
+              <div className="flex flex-wrap gap-2">
+                <span className={`inline-flex items-center gap-1 text-xs border px-2 py-0.5 rounded-full ${perfil.disponivelParaMentorar ? 'bg-green-900/40 text-green-400 border-green-800/60' : 'bg-gray-800 text-gray-400 border-gray-700'}`}>
+                  <span className={`w-1.5 h-1.5 rounded-full inline-block ${perfil.disponivelParaMentorar ? 'bg-green-400' : 'bg-gray-500'}`} />
+                  {perfil.disponivelParaMentorar ? 'Mentoria ativa' : 'Mentoria pausada'}
+                </span>
+                <span className="inline-flex items-center text-xs bg-brand/20 text-brand-light border border-brand/30 px-2 py-0.5 rounded-full">
+                  {perfil.modalidadeMentoria === 'HIBRIDA' ? 'Hibrida' : perfil.modalidadeMentoria === 'PRESENCIAL' ? 'Presencial' : 'Remota'}
+                </span>
+                <span className="inline-flex items-center text-xs bg-gray-800 text-gray-300 border border-gray-700 px-2 py-0.5 rounded-full">
+                  {perfil.mentoriaGratuita ? 'Gratuita' : `${formatarValorMentoria(perfil.valorHoraMentoria)} / hora`}
+                </span>
+              </div>
+
+              {perfil.cidadeMentoria && (
+                <p className="text-sm text-gray-400">Base: {perfil.cidadeMentoria}</p>
+              )}
+              {perfil.descricaoMentoria && (
+                <p className="text-sm text-gray-300 leading-relaxed whitespace-pre-line">{perfil.descricaoMentoria}</p>
+              )}
+
+              {erroMentoria && (
+                <div className="bg-red-900/30 border border-red-700 rounded-lg px-3 py-2 text-red-400 text-sm">
+                  {erroMentoria}
+                </div>
+              )}
+
+              <div className="flex flex-col sm:flex-row gap-2">
+                {perfil.disponivelParaMentorar ? (
+                  <button
+                    onClick={handlePausarMentoria}
+                    disabled={acaoMentoria === 'pausar'}
+                    className="btn-secondary text-sm py-2 px-3"
+                  >
+                    {acaoMentoria === 'pausar' ? 'Pausando...' : 'Pausar mentoria'}
+                  </button>
+                ) : (
+                  <button
+                    onClick={handleAtivarMentoria}
+                    disabled={acaoMentoria === 'ativar'}
+                    className="btn-primary text-sm py-2 px-3"
+                  >
+                    {acaoMentoria === 'ativar' ? 'Ativando...' : 'Reativar mentoria'}
+                  </button>
+                )}
+                <button onClick={() => navigate('/mentoria/configurar')} className="btn-secondary text-sm py-2 px-3">
+                  Editar dados
+                </button>
+                <button onClick={() => navigate('/mentoria/minhas')} className="btn-secondary text-sm py-2 px-3">
+                  Minhas mentorias
+                </button>
+                {perfil.disponivelParaMentorar && (
+                  <button onClick={() => navigate('/mentoria/artistas')} className="btn-primary text-sm py-2 px-3">
+                    Ver artistas disponiveis
+                  </button>
+                )}
+              </div>
+            </div>
+          )}
+        </div>
 
         {/* Portfólio */}
         <div className="bg-card rounded-xl p-5 md:p-6">
