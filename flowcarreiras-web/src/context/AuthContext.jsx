@@ -3,13 +3,19 @@ import { createContext, useContext, useState } from 'react'
 const AuthContext = createContext(null)
 
 function lerUsuarioStorage() {
-  const raw = localStorage.getItem('fc_usuario')
-  return raw ? JSON.parse(raw) : null
+  try {
+    const raw = localStorage.getItem('fc_usuario')
+    return raw ? JSON.parse(raw) : null
+  } catch {
+    localStorage.removeItem('fc_usuario')
+    localStorage.removeItem('fc_token')
+    return null
+  }
 }
 
 export function AuthProvider({ children }) {
   const [token, setToken] = useState(() => localStorage.getItem('fc_token'))
-  const [usuario, setUsuario] = useState(lerUsuarioStorage)
+  const [usuario, setUsuario] = useState(() => lerUsuarioStorage())
   const [onboardingConcluido, setOnboardingConcluido] = useState(
     () => lerUsuarioStorage()?.onboardingConcluido ?? false
   )
@@ -32,11 +38,11 @@ export function AuthProvider({ children }) {
 
   function marcarOnboardingConcluido() {
     setOnboardingConcluido(true)
-    const raw = localStorage.getItem('fc_usuario')
-    if (raw) {
-      const userData = JSON.parse(raw)
+    const userData = lerUsuarioStorage()
+    if (userData) {
       userData.onboardingConcluido = true
       localStorage.setItem('fc_usuario', JSON.stringify(userData))
+      setUsuario(userData)
     }
   }
 

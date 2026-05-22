@@ -42,8 +42,18 @@ export default function Mentores() {
       tag: filtros.tag,
       area: filtros.area,
     })
-      .then(setMentores)
-      .catch(err => setErro(err.response?.data?.mensagem ?? 'Nao foi possivel carregar mentores.'))
+      .then(data => {
+        if (Array.isArray(data)) {
+          setMentores(data)
+          return
+        }
+        setMentores([])
+        setErro('A API retornou um formato inesperado para a lista de mentores.')
+      })
+      .catch(err => {
+        setMentores([])
+        setErro(err.response?.data?.mensagem ?? 'Nao foi possivel carregar mentores.')
+      })
       .finally(() => setCarregando(false))
   }, [filtros])
 
