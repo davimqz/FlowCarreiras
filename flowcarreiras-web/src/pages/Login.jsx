@@ -55,10 +55,10 @@ export default function Login() {
       login(data)
       if (data.desejaConfigurarMentoria) {
         navigate('/mentoria/configurar', { state: { primeiraConfiguracao: true } })
-      } else if (!data.onboardingConcluido) {
+      } else if (!data.onboardingConcluido && (data.percentualCompletude ?? 0) < 40) {
         navigate('/onboarding')
       } else {
-        navigate('/portfolio/minhas-obras')
+        navigate('/oportunidades')
       }
     } catch (err) {
       const msg = err.response?.data?.mensagem ?? 'Erro ao autenticar. Verifique seus dados.'

@@ -49,6 +49,12 @@ export default function MinhasObras() {
           <h1 className="font-bold text-brand">Flow Carreiras</h1>
           <nav className="flex items-center gap-4">
             <Link
+              to="/oportunidades"
+              className="text-sm text-gray-400 hover:text-white"
+            >
+              Oportunidades
+            </Link>
+            <Link
               to="/portfolio/minhas-obras"
               className="text-sm text-gray-300 hover:text-white font-medium border-b-2 border-brand pb-0.5"
             >

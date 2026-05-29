@@ -29,6 +29,17 @@ export const salvarEtapaBio = (bio) =>
 export const salvarEtapaTags = (tagNecessidadeIds) =>
     apiClient.patch('/perfil/onboarding/tags', { tagNecessidadeIds }).then(r => r.data)
 
+export const salvarEtapaFoto = (file) => {
+    const form = new FormData()
+    form.append('foto', file)
+    return apiClient.patch('/perfil/onboarding/foto', form, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+    }).then(r => r.data)
+}
+
+export const salvarEtapaLinks = (linksExternos) =>
+    apiClient.patch('/perfil/onboarding/links', { linksExternos }).then(r => r.data)
+
 export const pularEtapa = (etapa) =>
     apiClient.patch(`/perfil/onboarding/pular/${etapa}`).then(r => r.data)
 

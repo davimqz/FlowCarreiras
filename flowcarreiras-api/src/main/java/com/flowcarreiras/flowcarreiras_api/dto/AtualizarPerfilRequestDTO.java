@@ -38,4 +38,6 @@ public class AtualizarPerfilRequestDTO {
     private List<UUID> tagsExpertiseIds;
 
     private List<UUID> tagsNecessidadeIds;
+
+    private List<String> linksExternos;
 }

@@ -47,6 +47,10 @@ public class PerfilService {
             perfil.setTagsExpertise(new HashSet<>(tagRepository.findAllById(dto.getTagsExpertiseIds())));
         if (dto.getTagsNecessidadeIds() != null)
             perfil.setTagsNecessidade(new HashSet<>(tagRepository.findAllById(dto.getTagsNecessidadeIds())));
+        if (dto.getLinksExternos() != null)
+            perfil.setLinksExternos(dto.getLinksExternos());
+        if (dto.getLinksExternos() != null && !dto.getLinksExternos().isEmpty())
+            perfil.setStatusEtapaLinks(StatusEtapaOnboarding.CONCLUIDA);
 
         perfil.setPercentualCompletude(perfil.calcularPercentualCompletude());
         return toPerfilCompleto(perfilArtistaRepository.save(perfil));
@@ -59,6 +63,7 @@ public class PerfilService {
             fileStorageService.deletar(perfil.getFotoPerfil());
         }
         perfil.setFotoPerfil(fileStorageService.salvarFotoPerfil(file));
+        perfil.setStatusEtapaFoto(StatusEtapaOnboarding.CONCLUIDA);
         perfil.setPercentualCompletude(perfil.calcularPercentualCompletude());
         return toPerfilCompleto(perfilArtistaRepository.save(perfil));
     }
@@ -103,6 +108,30 @@ public class PerfilService {
     }
 
     @Transactional
+    public OnboardingStatusResponseDTO salvarEtapaFoto(String email, MultipartFile file) {
+        PerfilArtista perfil = buscarPerfilPorEmail(email);
+        if (perfil.getFotoPerfil() != null) {
+            fileStorageService.deletar(perfil.getFotoPerfil());
+        }
+        perfil.setFotoPerfil(fileStorageService.salvarFotoPerfil(file));
+        perfil.setStatusEtapaFoto(StatusEtapaOnboarding.CONCLUIDA);
+        perfil.setPercentualCompletude(perfil.calcularPercentualCompletude());
+        return toOnboardingStatus(perfilArtistaRepository.save(perfil));
+    }
+
+    @Transactional
+    public OnboardingStatusResponseDTO salvarEtapaLinks(String email, List<String> linksExternos) {
+        PerfilArtista perfil = buscarPerfilPorEmail(email);
+        List<String> normalizados = linksExternos == null ? List.of() : linksExternos;
+        perfil.setLinksExternos(normalizados);
+        if (!normalizados.isEmpty()) {
+            perfil.setStatusEtapaLinks(StatusEtapaOnboarding.CONCLUIDA);
+        }
+        perfil.setPercentualCompletude(perfil.calcularPercentualCompletude());
+        return toOnboardingStatus(perfilArtistaRepository.save(perfil));
+    }
+
+    @Transactional
     public OnboardingStatusResponseDTO pularEtapa(String email, String etapa) {
         PerfilArtista perfil = buscarPerfilPorEmail(email);
         switch (etapa) {
@@ -110,6 +139,8 @@ public class PerfilService {
             case "cidade" -> perfil.setStatusEtapaCidade(StatusEtapaOnboarding.PULADA);
             case "bio"    -> perfil.setStatusEtapaBio(StatusEtapaOnboarding.PULADA);
             case "tags"   -> perfil.setStatusEtapaTags(StatusEtapaOnboarding.PULADA);
+            case "foto"   -> perfil.setStatusEtapaFoto(StatusEtapaOnboarding.PULADA);
+            case "links"  -> perfil.setStatusEtapaLinks(StatusEtapaOnboarding.PULADA);
             default -> throw new IllegalArgumentException("Etapa inválida: " + etapa);
         }
         return toOnboardingStatus(perfilArtistaRepository.save(perfil));
@@ -126,6 +157,10 @@ public class PerfilService {
             perfil.setStatusEtapaBio(StatusEtapaOnboarding.PULADA);
         if (perfil.getStatusEtapaTags() == StatusEtapaOnboarding.PENDENTE)
             perfil.setStatusEtapaTags(StatusEtapaOnboarding.PULADA);
+        if (perfil.getStatusEtapaFoto() == StatusEtapaOnboarding.PENDENTE)
+            perfil.setStatusEtapaFoto(StatusEtapaOnboarding.PULADA);
+        if (perfil.getStatusEtapaLinks() == StatusEtapaOnboarding.PENDENTE)
+            perfil.setStatusEtapaLinks(StatusEtapaOnboarding.PULADA);
         perfil.setOnboardingConcluido(true);
         return toOnboardingStatus(perfilArtistaRepository.save(perfil));
     }
@@ -144,6 +179,7 @@ public class PerfilService {
                 .urlPublica(perfil.getUrlPublica())
                 .bio(perfil.getBio())
                 .fotoPerfil(perfil.getFotoPerfil())
+                .linksExternos(perfil.getLinksExternos())
                 .cidade(perfil.getCidade())
                 .areaArtisticaPrincipal(perfil.getAreaArtisticaPrincipal())
                 .disponivelParaMentorar(perfil.getDisponivelParaMentorar())
@@ -162,6 +198,8 @@ public class PerfilService {
                 .statusEtapaCidade(perfil.getStatusEtapaCidade().name())
                 .statusEtapaBio(perfil.getStatusEtapaBio().name())
                 .statusEtapaTags(perfil.getStatusEtapaTags().name())
+                .statusEtapaFoto(perfil.getStatusEtapaFoto().name())
+                .statusEtapaLinks(perfil.getStatusEtapaLinks().name())
                 .build();
     }
 
@@ -172,10 +210,14 @@ public class PerfilService {
                 .statusEtapaCidade(perfil.getStatusEtapaCidade().name())
                 .statusEtapaBio(perfil.getStatusEtapaBio().name())
                 .statusEtapaTags(perfil.getStatusEtapaTags().name())
+                .statusEtapaFoto(perfil.getStatusEtapaFoto().name())
+                .statusEtapaLinks(perfil.getStatusEtapaLinks().name())
                 .percentualCompletude(perfil.getPercentualCompletude())
                 .areaArtisticaPrincipal(perfil.getAreaArtisticaPrincipal())
                 .cidade(perfil.getCidade())
                 .bio(perfil.getBio())
+                .fotoPerfil(perfil.getFotoPerfil())
+                .linksExternos(perfil.getLinksExternos())
                 .build();
     }
 }

@@ -19,6 +19,7 @@ public class PerfilCompletoResponseDTO {
     // Dados do perfil
     private String bio;
     private String fotoPerfil;
+    private List<String> linksExternos;
     private String cidade;
     private String areaArtisticaPrincipal;
     private Boolean disponivelParaMentorar;
@@ -41,4 +42,6 @@ public class PerfilCompletoResponseDTO {
     private String statusEtapaCidade;
     private String statusEtapaBio;
     private String statusEtapaTags;
+    private String statusEtapaFoto;
+    private String statusEtapaLinks;
 }

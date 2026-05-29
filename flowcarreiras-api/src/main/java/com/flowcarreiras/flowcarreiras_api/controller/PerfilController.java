@@ -62,6 +62,18 @@ public class PerfilController {
         return ResponseEntity.ok(perfilService.salvarEtapaTags(auth.getName(), dto.getTagNecessidadeIds()));
     }
 
+    @PatchMapping(value = "/onboarding/foto", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    ResponseEntity<OnboardingStatusResponseDTO> salvarFoto(
+            @RequestPart("foto") MultipartFile foto, Authentication auth) {
+        return ResponseEntity.ok(perfilService.salvarEtapaFoto(auth.getName(), foto));
+    }
+
+    @PatchMapping("/onboarding/links")
+    ResponseEntity<OnboardingStatusResponseDTO> salvarLinks(
+            @RequestBody @Valid OnboardingLinksRequestDTO dto, Authentication auth) {
+        return ResponseEntity.ok(perfilService.salvarEtapaLinks(auth.getName(), dto.getLinksExternos()));
+    }
+
     @PatchMapping("/onboarding/pular/{etapa}")
     ResponseEntity<OnboardingStatusResponseDTO> pularEtapa(
             @PathVariable String etapa, Authentication auth) {

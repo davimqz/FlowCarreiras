@@ -35,6 +35,10 @@ spring:
 storage:
   upload-dir: ./uploads
 
+oportunidades:
+  ttl-seconds: 600
+  fontes: []
+
 jwt:
   secret: Zmxvd2NhcnJlaXJhcy1zZWNyZXQta2V5LWZvci1qd3QtdG9rZW5zLTI1NmJpdA==
   expiration: 86400000

@@ -17,6 +17,7 @@ public class AuthResponseDTO {
     private UUID perfilArtistaId;
     private String urlPublica;
     private Boolean onboardingConcluido;
+    private Integer percentualCompletude;
     private Boolean desejaConfigurarMentoria;
     private Boolean perfilMentorConfigurado;
     private Boolean disponivelParaMentorar;

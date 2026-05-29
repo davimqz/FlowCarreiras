@@ -11,8 +11,12 @@ public class OnboardingStatusResponseDTO {
     private String statusEtapaCidade;
     private String statusEtapaBio;
     private String statusEtapaTags;
+    private String statusEtapaFoto;
+    private String statusEtapaLinks;
     private Integer percentualCompletude;
     private String areaArtisticaPrincipal;
     private String cidade;
     private String bio;
+    private String fotoPerfil;
+    private java.util.List<String> linksExternos;
 }

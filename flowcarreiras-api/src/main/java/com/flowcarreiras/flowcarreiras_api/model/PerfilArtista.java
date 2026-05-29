@@ -35,6 +35,15 @@ public class PerfilArtista {
 
     private String fotoPerfil;
 
+    @ElementCollection(fetch = FetchType.LAZY)
+    @CollectionTable(
+        name = "perfil_links_externos",
+        joinColumns = @JoinColumn(name = "perfil_id")
+    )
+    @Column(name = "link", length = 300)
+    @Builder.Default
+    private List<String> linksExternos = new ArrayList<>();
+
     private String cidade;
 
     private String areaArtisticaPrincipal;
@@ -93,6 +102,16 @@ public class PerfilArtista {
     @Builder.Default
     private StatusEtapaOnboarding statusEtapaTags = StatusEtapaOnboarding.PENDENTE;
 
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    @Builder.Default
+    private StatusEtapaOnboarding statusEtapaFoto = StatusEtapaOnboarding.PENDENTE;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    @Builder.Default
+    private StatusEtapaOnboarding statusEtapaLinks = StatusEtapaOnboarding.PENDENTE;
+
     @Column(unique = true, nullable = false)
     private String urlPublica;
 
@@ -120,12 +139,12 @@ public class PerfilArtista {
 
     public int calcularPercentualCompletude() {
         int pontos = 0;
-        if (bio != null && !bio.isBlank()) pontos += 20;
-        if (fotoPerfil != null && !fotoPerfil.isBlank()) pontos += 20;
-        if (cidade != null && !cidade.isBlank()) pontos += 15;
-        if (areaArtisticaPrincipal != null && !areaArtisticaPrincipal.isBlank()) pontos += 15;
-        if (!obras.isEmpty()) pontos += 20;
-        if (Boolean.TRUE.equals(onboardingConcluido)) pontos += 10;
+        if (areaArtisticaPrincipal != null && !areaArtisticaPrincipal.isBlank()) pontos += 30;
+        if (tagsNecessidade != null && !tagsNecessidade.isEmpty()) pontos += 25;
+        if (cidade != null && !cidade.isBlank()) pontos += 20;
+        if (bio != null && !bio.isBlank()) pontos += 10;
+        if (fotoPerfil != null && !fotoPerfil.isBlank()) pontos += 10;
+        if (linksExternos != null && !linksExternos.isEmpty()) pontos += 5;
         return pontos;
     }
 }
