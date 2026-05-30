@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 
 @Repository
@@ -52,4 +53,22 @@ public interface PerfilArtistaRepository extends JpaRepository<PerfilArtista, UU
             order by u.nome asc
             """)
     List<PerfilArtista> listarMentoresAtivos();
+
+                @Query("""
+                                                select distinct p from PerfilArtista p
+                                                join p.usuario u
+                                                left join p.tagsNecessidade tn
+                                                left join p.tagsExpertise te
+                                                where p.receberNotificacoesOportunidades = true
+                                                        and u.ativo = true
+                                                        and (tn in :tags or te in :tags)
+                                                """)
+                List<PerfilArtista> listarPerfisParaNotificacoes(@Param("tags") Set<com.flowcarreiras.flowcarreiras_api.model.Tag> tags);
+
+                @Query("""
+                                                select p from PerfilArtista p
+                                                where p.dataEntradaFila is not null
+                                                        and p.dataEntradaFila <= :limite
+                                                """)
+                List<PerfilArtista> listarParaRotacaoFila(@Param("limite") java.time.LocalDateTime limite);
 }

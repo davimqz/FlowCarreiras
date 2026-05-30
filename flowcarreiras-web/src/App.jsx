@@ -12,6 +12,7 @@ import ArtistasParaMentoria from './pages/ArtistasParaMentoria'
 import Mentores from './pages/Mentores'
 import MinhasMentorias from './pages/MinhasMentorias'
 import PortalOportunidades from './pages/PortalOportunidades'
+import ExplorarObras from './pages/ExplorarObras'
 import NetworkStatus from './components/NetworkStatus'
 
 function RotaProtegida({ children }) {
@@ -57,6 +58,7 @@ export default function App() {
           <Route path="/oportunidades" element={
             <RotaProtegida><PortalOportunidades /></RotaProtegida>
           } />
+          <Route path="/explorar" element={<ExplorarObras />} />
           <Route path="/" element={<Navigate to="/oportunidades" replace />} />
         </Routes>
       </BrowserRouter>

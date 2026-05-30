@@ -17,6 +17,16 @@ export async function buscarObra(id) {
   return data
 }
 
+export async function explorarObras(filtros = {}) {
+  const params = {}
+  if (filtros.tags?.length) params.tags = filtros.tags.join(',')
+  if (filtros.area) params.area = filtros.area
+  if (filtros.formatos?.length) params.formatos = filtros.formatos.join(',')
+  if (filtros.recencia) params.recencia = filtros.recencia
+  const { data } = await api.get('/obras/explorar', { params })
+  return data
+}
+
 export async function criarObra(dados, file, onProgress) {
   const formData = new FormData()
   formData.append('dados', new Blob([JSON.stringify(dados)], { type: 'application/json' }))

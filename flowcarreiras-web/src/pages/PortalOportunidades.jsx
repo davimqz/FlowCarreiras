@@ -2,14 +2,15 @@ import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import { listarOportunidades } from '../api/oportunidades'
-import SeletorTags from '../components/SeletorTags'
+import { listarNotificacoesOportunidades, marcarNotificacaoOportunidadeLida } from '../api/notificacoes'
 import CardOportunidade from '../components/CardOportunidade'
 
 const TIPOS = [
   { id: 'EDITAL', label: 'Editais' },
   { id: 'VAGA', label: 'Vagas' },
+  { id: 'WORKSHOP', label: 'Workshops' },
+  { id: 'RESIDENCIA', label: 'Residencias' },
   { id: 'EVENTO', label: 'Eventos' },
-  { id: 'OPORTUNIDADE', label: 'Oportunidades' },
 ]
 
 export default function PortalOportunidades() {
@@ -17,20 +18,20 @@ export default function PortalOportunidades() {
   const [carregando, setCarregando] = useState(true)
   const [oportunidades, setOportunidades] = useState([])
 
-  const [query, setQuery] = useState('')
   const [area, setArea] = useState('')
-  const [localidade, setLocalidade] = useState('')
-  const [tagsSelecionadas, setTagsSelecionadas] = useState([])
-  const [tiposSelecionados, setTiposSelecionados] = useState(['EDITAL', 'VAGA', 'EVENTO', 'OPORTUNIDADE'])
+  const [prazo, setPrazo] = useState('')
+  const [tiposSelecionados, setTiposSelecionados] = useState(['EDITAL', 'VAGA', 'WORKSHOP', 'RESIDENCIA', 'EVENTO'])
+
+  const [menuNotificacoes, setMenuNotificacoes] = useState(false)
+  const [notificacoes, setNotificacoes] = useState([])
+  const [totalNaoLidas, setTotalNaoLidas] = useState(0)
 
   async function carregar() {
     setCarregando(true)
     try {
       const dados = await listarOportunidades({
-        query,
         area,
-        localidade,
-        tags: tagsSelecionadas.map(t => t.nome ?? t),
+        prazo,
         tipos: tiposSelecionados,
       })
       setOportunidades(dados)
@@ -39,14 +40,55 @@ export default function PortalOportunidades() {
     }
   }
 
+  async function carregarNotificacoes() {
+    try {
+      const dados = await listarNotificacoesOportunidades(8)
+      setNotificacoes(dados.notificacoes || [])
+      setTotalNaoLidas(dados.totalNaoLidas || 0)
+    } catch {
+      setNotificacoes([])
+      setTotalNaoLidas(0)
+    }
+  }
+
   useEffect(() => {
     carregar()
+    carregarNotificacoes()
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffect(() => {
+    const handle = setTimeout(() => carregar(), 250)
+    return () => clearTimeout(handle)
+  }, [area, prazo, tiposSelecionados]) // eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffect(() => {
+    if (!carregando && oportunidades.length > 0 && window.location.hash) {
+      const id = window.location.hash.slice(1)
+      const el = document.getElementById(id)
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    }
+  }, [carregando, oportunidades])
 
   function toggleTipo(tipo) {
     setTiposSelecionados(prev =>
       prev.includes(tipo) ? prev.filter(t => t !== tipo) : [...prev, tipo]
     )
+  }
+
+  function limparFiltros() {
+    setArea('')
+    setPrazo('')
+    setTiposSelecionados(['EDITAL', 'VAGA', 'WORKSHOP', 'RESIDENCIA', 'EVENTO'])
+  }
+
+  async function abrirNotificacao(notificacao) {
+    if (!notificacao?.oportunidadeId) return
+    setMenuNotificacoes(false)
+    if (!notificacao.lida) {
+      await marcarNotificacaoOportunidadeLida(notificacao.id)
+      await carregarNotificacoes()
+    }
+    window.location.hash = `oportunidade-${notificacao.oportunidadeId}`
   }
 
   return (
@@ -58,6 +100,9 @@ export default function PortalOportunidades() {
             <Link to="/oportunidades" className="text-sm text-gray-300 hover:text-white font-medium border-b-2 border-brand pb-0.5">
               Oportunidades
             </Link>
+            <Link to="/explorar" className="text-sm text-gray-400 hover:text-white">
+              Explorar
+            </Link>
             <Link to="/portfolio/minhas-obras" className="text-sm text-gray-400 hover:text-white">
               Portfolio
             </Link>
@@ -67,6 +112,45 @@ export default function PortalOportunidades() {
             <Link to="/mentores" className="text-sm text-gray-400 hover:text-white">
               Mentores
             </Link>
+            <div className="relative">
+              <button
+                onClick={() => setMenuNotificacoes(v => !v)}
+                className="text-gray-400 hover:text-white relative"
+                aria-label="Notificacoes"
+              >
+                🔔
+                {totalNaoLidas > 0 && (
+                  <span className="absolute -top-1 -right-2 bg-brand text-white text-[10px] rounded-full px-1.5 py-0.5">
+                    {totalNaoLidas}
+                  </span>
+                )}
+              </button>
+              {menuNotificacoes && (
+                <div className="absolute right-0 mt-2 w-80 bg-card border border-gray-800 rounded-xl shadow-lg z-20">
+                  <div className="p-3 border-b border-gray-800 flex items-center justify-between">
+                    <span className="text-sm font-semibold">Notificacoes</span>
+                    <button onClick={carregarNotificacoes} className="text-xs text-gray-500 hover:text-white">Atualizar</button>
+                  </div>
+                  <div className="max-h-72 overflow-auto">
+                    {notificacoes.length === 0 ? (
+                      <div className="p-4 text-sm text-gray-500">Sem notificacoes recentes.</div>
+                    ) : (
+                      notificacoes.map(n => (
+                        <button
+                          key={n.id}
+                          onClick={() => abrirNotificacao(n)}
+                          className={`w-full text-left p-3 border-b border-gray-800 hover:bg-gray-900 ${n.lida ? 'text-gray-500' : 'text-white'}`}
+                        >
+                          <div className="text-xs uppercase text-brand mb-1">{n.tipo}</div>
+                          <div className="text-sm font-medium line-clamp-2">{n.titulo}</div>
+                          <div className="text-xs text-gray-500 mt-1">Prazo: {new Date(n.dataEncerramento).toLocaleDateString('pt-BR')}</div>
+                        </button>
+                      ))
+                    )}
+                  </div>
+                </div>
+              )}
+            </div>
             <span className="text-gray-600">|</span>
             <span className="text-sm text-gray-400 hidden sm:block">{usuario?.nome}</span>
             <button onClick={logout} className="text-xs text-gray-500 hover:text-white">Sair</button>
@@ -97,22 +181,15 @@ export default function PortalOportunidades() {
               <div className="space-y-3">
                 <input
                   className="input"
-                  placeholder="Buscar por palavra-chave"
-                  value={query}
-                  onChange={e => setQuery(e.target.value)}
-                />
-                <input
-                  className="input"
                   placeholder="Area artistica"
                   value={area}
                   onChange={e => setArea(e.target.value)}
                 />
-                <input
-                  className="input"
-                  placeholder="Localidade"
-                  value={localidade}
-                  onChange={e => setLocalidade(e.target.value)}
-                />
+                <select className="input" value={prazo} onChange={e => setPrazo(e.target.value)}>
+                  <option value="">Sem filtro de prazo</option>
+                  <option value="semana">Esta semana</option>
+                  <option value="mes">Este mes</option>
+                </select>
               </div>
             </div>
 
@@ -135,19 +212,14 @@ export default function PortalOportunidades() {
               </div>
             </div>
 
-            <div className="bg-card rounded-xl p-4">
-              <h3 className="text-sm font-semibold mb-3">Tags</h3>
-              <SeletorTags tagsSelecionadas={tagsSelecionadas} onChange={setTagsSelecionadas} maxTags={10} />
-            </div>
-
-            <button onClick={carregar} className="btn-primary w-full">Aplicar filtros</button>
+            <button onClick={limparFiltros} className="btn-secondary w-full">Limpar filtros</button>
           </aside>
 
           <section className="lg:col-span-3">
             <div className="flex items-center justify-between mb-4">
               <div>
                 <h2 className="text-xl font-semibold">Portal de Oportunidades</h2>
-                <p className="text-sm text-gray-400">{oportunidades.length} resultado(s)</p>
+                <p className="text-sm text-gray-400">{oportunidades.length} oportunidades encontradas</p>
               </div>
               <button onClick={carregar} className="btn-secondary text-sm px-3 py-1.5">Atualizar</button>
             </div>
@@ -156,7 +228,8 @@ export default function PortalOportunidades() {
               <div className="text-gray-400 text-sm">Carregando oportunidades...</div>
             ) : oportunidades.length === 0 ? (
               <div className="bg-card rounded-xl p-6 text-center text-gray-400">
-                Nenhuma oportunidade encontrada. Tente ajustar os filtros.
+                <p>Nenhuma oportunidade encontrada para os filtros selecionados.</p>
+                <button onClick={limparFiltros} className="btn-secondary mt-4">Limpar filtros</button>
               </div>
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

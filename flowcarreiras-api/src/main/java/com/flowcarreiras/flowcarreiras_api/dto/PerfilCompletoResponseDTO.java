@@ -32,6 +32,7 @@ public class PerfilCompletoResponseDTO {
     private Integer percentualCompletude;
     private Boolean onboardingConcluido;
     private Integer totalObras;
+    private Boolean receberNotificacoesOportunidades;
 
     // Tags
     private List<TagDTO> tagsExpertise;

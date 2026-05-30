@@ -40,4 +40,6 @@ public class AtualizarPerfilRequestDTO {
     private List<UUID> tagsNecessidadeIds;
 
     private List<String> linksExternos;
+
+    private Boolean receberNotificacoesOportunidades;
 }

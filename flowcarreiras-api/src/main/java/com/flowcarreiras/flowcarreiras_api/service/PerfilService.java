@@ -51,6 +51,8 @@ public class PerfilService {
             perfil.setLinksExternos(dto.getLinksExternos());
         if (dto.getLinksExternos() != null && !dto.getLinksExternos().isEmpty())
             perfil.setStatusEtapaLinks(StatusEtapaOnboarding.CONCLUIDA);
+        if (dto.getReceberNotificacoesOportunidades() != null)
+            perfil.setReceberNotificacoesOportunidades(dto.getReceberNotificacoesOportunidades());
 
         perfil.setPercentualCompletude(perfil.calcularPercentualCompletude());
         return toPerfilCompleto(perfilArtistaRepository.save(perfil));
@@ -192,6 +194,7 @@ public class PerfilService {
                 .percentualCompletude(perfil.getPercentualCompletude())
                 .onboardingConcluido(perfil.getOnboardingConcluido())
                 .totalObras(perfil.getObras().size())
+                .receberNotificacoesOportunidades(perfil.getReceberNotificacoesOportunidades())
                 .tagsExpertise(perfil.getTagsExpertise().stream().map(TagDTO::from).toList())
                 .tagsNecessidade(perfil.getTagsNecessidade().stream().map(TagDTO::from).toList())
                 .statusEtapaArea(perfil.getStatusEtapaArea().name())

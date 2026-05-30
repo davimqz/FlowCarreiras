@@ -56,6 +56,10 @@ public class PerfilArtista {
 
     @Column(nullable = false)
     @Builder.Default
+    private Boolean receberNotificacoesOportunidades = true;
+
+    @Column(nullable = false)
+    @Builder.Default
     private Boolean disponivelParaMentorar = false;
 
     @Column(nullable = false)
