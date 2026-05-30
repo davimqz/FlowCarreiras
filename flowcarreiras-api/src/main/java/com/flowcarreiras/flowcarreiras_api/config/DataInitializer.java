@@ -1,13 +1,17 @@
 package com.flowcarreiras.flowcarreiras_api.config;
 
 import com.flowcarreiras.flowcarreiras_api.model.PerfilArtista;
+import com.flowcarreiras.flowcarreiras_api.model.Oportunidade;
 import com.flowcarreiras.flowcarreiras_api.model.Tag;
 import com.flowcarreiras.flowcarreiras_api.model.Usuario;
 import com.flowcarreiras.flowcarreiras_api.model.enums.CategoriaTag;
 import com.flowcarreiras.flowcarreiras_api.model.enums.ModalidadeMentoria;
+import com.flowcarreiras.flowcarreiras_api.model.enums.OportunidadeTipo;
+import com.flowcarreiras.flowcarreiras_api.repository.OportunidadeRepository;
 import com.flowcarreiras.flowcarreiras_api.repository.PerfilArtistaRepository;
 import com.flowcarreiras.flowcarreiras_api.repository.TagRepository;
 import com.flowcarreiras.flowcarreiras_api.repository.UsuarioRepository;
+import com.flowcarreiras.flowcarreiras_api.service.NotificacaoOportunidadeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
@@ -16,6 +20,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
@@ -28,6 +33,8 @@ public class DataInitializer implements CommandLineRunner {
     private final TagRepository tagRepository;
     private final UsuarioRepository usuarioRepository;
     private final PerfilArtistaRepository perfilArtistaRepository;
+    private final OportunidadeRepository oportunidadeRepository;
+    private final NotificacaoOportunidadeService notificacaoOportunidadeService;
     private final PasswordEncoder passwordEncoder;
 
     @Value("${seed.teste-senha:senha123}")
@@ -38,6 +45,7 @@ public class DataInitializer implements CommandLineRunner {
     public void run(String... args) {
         seedTags();
         seedUsuariosTeste();
+        seedOportunidades();
     }
 
     private void seedTags() {
@@ -153,8 +161,85 @@ public class DataInitializer implements CommandLineRunner {
         perfilArtistaRepository.save(dandara);
     }
 
+        private void seedOportunidades() {
+        if (oportunidadeRepository.count() > 0) return;
+        List<Tag> tags = tagRepository.findAll();
+
+        List<Oportunidade> oportunidades = List.of(
+            oportunidade(
+                "Edital Cultura Viva 2026",
+                "Selecao de projetos de arte comunitaria para circulacao nacional.",
+                OportunidadeTipo.EDITAL,
+                "Artes Visuais",
+                LocalDate.now().plusDays(12),
+                "https://exemplo.org/edital-cultura-viva",
+                tagsPorNome(tags, "fotografia", "pintura", "ilustracao")
+            ),
+            oportunidade(
+                "Residencia Artistica Nordeste",
+                "Programa de residencia de 2 meses com bolsa e mentorias.",
+                OportunidadeTipo.RESIDENCIA,
+                "Performance",
+                LocalDate.now().plusDays(20),
+                "https://exemplo.org/residencia-nordeste",
+                tagsPorNome(tags, "teatro", "danca", "experimental")
+            ),
+            oportunidade(
+                "Workshop Storytelling Visual",
+                "Workshop intensivo de narrativa visual para portfolios.",
+                OportunidadeTipo.WORKSHOP,
+                "Design",
+                LocalDate.now().plusDays(7),
+                "https://exemplo.org/workshop-storytelling",
+                tagsPorNome(tags, "design grafico", "lettering", "direcao de arte")
+            ),
+            oportunidade(
+                "Vaga: Assistente de Producao Audiovisual",
+                "Vaga junior com foco em edicao e assistencia de set.",
+                OportunidadeTipo.VAGA,
+                "Audiovisual",
+                LocalDate.now().plusDays(15),
+                "https://exemplo.org/vaga-audiovisual",
+                tagsPorNome(tags, "audiovisual", "edicao de video")
+            ),
+            oportunidade(
+                "Festival de Arte e Tecnologia",
+                "Evento anual com mesas e exposicoes interativas.",
+                OportunidadeTipo.EVENTO,
+                "Multimidia",
+                LocalDate.now().plusDays(25),
+                "https://exemplo.org/festival-arte-tech",
+                tagsPorNome(tags, "animacao", "motion graphics", "experimental")
+            )
+        );
+
+        oportunidades.forEach(op -> {
+            Oportunidade salva = oportunidadeRepository.save(op);
+            notificacaoOportunidadeService.notificarNovaOportunidade(salva);
+        });
+        }
+
     private Tag tag(String nome, CategoriaTag categoria) {
         return Tag.builder().nome(nome).categoria(categoria).build();
+    }
+
+    private Oportunidade oportunidade(
+            String titulo,
+            String descricao,
+            OportunidadeTipo tipo,
+            String area,
+            LocalDate dataEncerramento,
+            String link,
+            Set<Tag> tags) {
+        return Oportunidade.builder()
+                .titulo(titulo)
+                .descricao(descricao)
+                .tipo(tipo)
+                .areaArtistica(area)
+                .dataEncerramento(dataEncerramento)
+                .linkExterno(link)
+                .tags(tags)
+                .build();
     }
 
     private PerfilArtista criarPerfilSeAusente(

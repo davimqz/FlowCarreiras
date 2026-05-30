@@ -1,12 +1,16 @@
 export default function CardOportunidade({ oportunidade }) {
+  const prazo = oportunidade.dataEncerramento
+    ? new Date(oportunidade.dataEncerramento).toLocaleDateString('pt-BR')
+    : null
+
   return (
-    <div className="card p-4 hover:ring-2 hover:ring-brand transition-all">
+    <div id={`oportunidade-${oportunidade.id}`} className="card p-4 hover:ring-2 hover:ring-brand transition-all">
       <div className="flex items-center justify-between gap-3 mb-2">
         <span className="text-xs px-2 py-1 rounded-full bg-brand/20 text-brand">
           {oportunidade.tipo}
         </span>
-        {oportunidade.data && (
-          <span className="text-xs text-gray-500">{oportunidade.data}</span>
+        {prazo && (
+          <span className="text-xs text-gray-500">Prazo: {prazo}</span>
         )}
       </div>
       <h3 className="font-semibold text-white mb-1">
@@ -18,14 +22,8 @@ export default function CardOportunidade({ oportunidade }) {
         </p>
       )}
       <div className="flex flex-wrap gap-2 text-xs text-gray-500 mb-3">
-        {oportunidade.localidade && (
-          <span className="px-2 py-1 rounded-full bg-gray-800">{oportunidade.localidade}</span>
-        )}
         {oportunidade.areaArtistica && (
           <span className="px-2 py-1 rounded-full bg-gray-800">{oportunidade.areaArtistica}</span>
-        )}
-        {oportunidade.fonte && (
-          <span className="px-2 py-1 rounded-full bg-gray-800">{oportunidade.fonte}</span>
         )}
       </div>
       {oportunidade.tags?.length > 0 && (
@@ -38,14 +36,14 @@ export default function CardOportunidade({ oportunidade }) {
           )}
         </div>
       )}
-      {oportunidade.link && (
+      {oportunidade.linkExterno && (
         <a
-          href={oportunidade.link}
+          href={oportunidade.linkExterno}
           target="_blank"
           rel="noopener noreferrer"
           className="btn-secondary text-sm px-3 py-1.5 inline-flex"
         >
-          Ver detalhes
+          Inscrever-se
         </a>
       )}
     </div>

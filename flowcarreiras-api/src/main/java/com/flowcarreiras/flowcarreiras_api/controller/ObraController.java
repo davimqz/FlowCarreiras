@@ -14,6 +14,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Locale;
+import java.util.Set;
+import java.util.stream.Collectors;
 import java.util.UUID;
 
 @RestController
@@ -39,6 +42,22 @@ public class ObraController {
     @GetMapping("/{id}")
     ResponseEntity<ObraResponseDTO> buscarPorId(@PathVariable UUID id) {
         return ResponseEntity.ok(obraService.buscarPorId(id));
+    }
+
+    // Público — exploração com filtros
+    @GetMapping("/explorar")
+    ResponseEntity<List<ObraResponseDTO>> explorar(
+            @RequestParam(required = false) String tags,
+            @RequestParam(required = false) String area,
+            @RequestParam(required = false) String formatos,
+            @RequestParam(required = false) String recencia
+    ) {
+        return ResponseEntity.ok(obraService.explorar(
+                area,
+                splitLower(tags),
+                splitFormatos(formatos),
+                parseRecencia(recencia)
+        ));
     }
 
     // Autenticado — upload com multipart/form-data
@@ -72,5 +91,43 @@ public class ObraController {
 
         obraService.removerObra(id, userDetails.getUsername());
         return ResponseEntity.noContent().build();
+    }
+
+    private Set<String> splitLower(String raw) {
+        if (raw == null || raw.isBlank()) return Set.of();
+        return java.util.Arrays.stream(raw.split(","))
+                .map(String::trim)
+                .filter(s -> !s.isBlank())
+                .map(s -> s.toLowerCase(Locale.ROOT))
+                .collect(Collectors.toSet());
+    }
+
+    private Set<com.flowcarreiras.flowcarreiras_api.model.enums.TipoMidia> splitFormatos(String raw) {
+        if (raw == null || raw.isBlank()) return Set.of();
+        return java.util.Arrays.stream(raw.split(","))
+                .map(String::trim)
+                .filter(s -> !s.isBlank())
+                .map(s -> s.toUpperCase(Locale.ROOT))
+                .map(this::parseFormato)
+                .filter(java.util.Objects::nonNull)
+                .collect(Collectors.toSet());
+    }
+
+    private com.flowcarreiras.flowcarreiras_api.model.enums.TipoMidia parseFormato(String raw) {
+        try {
+            return com.flowcarreiras.flowcarreiras_api.model.enums.TipoMidia.valueOf(raw);
+        } catch (IllegalArgumentException ex) {
+            return null;
+        }
+    }
+
+    private ObraService.PeriodoRecencia parseRecencia(String raw) {
+        if (raw == null || raw.isBlank()) return ObraService.PeriodoRecencia.SEM_FILTRO;
+        String valor = raw.trim().toLowerCase(Locale.ROOT);
+        return switch (valor) {
+            case "semana" -> ObraService.PeriodoRecencia.ESTA_SEMANA;
+            case "mes" -> ObraService.PeriodoRecencia.ESTE_MES;
+            default -> ObraService.PeriodoRecencia.SEM_FILTRO;
+        };
     }
 }

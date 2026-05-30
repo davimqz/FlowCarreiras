@@ -65,6 +65,7 @@ export default function MeuPerfil() {
   const [formBio, setFormBio] = useState('')
   const [formExpertise, setFormExpertise] = useState([])
   const [formNecessidade, setFormNecessidade] = useState([])
+  const [receberNotificacoes, setReceberNotificacoes] = useState(true)
 
   useEffect(() => {
     obterMeuPerfil()
@@ -83,6 +84,7 @@ export default function MeuPerfil() {
     setFormBio(p.bio || '')
     setFormExpertise(p.tagsExpertise || [])
     setFormNecessidade(p.tagsNecessidade || [])
+    setReceberNotificacoes(p.receberNotificacoesOportunidades ?? true)
   }
 
   function cancelar() {
@@ -320,6 +322,34 @@ export default function MeuPerfil() {
             <button onClick={() => setEditando('bio')} className="text-sm text-gray-500 hover:text-brand transition-colors">
               + Adicionar uma apresentação sobre você
             </button>
+          )}
+        </Secao>
+
+        <Secao
+          titulo="Notificacoes de oportunidades"
+          editando={editando === 'notificacoes'}
+          onEditar={() => setEditando('notificacoes')}
+          onSalvar={() => salvarSecao({ receberNotificacoesOportunidades: receberNotificacoes })}
+          onCancelar={cancelar}
+          salvando={salvando}
+        >
+          {editando === 'notificacoes' ? (
+            <label className="flex items-center justify-between gap-4">
+              <span className="text-sm text-gray-300">Receber alertas de novas oportunidades</span>
+              <input
+                type="checkbox"
+                checked={receberNotificacoes}
+                onChange={e => setReceberNotificacoes(e.target.checked)}
+                className="h-4 w-4 accent-brand"
+              />
+            </label>
+          ) : (
+            <div className="flex items-center justify-between">
+              <span className="text-sm text-gray-300">Alertas de novas oportunidades</span>
+              <span className={`text-xs px-2 py-1 rounded-full ${perfil?.receberNotificacoesOportunidades ? 'bg-brand/20 text-brand-light' : 'bg-gray-800 text-gray-400'}`}>
+                {perfil?.receberNotificacoesOportunidades ? 'Ativo' : 'Desativado'}
+              </span>
+            </div>
           )}
         </Secao>
 

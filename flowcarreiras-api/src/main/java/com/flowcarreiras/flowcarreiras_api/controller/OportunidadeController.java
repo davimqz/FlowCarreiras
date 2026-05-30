@@ -2,6 +2,7 @@ package com.flowcarreiras.flowcarreiras_api.controller;
 
 import com.flowcarreiras.flowcarreiras_api.dto.oportunidades.OportunidadeResponseDTO;
 import com.flowcarreiras.flowcarreiras_api.service.OportunidadeService;
+import com.flowcarreiras.flowcarreiras_api.model.enums.OportunidadeTipo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,21 +28,38 @@ public class OportunidadeController {
             @RequestParam(required = false) String tipos,
             @RequestParam(required = false) String tags,
             @RequestParam(required = false) String area,
-            @RequestParam(required = false) String localidade,
-            @RequestParam(required = false, name = "q") String query,
+            @RequestParam(required = false) String prazo,
             @RequestParam(defaultValue = "50") int limit,
             @RequestParam(defaultValue = "0") int offset
     ) {
         OportunidadeService.Filtro filtro = new OportunidadeService.Filtro(
-                splitLower(tipos),
+                splitTipos(tipos),
                 splitLower(tags),
                 area,
-                localidade,
-                query,
+                parsePrazo(prazo),
                 Math.min(Math.max(limit, 1), 200),
                 Math.max(offset, 0)
         );
         return oportunidadeService.listar(filtro);
+    }
+
+    private Set<OportunidadeTipo> splitTipos(String raw) {
+        if (!StringUtils.hasText(raw)) return Set.of();
+        return Arrays.stream(raw.split(","))
+                .map(String::trim)
+                .filter(StringUtils::hasText)
+                .map(s -> s.toUpperCase(Locale.ROOT))
+                .map(this::parseTipo)
+                .filter(java.util.Objects::nonNull)
+                .collect(Collectors.toSet());
+    }
+
+    private OportunidadeTipo parseTipo(String raw) {
+        try {
+            return OportunidadeTipo.valueOf(raw);
+        } catch (IllegalArgumentException ex) {
+            return null;
+        }
     }
 
     private Set<String> splitLower(String raw) {
@@ -51,5 +69,15 @@ public class OportunidadeController {
                 .filter(StringUtils::hasText)
                 .map(s -> s.toLowerCase(Locale.ROOT))
                 .collect(Collectors.toSet());
+    }
+
+    private OportunidadeService.PrazoFiltro parsePrazo(String raw) {
+        if (!StringUtils.hasText(raw)) return OportunidadeService.PrazoFiltro.SEM_FILTRO;
+        String valor = raw.trim().toLowerCase(Locale.ROOT);
+        return switch (valor) {
+            case "semana" -> OportunidadeService.PrazoFiltro.ESTA_SEMANA;
+            case "mes" -> OportunidadeService.PrazoFiltro.ESTE_MES;
+            default -> OportunidadeService.PrazoFiltro.SEM_FILTRO;
+        };
     }
 }
