@@ -1,0 +1,225 @@
+id,nome,descricao_curta,tipo_id,tipo_nome,termos_tags,termos_areas,termos_funcoes,termos_etnias,termos_subareas,data_criacao,data_atualizacao
+1,Admin@local,,1,Individual,,,,,,2017-03-03 00:00:00.000000,2017-03-03 00:00:00.000000
+3,Gustavo Lima da Silva,Teste,1,Individual,,Circo,,,,2017-03-16 14:38:42.000000,2017-03-21 19:57:26.000000
+4,Thaís Rigolon,Produtora Cultural,1,Individual,,,,,,2017-03-16 20:48:39.000000,2017-03-16 20:53:26.000000
+5,Miguel Salvatore,descrever,1,Individual,fotografia | gestão cultural | produtor,Fotografia | Gestão Cultural,,,,2017-03-17 18:42:12.000000,2024-06-11 22:58:05.000000
+6,Bruno Cavalcanti,Gerente de Projetos. Coordenador de Apoio à Gestão do Fundo Pernambucano de Incentivo à Cultura - FUNCULTURA.,1,Individual,Funcultura,Gestão Cultural,,,,2017-03-20 17:19:56.000000,2024-06-11 22:58:07.000000
+7,Flávio Barbosa da Silva,"Assessor de Gestão - FUNDARPE
+Doutorando em Design da Informação - UFPE",1,Individual,,Design | Gestão Cultural | Patrimônio Cultural,,,Design,2017-03-20 17:20:07.000000,2024-06-11 22:58:06.000000
+8,TIAGO,"Jornalista e gestor cultural. Consultor da Unesco Brasil e membro do Coletivo CineRuaPE.
+Coordenador de comunicação estratégica do Projeto Museu Nacional Vive (UNESCO, UFRJ, Instituto Cultural Vale). A iniciativa é responsável pelo restauro do Paço de São Cristóvão e a reconstrução do Museu, atingido por um trágico incêndio em 2018.",1,Individual,,Comunicação | Gestão Cultural | Novas Mídias | Patrimônio Cultural | Patrimônio Cultural Imaterial | Patrimônio Cultural Material | Produção Cultural,,,Cadeia Mediadora | Multilinguagem,2017-03-20 17:21:10.000000,2026-03-27 10:43:07.000000
+9,Diego Linhares Moura,Jornalista.  Assessoria de comunicação - SECULT/PE,1,Individual,,Comunicação | Jornais e outros periódicos,,,,2017-03-20 17:22:17.000000,2024-06-11 22:58:11.000000
+10,Mário Jarbas,Página teste para o mapa,1,Individual,,"Cultura, Meio Ambiente e Sustentabilidade | Gestão Cultural | Pesquisa | Produção Cultural",,,,2017-03-20 17:23:58.000000,2024-06-11 22:58:04.000000
+11,Secretaria de Cultura do Estado de Pernambuco,"PARA SUPORTE TÉCNICO ENTRAR EM CONTATO ATRAVÉS DO WHATSAPP (81) 3184-3018.  
+
+SELECIONE:
+OPÇÃO 1: CONTINUAR O ATENDIMENTO; 
+OPÇÃO 2: CONTATO COM O MAPA CULTURAL.
+
+TENHA EM MÃOS: 
+NOME COMPLETO,
+E-MAIL,
+CPF,
+NOME DO EDITAL/OPORTUNIDADE
+NÚMERO DE INSCRIÇÃO. 
+
+HORÁRIO DE ATENDIMENTO: 
+SEGUNDA A SEXTA DAS 08H ÀS 12H E DAS 14H ÀS 17H.",2,Coletivo,,Gestão Cultural,,,Outros,2017-03-20 17:41:47.000000,2024-06-11 22:58:14.000000
+13,Fundação do Patrimônio Histórico e Artístico de Pernambuco - FUNDARPE,"A Fundarpe tem como objetivo principal a promoção, o apoio, o incentivo, a preservação e a difusão das identidades e produções culturais de Pernambuco de forma estruturadora e sistêmica, focada na inclusão social.",2,Coletivo,,Gestão Cultural,,,,2017-03-20 17:51:14.000000,2024-06-11 22:58:01.000000
+16,Anizio Silva,Designer. Servidor público estadual. Gestor de Comunicação Digital na Universidade de Pernambuco. Militante da União de Negras e Negros pela Igualdade (UNEGRO).,1,Individual,,Comunicação | Mídias Sociais,,,Webdesign,2017-03-21 14:16:17.000000,2025-10-07 12:51:29.000000
+17,Janaína Branco,"Designer, Doutoranda em Design Estratégico, Ma. Design da Informação, Coordenadora de projetos educacionais e de inovação, produtora e gestora cultural (Design e moda).",1,Individual,Fundarpe | Secult,Design | Design de Moda | Economia Criativa e da Cultura | Gestão Cultural,,,Design | Design da Informação | Design de Produto | UX Design,2017-03-21 14:18:34.000000,2024-06-11 22:58:09.000000
+18,Juliana Rezende,.......,1,Individual,,Artesanato | Cultura e Turismo | Gestão Cultural,,,,2017-03-21 14:18:57.000000,2024-06-11 22:58:11.000000
+19,José Neto Barbosa,"Ator, Intérprete das artes cênicas, Drag Queen, Diretor, Dramaturgo, Produtor, Educador e Gestor cultural.",1,Individual,,Cinema | Cultura LGBTQIAPN+ | Outra | Produção Cultural | Teatro | Televisão,,,Audiovisual | Teatro Adulto,2017-03-21 14:19:57.000000,2024-06-11 22:58:04.000000
+20,Ellen Meireles,"Especialista em Gestão e Política Cultural com atenção às Políticas Públicas de Cultura para a Pessoa com Deficiência. 
+Assessora da Gerência de Política Cultural  na Secretaria de Cultura de Pernambuco - Secult PE.",1,Individual,GPC | SECULTPE,Gestão Cultural | Outra | Pesquisa | Produção Cultural,,,Não se Aplica,2017-03-21 14:20:23.000000,2024-06-11 22:58:07.000000
+21,clarice andrade,"Sócia proprietária da Zanzibar Produções, Coordenadora de Conteúdo Centro Cultural Cais do Sertão, desde novembro de 2019. Como profissão mãe, é produtora de audiovisual. Foi gestora do Museu do Trem desde janeiro a maio de 2017. Secretária Executiva de Cultura de Olinda de 2009 a 2016. Formada em Comunicação Social- Jornalismo, especialista em Gestão Cultural",1,Individual,Cais do Sertão | artes visuais | gestao cultural | museu,Audiovisual e Mídias Interativas | Comunicação | Cultura e Educação | Gestão Cultural | Museu (Patrimônio Material) | Novas Mídias,,,,2017-03-21 14:23:22.000000,2024-06-11 22:58:09.000000
+22,Manoela Antunes,Graduanda em Biblioteconomia pela UFPE,1,Individual,,Leitura | Literatura | Livro,,,,2017-03-21 14:23:38.000000,2024-06-11 22:58:12.000000
+23,Yolanda Correa dos Santos,Produtora Cultural,1,Individual,,Gestão Cultural,,,Outros,2017-03-21 14:24:10.000000,2024-06-11 22:58:03.000000
+24,Milena Evangelista,"Jornalista, Produtora e Gestora Cultural.
+Especialista em Estudos Cinematográficos.
+Coordenadora de Audiovisual da Secult/PE.",1,Individual,,Audiovisual e Mídias Interativas | Comunicação | Gestão Cultural,,,,2017-03-21 14:26:38.000000,2024-06-11 22:58:13.000000
+25,Marcela Wanderley,"Migrei da área da Psicologia para a da História, ambas na UFPE. Trabalhei em projetos de Registro, Tombamento, Acervos e Educativos em Museus, especialmente durante o período acadêmico. Gestão de Museus e desenvolvimento de projetos. Trabalho na Gerência de Ação Cultural - FUNDARPE.",1,Individual,,Artes Visuais | Artesanato | Gestão Cultural | Museu (Patrimônio Material) | Produção Cultural,,,Cadeia Criativa,2017-03-21 14:27:37.000000,2024-06-11 22:58:06.000000
+28,Felipe Cabral,desc,1,Individual,,Arte Digital,,,,2017-03-21 18:27:11.000000,2017-03-21 18:27:49.000000
+29,batiman feira da fruta,"Entrei na feira da fruta
+Pra ver o que a feira da fruta tem
+Tinha laranja, morango e banana
+Só não tinha a jaca do meu bem
+
+Feira da fruta é a feira mais cara
+Aonde só dá pilão
+Tem a feira tamanho família
+Tem até a feira do melão
+
+Feira da fruta hey!
+Feira da fruta ha!
+Feira da fruta hey!
+Feira da fruta ha!
+Feira da fruta hey!
+Feira da fruta ha!",2,Coletivo,,Audiovisual e Mídias Interativas,,,,2017-03-21 19:19:49.000000,2017-03-21 19:21:05.000000
+30,Teste Anexo,asdfafds,1,Individual,,Circo,,,,2017-03-21 20:31:23.000000,2017-03-21 22:39:05.000000
+31,SUPER ADMIN JADA,asdfasdf,1,Individual,,Circo,,,,2017-03-21 20:42:41.000000,2017-03-23 15:16:54.000000
+32,Vitor Kato,..,1,Individual,,Antropologia,,,,2017-04-06 15:16:21.000000,2024-06-11 22:58:10.000000
+33,teste agente para campos,..,1,Individual,,Arquitetura e Urbanismo,,,,2017-04-06 15:53:23.000000,2017-04-06 15:57:14.000000
+39,Vitor Teste,adasdsa,2,Coletivo,,Arte Digital,,,,2017-05-29 15:33:32.000000,2017-05-29 15:33:32.000000
+45,Gerência de Equipamentos Culturais - GEC,"Responsável pela gestão política, de conteúdos e de programação dos espaços culturais sob a tutela da Fundarpe.",2,Coletivo,,Artes Visuais | Artesanato | Audiovisual e Mídias Interativas | Cinema | Circo | Culturas Populares | Dança | Design | Fotografia | Gestão Cultural | História | Literatura | Museu (Patrimônio Material) | Música | Patrimônio Cultural Material | Produção Cultural | Teatro,,,,2017-09-06 16:17:58.000000,2024-06-11 22:58:01.000000
+47,VALERIA,"A liberdade é o maior fruto da auto-suficiência
+Epicuro",1,Individual,,Comunicação | Gestão Cultural | Mídias Sociais | Produção Cultural,,,Cadeia Produtiva,2017-09-13 13:45:35.000000,2025-05-28 09:30:01.000000
+49,Jacira França,"Doutora em Sociologia, trabalha nas áreas do Patrimônio Imaterial e da Cultura Popular. Participou dos Inventários da Feira de Caruaru, do Frevo, da Capoeira, das Parteiras, dos Caboclinhos, dos Ursos de Carnaval e das Matrizes do Forró. Coordenou o setor de Patrimônio Imaterial da Fundarpe e a Unidade Gerencial do Patrimônio Vivo-PE (2017-2019). Atua como pesquisadora e parecerista.",1,Individual,,Culturas Populares | Gestão Cultural | Patrimônio Cultural Imaterial | Sociologia,,,Cultura Popular,2017-09-19 15:36:48.000000,2024-09-17 20:33:09.000000
+50,Lia de Itamaracá,Cirandeira,1,Individual,ciranda | culturapopular | patrimônio,Culturas Populares | Patrimônio Cultural Imaterial,,,,2017-09-19 15:56:41.000000,2024-06-14 17:21:41.000000
+51,Ana das Carrancas (in memoriam),"Artesã Ceramista
+Natural de Petrolina
+intitulado Patrimônio Vivo em 2005
+Falecida em 01/10/2008",1,Individual,,Arqueologia | Artesanato | Culturas Populares | Patrimônio Cultural Imaterial,,,,2017-09-20 12:27:44.000000,2024-06-14 17:21:41.000000
+52,Arlindo dos Oito Baixos (in memoriam),"Músico 
+Intitulado Patrimônio Vivo de Pernambuco em 2012
+Falecido em 23/10/2013",1,Individual,,Culturas Populares | Música | Patrimônio Cultural Imaterial,,,,2017-09-20 13:23:57.000000,2024-06-14 17:21:41.000000
+53,Banda Revoltosa,"Banda musical
+Cidade Natal: Nazaré da Mata
+Ano de registro de Patrimônio Vivo: 2013",2,Coletivo,Patrimônio Vivo,Culturas Populares | Música | Patrimônio Cultural Imaterial,,,,2017-09-20 13:37:00.000000,2024-06-11 22:58:02.000000
+54,Caboclinho Sete Flexas,"Atividade/expressão cultural: caboclinho
+Cidade: Recife
+Fundado em 1973
+Ano de registro de Patrimônio Vivo: 2008",2,Coletivo,Caboclinho | Patrimônio Vivo,Culturas Populares | Patrimônio Cultural Imaterial,,,,2017-09-20 13:46:31.000000,2024-06-11 22:57:59.000000
+55,Camarão (in memoriam),"Músico 
+Natural do Recife
+intitulado Patrimônio Vivo de Pernambuco em 2005
+Falecido em 21/04/2015",1,Individual,,Música | Patrimônio Cultural Imaterial,,,,2017-09-20 14:02:59.000000,2024-06-14 17:21:42.000000
+56,Canhoto da Paraíba (in memoriam),"Cidade: Recife
+Atividade/expressão cultural: violonista
+Ano de registro de patrimônio vivo: 2005
+Falecido em 24/04/2008",1,Individual,,Culturas Populares | Música | Patrimônio Cultural Imaterial,,,,2017-09-20 14:20:30.000000,2024-06-14 17:21:42.000000
+57,"Claudionor Germano: rei do frevo, patrimônio de Pernambuco","Cidade: Recife
+Atividade/expressão cultural: Cantor/Frevo
+Ano de registro de patrimônio vivo: 2016",1,Individual,Frevo | Patrimônio Vivo,Culturas Populares | Patrimônio Cultural Imaterial,,,,2017-09-20 14:56:45.000000,2024-06-14 17:21:43.000000
+58,Clube Carnavalesco Mixto Seu Malaquias,"Agremiação carnavalesca
+Fundado em: 27/08/1954
+Ano de titulação Patrimônio Vivo:2016
+Cidade: Recife",2,Coletivo,Frevo | Patrimônio Vivo,Culturas Populares | Música | Patrimônio Cultural Imaterial,,,,2017-09-21 10:54:41.000000,2024-06-14 17:21:43.000000
+59,Clube Indígena Canindé,"Cidade: Recife
+Atividade/expressão cultural: caboclinho
+Ano de registro de patrimônio vivo: 2009",2,Coletivo,Caboclinho | Patrimônio Vivo,Culturas Populares | Patrimônio Cultural Imaterial,,,,2017-09-21 11:17:39.000000,2017-09-21 11:17:39.000000
+60,Confraria do Rosário,"Cidade: Floresta
+Atividade/expressão cultural: congo/rosário
+Ano de registro de patrimônio vivo: 2007
+Fundado em 1977",2,Coletivo,Floresta | Patrimônio Vivo | Rosário,Culturas Populares | Patrimônio Cultural Imaterial,,,,2017-09-21 11:25:44.000000,2024-06-11 22:58:02.000000
+61,Dedé Monteiro,"Cidade: Tabira
+Ano de registro de Patrimônio Vivo: 2016",1,Individual,Literatura de cordel | Patrimônio Vivo,Gestão Cultural | Patrimônio Cultural Imaterial,,,,2017-09-21 12:23:04.000000,2024-06-14 17:21:44.000000
+62,Didi do Pagode,"Cidade: Recife
+Atividade/expressão cultural: samba/pagode
+Ano de registro de patrimônio vivo: 2010",1,Individual,Pagode | Patrimônio Vivo,Culturas Populares | Música | Patrimônio Cultural Imaterial,,,,2017-09-21 12:36:30.000000,2024-06-14 17:21:45.000000
+63,Portal Cultura.PE,,1,Individual,,,,,,2017-09-22 16:57:04.000000,2017-09-22 16:57:04.000000
+64,Carlos Andrade,,1,Individual,,,,,,2017-09-25 11:03:45.000000,2017-09-25 11:03:45.000000
+65,ALBERTO L VIEGAS,,1,Individual,,,,,,2017-09-25 17:14:56.000000,2017-09-25 17:14:56.000000
+66,Joaquim,,1,Individual,,,,,,2017-09-26 09:32:06.000000,2017-09-26 09:32:06.000000
+67,Teste,,1,Individual,,,,,,2017-09-26 13:47:20.000000,2017-09-26 13:47:20.000000
+68,Dila,"Cidade: Caruaru
+Atividade/expressão cultural: literatura de cordel e xilogravura
+Ano de registro de patrimônio vivo: 2005",1,Individual,Literatura de cordel | Patrimônio Vivo,Literatura | Patrimônio Cultural Imaterial,,,,2017-09-26 15:08:47.000000,2024-06-14 17:21:45.000000
+69,Euterpina de Timbaúba,"Banda musical
+Cidade Natal: Timbaúba
+Ano de registro de Patrimônio Vivo: 2012",1,Individual,Patrimônio Vivo,Música | Patrimônio Cultural Imaterial,,,,2017-09-26 15:54:12.000000,2017-09-26 15:54:12.000000
+71,Fernando Spencer (in memoriam),"Cidade: Recife
+Atividade/expressão cultural: cinema
+Ano de registro de patrimônio vivo: 2007
+Falecido em 17/03/2014",1,Individual,,Cinema | Patrimônio Cultural Imaterial,,,,2017-09-27 11:18:54.000000,2024-06-14 17:21:46.000000
+72,Galo Preto,"Cidade: Paulista 
+Tradição cultural: Cult. popular/ Coco e Embolada
+Ano de Registro Patrimônio Vivo: 2011",1,Individual,Patrimônio Vivo | coco | embolada,Culturas Populares | Música | Patrimônio Cultural Imaterial,,,,2017-09-27 11:34:00.000000,2024-06-14 17:21:47.000000
+73,Homem da Meia-Noite,"Cidade: Olinda
+Atividade/expressão cultural: agremiação carnavalesca/clube de frevo
+Ano de registro de patrimônio vivo: 2006",1,Individual,Frevo | Patrimônio Vivo | carnaval | olinda,Culturas Populares | Patrimônio Cultural Imaterial,,,,2017-09-27 12:12:21.000000,2024-06-11 22:58:16.000000
+74,Índia Morena,"Cidade: Jaboatão
+Atividade/expressão cultural: circo
+Ano de registro de patrimônio vivo: 2006",1,Individual,Patrimônio Vivo | circo,Culturas Populares | Patrimônio Cultural Imaterial,,,,2017-09-27 14:38:41.000000,2024-06-14 17:21:48.000000
+75,J. Borges,"Cidade: Bezerros
+Atividade/expressão cultural: literatura de cordel e xilogravura
+Ano de registro de patrimônio vivo: 2005",1,Individual,cordel | patrimônio vivo,Literatura | Patrimônio Cultural Imaterial,,,,2017-09-27 15:15:52.000000,2024-06-14 17:21:49.000000
+76,Torre Malakoff,"Com as galerias e a sala Alcir Lacerda, mais o anfiteatro e o observatório astronômico na cúpula, a Torre recebe expressiva visitação, especialmente aos finais de semana, sendo palco para música e artes visuais.",1,Individual,,Arte Digital | Artes Visuais | Música,,,,2017-09-27 17:31:13.000000,2024-06-11 22:58:25.000000
+77,ELAINE,"Produtora cultural, fundadora do coletivo Macromídia Produções. Tem como missão encontrar caminhos para a viabilização de projetos através de captação de recursos e formação a produtores que queiram aprender como realizar a captação para seus projetos.",1,Individual,Captação de Recursos | Consultoria | Elaboração de Projetos,Artes Visuais | Economia Criativa e da Cultura | Literatura | Produção Cultural,,,,2017-09-29 15:34:26.000000,2025-01-15 11:27:44.000000
+78,Rodolfo Araújo,,1,Individual,,,,,,2017-10-02 18:10:05.000000,2017-10-02 18:10:05.000000
+79,Mestre João Elias Espíndola,"Cidade: Poção 
+Expressão Cultural: Renda Renascença
+Ano de registro de patrimônio vivo: 2016",1,Individual,Patrimônio Vivo,Culturas Populares | Patrimônio Cultural Imaterial,,,,2017-10-03 11:01:46.000000,2024-06-14 17:21:49.000000
+80,João Silva (in memoriam),"Cidade: Recife
+Atividade/expressão cultural:música/forró 
+Ano de registro de patrimônio vivo: 2012
+Falecido em 06/12/2013",1,Individual,,Culturas Populares | Música | Patrimônio Cultural Imaterial,,,,2017-10-03 11:07:46.000000,2024-06-14 17:21:50.000000
+81,José Costa Leite,"Cidade: Condado
+Atividade/expressão cultural: literatura de cordel e xilogravura
+Ano de registro de patrimônio vivo: 2005",1,Individual,Patrimônio Vivo,Culturas Populares | Patrimônio Cultural Imaterial,,,,2017-10-03 11:12:59.000000,2024-06-14 17:21:51.000000
+82,Lula Gonzaga,"Cidades: Recife/Olinda/Gravatá
+Atividade/expressão cultural: Cinema, Cultura Popular
+Data de nascimento: 21 de janeiro de 1951",1,Individual,Patrimônio Vivo,Cinema | Culturas Populares | Patrimônio Cultural Imaterial,,,,2017-10-03 11:40:07.000000,2024-06-14 17:21:52.000000
+83,Lula Vassoureiro,"Cidade: Bezerros
+Atividade/expressão cultural: artesão
+Ano de registro de patrimônio vivo: 2013",1,Individual,Patrimônio Vivo,Culturas Populares | Patrimônio Cultural Imaterial,,,,2017-10-03 12:15:00.000000,2024-06-14 17:21:53.000000
+84,Maestro Ademir Araújo,"Cidade: Recife
+Atividade/expressão cultural: maestro, compositor, arranjador
+Ano de registro de patrimônio vivo: 2013",1,Individual,Patrimônio Vivo,Culturas Populares | Patrimônio Cultural Imaterial,,,,2017-10-04 10:53:10.000000,2024-06-14 17:21:53.000000
+85,Maestro Duda,"Cidade: Recife
+Atividade/expressão cultural: maestro
+Ano de registro patrimônio vivo: 2010",1,Individual,Patrimônio  Vivo,Culturas Populares | Patrimônio Cultural Imaterial,,,,2017-10-04 11:05:50.000000,2024-06-14 17:21:55.000000
+86,Maestro Nunes (in memoriam),"Cidade: Recife
+Atividade/expressão cultural: maestro
+Ano de registro de patrimônio vivo: 2009",1,Individual,,Culturas Populares | Música | Patrimônio Cultural Imaterial,,,,2017-10-04 11:35:42.000000,2024-06-14 17:21:56.000000
+87,Manuel Eudócio (in memoriam),"Cidade: Caruaru
+Atividade/expressão cultural: artesão ceramista
+Ano de registro de patrimônio vivo: 2002
+Faleceu em: 13/02/2016",1,Individual,,Artesanato | Culturas Populares | Patrimônio Cultural Imaterial,,,,2017-10-04 15:02:44.000000,2024-06-14 17:21:57.000000
+88,Maracatu Estrela Brilhante de Igarassu,"Cidade: Igarassu
+Atividade/expressão cultural: maracatu de baque virado
+Ano de registro de patrimônio vivo: 2009
+Fundado em: 08/12/1824",2,Coletivo,Maracatu | Patrimônio Vivo,Culturas Populares | Patrimônio Cultural Imaterial,,,,2017-10-04 15:34:25.000000,2024-06-11 22:58:17.000000
+89,Maracatu Estrela de Ouro de Aliança,"Cidade: Aliança
+Atividade/expressão cultural: Maracatu de Baque Solto
+Ano de registro de patrimônio vivo: 2011",2,Coletivo,Aliança | Maracatu | Patrimônio Vivo,Culturas Populares | Patrimônio Cultural Imaterial,,,,2017-10-04 15:49:32.000000,2024-06-11 22:58:20.000000
+90,Maracatu Leão Coroado,"Fundado em 08 de dezembro de 1863, é o maracatu mais antigo em atividades ininterruptas. Patrimônio Vivo do Estado de Pernambuco, premiado Cultura Viva em 2006,  considerado Ponto de Cultura em 2006 pelo extinto Ministério da Cultura em 2007.",2,Coletivo,Maracatu | Patrimônio Vivo,Culturas Populares | Patrimônio Cultural Imaterial,,,Cultura Popular,2017-10-04 16:05:08.000000,2024-06-11 22:58:21.000000
+91,Maria Amélia,"Cidade: Tracunhaém
+Atividade/expressão cultural: artesã ceramista
+Ano de registro de patrimônio vivo: 2011",1,Individual,Patrimônio Vivo,Culturas Populares | Patrimônio Cultural Imaterial,,,,2017-10-04 16:14:36.000000,2024-06-14 17:21:58.000000
+92,Michelle de Assumpção,"Michelle de Assumpção é jornalista, produtora cultural, escritora, curadora, gestora de projetos com atuação consolidada na cultura popular pernambucana. Especialista e com experiência em Gestão Pública da Cultura atualmente realiza e coordena o Recife Frevo Festival, além de projetos culturais com artistas pernambucanos tais como Jota Michiles e Lia de Itamaracá.",1,Individual,,,,,,2017-10-05 12:07:00.000000,2026-04-28 11:20:05.000000
+93,Maria Santos Moreira,,1,Individual,,,,,,2017-10-05 14:48:08.000000,2017-10-05 14:48:08.000000
+94,gugu,dfsd,1,Individual,,Antropologia,,,,2017-10-05 15:06:29.000000,2017-10-05 15:06:29.000000
+95,Dimison Cesar,"Mestre em Música e Sociedade e Licenciado em Música pela UFPE. Músico Profissional e Membro do Conselho Regional da Ordem dos Músicos, em Pernambuco. Professor da Rede Municipal de Tamandaré, da Rede Estadual de Pernambuco e da Faculdade da Escada FAESC. Músico da Opus Cerimoniale e Regente do Coral Padre Geraldo, reconhecido como Ponto de Cultura pelo Ministério da Cultura.",1,Individual,Música,Culturas Populares | Formação Cultural | Música | Pesquisa | Produção Cultural,Músico/Musicista,,Música,2017-10-05 16:45:31.000000,2026-04-12 13:57:29.000000
+96,Portal Cultura.PE,,1,Individual,,,,,,2017-10-05 18:23:38.000000,2017-10-05 18:23:38.000000
+97,Francilene Bezerra,Gestora cultural especializada.,1,Individual,,Gestão Cultural,,,,2017-10-05 18:25:15.000000,2024-06-11 22:58:23.000000
+98,Mestre Salustiano (in memoriam),"Cidade: Olinda
+Atividade/expressão cultural: mestre de folguedos populares, rabequeiro
+Ano de registro de patrimônio vivo: 2005
+Falecido em 31/08/2008",1,Individual,,Culturas Populares | Patrimônio Cultural Imaterial,,,,2017-10-06 10:53:07.000000,2024-06-14 17:21:59.000000
+99,Mestre Zé Lopes,"Atividade/expressão cultural: Teatro Popular de Bonecos - Mamulengo
+Cidade: Glória do Goitá
+Ano de registro de Patrimônio Vivo: 2016",1,Individual,Mamulengo | Patrimônio Vivo,Culturas Populares | Patrimônio Cultural Imaterial,,,,2017-10-06 11:09:36.000000,2024-06-14 17:22:00.000000
+100,Mocinha de Passira,"Cidade: Passira
+Atividade/expressão cultural: Repente, Cantoria de Viola
+Ano de registro de patrimônio vivo: 2016
+Nascimento: 14/11/1948",1,Individual,Patrimônio Vivo,Culturas Populares | Música | Patrimônio Cultural Imaterial,,,,2017-10-06 11:46:37.000000,2024-06-14 17:22:01.000000
+101,Nuca (in memoriam),"Cidade: Tracunhaém
+Atividade/expressão cultural: artesão ceramista
+Ano de registro de patrimônio vivo: 2005",1,Individual,Artesanato,Culturas Populares | Patrimônio Cultural Imaterial,,,,2017-10-06 11:55:38.000000,2024-06-14 17:22:03.000000
+102,Cultura Camaragibe,"Coletivo cultural de Camaragibe que visa promover, incentivar, difundir e valorizar a cultura e as artes na cidade com eventos e projetos especiais",2,Coletivo,camaragibe,Artes Visuais | Artesanato | Audiovisual e Mídias Interativas | Circo | Cultura Negra | Culturas Populares | Dança | Economia Criativa e da Cultura | Literatura | Música | Patrimônio Cultural Imaterial | Patrimônio Cultural Material | Teatro,,,,2017-10-06 13:29:45.000000,2024-06-11 22:58:26.000000
+103,MARIA,"Escritora (Literatura infanto-juvenil)
+Autora dos livros: Vira-Vira, Violeta, O Monstro da Caatinga  e O Mistério do Sumiço do Velho Chico 
+Autora do Conto Tereza - Prêmio de Melhor Conto do NE no Selo Off Flip.",1,Individual,,Gestão Cultural | Literatura | Livro,,,,2017-10-06 13:46:15.000000,2025-06-10 20:19:32.000000
+104,Rosália Lionete da Silva,,1,Individual,,,,,,2017-10-06 13:48:50.000000,2017-10-06 13:48:50.000000
+105,Orquestra Capa Bode,"Cidade: Nazaré da Mata
+Atividade/expressão cultural: banda musical
+Ano de registro de patrimônio vivo: 2010
+Fundado em janeiro de 1988",2,Coletivo,Patrimônio Vivo,Culturas Populares | Música | Patrimônio Cultural Imaterial,,,,2017-10-06 14:36:27.000000,2017-10-06 14:36:27.000000
+106,EDUARDO SALVADOR,,1,Individual,,,,,,2017-10-06 14:36:46.000000,2017-10-06 14:36:46.000000
+107,Bruno Souza,,1,Individual,,,,,,2017-10-06 14:47:53.000000,2017-10-06 14:47:53.000000
+108,Marisa Soares,,1,Individual,,,,,,2017-10-06 14:50:22.000000,2017-10-06 14:50:22.000000
+109,Selma do Coco (in memoriam),"Cidade: Olinda
+Atividade/expressão cultural: coquista
+Ano de registro de patrimônio vivo: 2008
+Falecida em 09/05/2015",1,Individual,Coco | Olinda,Culturas Populares | Patrimônio Cultural Imaterial,,,,2017-10-06 14:55:10.000000,2024-06-14 17:22:03.000000
+111,EDMUNDO FERNANDES CAVALCANTE DA SILVA,Professor,1,Individual,,Gestão Cultural,,,,2017-10-07 18:17:25.000000,2024-06-11 22:58:27.000000
+116,Allan dellon,,1,Individual,,,,,,2017-10-07 19:43:38.000000,2017-10-07 19:43:38.000000
+117,ROBSON FARO,Cantor e compositor,1,Individual,,Música,,,Música,2017-10-07 21:14:14.000000,2024-06-11 22:58:22.000000
+118,Larissa,,1,Individual,,,,,,2017-10-07 21:35:48.000000,2017-10-07 21:35:48.000000
+119,Thamisa da Hora,Produção e edição em cinema e audiovisual.,1,Individual,,Audiovisual e Mídias Interativas | Cinema | Comunicação | Produção Cultural,,,,2017-10-07 22:18:01.000000,2024-06-11 22:58:26.000000
+120,Késsia,"GRADUANDA em Educação Física, na UNINASSAU",1,Individual,,Artesanato | Cultura e Educação | Cultura e Saúde | Culturas Populares | Dança,,,,2017-10-07 22:18:42.000000,2024-06-11 22:58:23.000000
+121,Sesc Pernambuco,"O Sesc foi criado, nacionalmente, no dia 13 de setembro de 1946, pelo Decreto-Lei nº 9.853. A entidade é fruto da Carta da Paz Social, elaborada por um grupo de empresários que participaram, em 1945, da I Conferência Nacional das Classes Produtoras, em Teresópolis. Eles buscavam, através de um documento que mobilizasse a sociedade, minimizar os efeitos da II Guerra Mundial.",2,Coletivo,,Artes Visuais | Audiovisual e Mídias Interativas | Dança | Literatura | Museu (Patrimônio Material) | Música | Teatro,,,,2017-10-09 09:22:13.000000,2024-06-14 17:22:04.000000
+122,Mariana Beatriz de Aguiar Barbosa,Assessoria de Cultura da Secretaria Municipal de Educação e Cultura,1,Individual,Cultura | Design | Surubim,Design,,,,2017-10-09 10:02:03.000000,2024-06-11 22:58:21.000000
+123,CULTURA DE SURUBIM - PE,SECRETARIA MUNICIPAL DE EDUCAÇÃO E CULTURA - DIRETORIA DE CULTURA,2,Coletivo,,Gestão Cultural,,,,2017-10-09 10:19:04.000000,2024-06-11 22:58:47.000000
+124,Severino Apolinário de Lucena Filho,Artista Plástico e Artesão autodidata.,1,Individual,Artes Plásticas | Artesanato | Cultura | Surubim,Artesanato,,,,2017-10-09 11:21:11.000000,2024-06-11 22:58:42.000000

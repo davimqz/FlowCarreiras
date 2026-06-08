@@ -1,1 +1,46 @@
 # Fontes dos Dados
+
+As análises usam duas fontes abertas e reais. Não há base simulada.
+
+## Mapa Cultural de Pernambuco
+
+- Fonte: API pública do Mapa Cultural de Pernambuco.
+- Recurso: agentes culturais.
+- Endpoint: `https://www.mapacultural.pe.gov.br/api/agent/find`
+- Consulta utilizada:
+
+```text
+@select=id,name,shortDescription,type,terms,createTimestamp,updateTimestamp
+@limit=100
+@page=1
+```
+
+- Data da extração incorporada ao projeto: 8 de junho de 2026.
+- Registros obtidos: 100.
+- JSON bruto: `data/raw/mapa_cultural_pe_agentes.json`.
+- CSV tratado: `data/processed/mapa_cultural_pe_agentes.csv`.
+
+O JSON guarda os dados exatamente como retornados pela API, junto com a URL consultada, o horário da extração e os parâmetros usados. O CSV achata objetos aninhados para facilitar a análise tabular.
+
+## contempArt
+
+- Fonte principal: repositório público `georgeblck/contempart` no GitHub.
+- Repositório: `https://github.com/georgeblck/contempart`
+- Site do projeto: `https://contempart.org/`
+- Arquivo utilizado: `data/artists.csv` do repositório.
+- Registros: 441 artistas.
+- CSV bruto: `data/raw/contempart_artists.csv`.
+- CSV tratado: `data/processed/contempart_artists.csv`.
+
+O contempArt é uma base científica multimodal de arte contemporânea. O recorte usado neste projeto contém artistas em início de carreira ligados a 15 escolas de arte alemãs. A base inclui informações institucionais e demográficas e, quando disponíveis, métricas públicas de Instagram e características médias das imagens.
+
+O dataset foi apresentado por Nikolai Huckle, Noa Garcia e Yuta Nakashima em trabalho publicado no contexto do ECCV Workshop de 2020.
+
+## Complementaridade
+
+Os datasets abordam partes diferentes do ecossistema artístico:
+
+- o Mapa Cultural descreve agentes culturais cadastrados em uma plataforma pública de Pernambuco;
+- o contempArt descreve artistas vinculados a instituições de ensino artístico da Alemanha.
+
+Eles são complementares no tema geral de carreira e atuação cultural, mas não devem ser unidos. Não existe chave comum confiável, os países e contextos institucionais são diferentes e as unidades de análise não são equivalentes.

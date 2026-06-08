@@ -1,1 +1,35 @@
-# Plano de Analise
+# Plano de Análise
+
+As perguntas são respondidas separadamente em cada dataset. Não haverá junção de linhas, comparação individual ou tentativa de identificar correspondências entre agentes e artistas.
+
+## Mapa Cultural de Pernambuco
+
+Unidade de análise: um agente cultural retornado pela API.
+
+Perguntas:
+
+1. Quantos agentes são individuais e quantos são coletivos?
+2. Quais áreas culturais aparecem com maior frequência?
+3. Quais tags e funções são mais recorrentes?
+4. Qual é o percentual de agentes com descrição curta preenchida?
+5. Como os registros se distribuem por ano de criação?
+6. Quantos registros foram atualizados após a data de criação?
+
+## contempArt
+
+Unidade de análise: um artista em início de carreira.
+
+Perguntas:
+
+1. Quais escolas de arte concentram mais artistas?
+2. Qual é a distribuição dos artistas entre escolas do leste e do oeste alemão?
+3. Qual é a distribuição de gênero nos registros preenchidos?
+4. Quais países, continentes e regiões aparecem com maior frequência?
+5. Quantos artistas possuem Instagram ou website informado?
+6. Qual é a distribuição de seguidores, publicações, curtidas e comentários?
+7. Existem diferenças de alcance digital entre escolas ou grupos com dados suficientes?
+8. Como variam quantidade, dimensão e proporção média das imagens por artista?
+
+## Uso conjunto sem integração
+
+Os resultados podem aparecer no mesmo relatório para apresentar dois contextos de atuação cultural. Contudo, cada gráfico, tabela, métrica ou modelo deve indicar claramente qual dataset foi usado. Não serão calculadas métricas que misturem registros das duas bases.
