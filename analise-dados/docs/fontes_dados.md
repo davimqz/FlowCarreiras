@@ -11,14 +11,15 @@ As análises usam duas fontes abertas e reais. Não há base simulada.
 
 ```text
 @select=id,name,shortDescription,type,terms,createTimestamp,updateTimestamp
-@limit=100
-@page=1
+@limit=100 por página
+total_registros=1000
 ```
 
-- Data da extração incorporada ao projeto: 8 de junho de 2026.
-- Registros obtidos: 100.
+- Data da extração incorporada ao projeto: 9 de junho de 2026.
+- Registros obtidos no recorte do projeto: 1.000.
 - JSON bruto: `data/raw/mapa_cultural_pe_agentes.json`.
 - CSV tratado: `data/processed/mapa_cultural_pe_agentes.csv`.
+- CSV enriquecido: `data/processed/mapa_cultural_pe_agentes_enriquecido.csv`.
 
 O JSON guarda os dados exatamente como retornados pela API, junto com a URL consultada, o horário da extração e os parâmetros usados. O CSV achata objetos aninhados para facilitar a análise tabular.
 
@@ -31,6 +32,7 @@ O JSON guarda os dados exatamente como retornados pela API, junto com a URL cons
 - Registros: 441 artistas.
 - CSV bruto: `data/raw/contempart_artists.csv`.
 - CSV tratado: `data/processed/contempart_artists.csv`.
+- CSV enriquecido: `data/processed/contempart_artists_enriquecido.csv`.
 
 O contempArt é uma base científica multimodal de arte contemporânea. O recorte usado neste projeto contém artistas em início de carreira ligados a 15 escolas de arte alemãs. A base inclui informações institucionais e demográficas e, quando disponíveis, métricas públicas de Instagram e características médias das imagens.
 

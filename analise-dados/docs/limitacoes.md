@@ -2,7 +2,8 @@
 
 ## Mapa Cultural de Pernambuco
 
-- A extração incorporada contém somente os 100 registros da página 1, conforme a consulta definida.
+- A extração incorporada usa um recorte dos primeiros 1.000 registros retornados pela API, não os mais de 61 mil agentes cadastrados.
+- Como a API pode ordenar por identificador, o recorte não deve ser tratado como amostra aleatória representativa de todo o estado.
 - Os campos selecionados não incluem município, localização ou contato.
 - O preenchimento depende do que cada agente informou na plataforma.
 - Listas de termos podem conter categorias pouco frequentes ou variações de escrita.

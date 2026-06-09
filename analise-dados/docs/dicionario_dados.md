@@ -18,6 +18,10 @@ Arquivo tratado: `data/processed/mapa_cultural_pe_agentes.csv`
 | `termos_subareas` | Texto multivalor | Subáreas culturais informadas |
 | `data_criacao` | Data/hora | Data de criação do registro |
 | `data_atualizacao` | Data/hora | Data da atualização mais recente |
+| `possui_descricao` | Booleano derivado | Indica se `descricao_curta` está preenchida |
+| `quantidade_areas` | Inteiro derivado | Quantidade de áreas culturais associadas ao agente |
+| `ano_criacao` | Inteiro derivado | Ano extraído de `data_criacao` |
+| `atualizacao_posterior` | Booleano derivado | Indica atualização posterior à criação |
 
 ## contempArt
 
@@ -50,3 +54,7 @@ Arquivo tratado: `data/processed/contempart_artists.csv`
 | `avg_width` | Número | Largura média das imagens, em pixels |
 | `avg_height` | Número | Altura média das imagens, em pixels |
 | `avg_aspect_ratio` | Número | Proporção média entre largura e altura |
+| `possui_instagram` | Booleano derivado | Indica se o identificador do Instagram está preenchido |
+| `possui_website` | Booleano derivado | Indica se o website está preenchido |
+| `taxa_engajamento` | Número derivado | Percentual calculado por `(avg_likes + avg_comments) / follower_count * 100` |
+| `nivel_visibilidade` | Categoria derivada | Faixa baixa, média ou alta baseada nos percentis de seguidores |

@@ -2,9 +2,20 @@
 
 Cada base possui um fluxo independente de extração e limpeza.
 
+## Justificativa por tipo de variável
+
+| Tipo de variável | Tratamento previsto | Justificativa |
+| --- | --- | --- |
+| Numérica | Converter para tipo numérico, preservar ausentes e verificar distribuição/outliers antes de calcular médias | Seguidores, posts, likes e comentários podem ser muito assimétricos; zeros inventados distorceriam métricas e modelos. |
+| Categórica | Remover espaços excedentes, preservar categorias originais e contabilizar ausentes separadamente | Evita duplicações causadas por formatação sem alterar o significado declarado pela fonte. |
+| Data/hora | Converter com validação; datas inválidas viram ausentes e inconsistências temporais são contabilizadas | A conversão permite extrair ano, ordenar registros e verificar atualizações posteriores à criação. |
+| Booleana | Preservar verdadeiro, falso e ausente como situações distintas | Ausência não significa necessariamente falso, principalmente nos dados de Instagram. |
+| Lista de tags/áreas | Padronizar o separador como ` | `, remover repetições dentro do registro e explodir somente durante análises de frequência | Um agente pode possuir várias áreas; tratá-las como uma única categoria impediria contagens corretas. |
+| Texto livre | Remover apenas espaços externos e preservar o conteúdo original | Descrições podem conter informação relevante; alterações extensas poderiam mudar seu significado. |
+
 ## Mapa Cultural de Pernambuco
 
-1. Consultar a API com os campos e limites definidos.
+1. Consultar a API com os campos definidos, paginando até atingir 1.000 registros.
 2. Salvar a resposta integral em JSON, preservando metadados da extração.
 3. Validar que a resposta contém uma lista de agentes.
 4. Achatar os objetos `type`, `terms`, `createTimestamp` e `updateTimestamp`.
@@ -13,6 +24,7 @@ Cada base possui um fluxo independente de extração e limpeza.
 7. Ordenar os registros por `id`.
 8. Manter campos ausentes vazios, sem inventar ou imputar valores.
 9. Exportar o resultado em CSV UTF-8.
+10. Converter datas para tipo data/hora e contabilizar valores inválidos ou inconsistentes.
 
 Scripts:
 
@@ -41,3 +53,12 @@ Scripts:
 - Não preencher dados ausentes com médias, zeros ou categorias inventadas.
 - Preservar uma cópia bruta para auditoria e reprodução.
 - Registrar fonte, parâmetros e data da extração.
+
+## Variáveis derivadas
+
+O script `src/features/criar_variaveis_derivadas.py` gera arquivos enriquecidos sem substituir as bases limpas originais.
+
+- Mapa Cultural PE: `possui_descricao`, `quantidade_areas`, `ano_criacao` e `atualizacao_posterior`.
+- contempArt: `possui_instagram`, `possui_website`, `taxa_engajamento` e `nivel_visibilidade`.
+
+O `nivel_visibilidade` usa três faixas baseadas nos percentis 33% e 67% dos seguidores preenchidos. A taxa de engajamento é calculada por `(média de likes + média de comentários) / seguidores * 100`.

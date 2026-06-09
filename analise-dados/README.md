@@ -26,11 +26,12 @@ src/cleaning/     Scripts de limpeza e transformação
 ```bash
 pip install -r analise-dados/requirements.txt
 
-python analise-dados/src/extract/baixar_mapa_cultural_pe.py
+python analise-dados/src/extract/baixar_mapa_cultural_pe.py --total-registros 1000
 python analise-dados/src/cleaning/limpar_mapa_cultural_pe.py
 
 python analise-dados/src/extract/baixar_contempart.py
 python analise-dados/src/cleaning/limpar_contempart.py
+python analise-dados/src/features/criar_variaveis_derivadas.py
 ```
 
-O download padrão do Mapa Cultural utiliza exatamente a consulta definida para o projeto: 100 registros da página 1.
+O download padrão do Mapa Cultural pagina a API até obter no máximo 1.000 registros.

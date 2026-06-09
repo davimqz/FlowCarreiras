@@ -2,6 +2,14 @@
 
 As perguntas são respondidas separadamente em cada dataset. Não haverá junção de linhas, comparação individual ou tentativa de identificar correspondências entre agentes e artistas.
 
+## Objetivos da comunicação visual
+
+1. Evidenciar a diversidade de áreas, tags e perfis presentes no ecossistema cultural de Pernambuco.
+2. Mostrar como os agentes culturais cadastrados se distribuem por tipo e ao longo do tempo.
+3. Demonstrar como produção digital, presença online, alcance e engajamento se distribuem entre artistas emergentes do contempArt.
+4. Tornar visíveis concentrações, desigualdades, padrões e valores atípicos sem sugerir comparação direta entre as duas bases.
+5. Comunicar os resultados de forma acessível, indicando claramente a fonte, o universo analisado e os dados ausentes em cada visualização.
+
 ## Mapa Cultural de Pernambuco
 
 Unidade de análise: um agente cultural retornado pela API.

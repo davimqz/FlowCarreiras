@@ -17,7 +17,8 @@ DEFAULT_OUTPUT = PROJECT_DIR / "data" / "processed" / "mapa_cultural_pe_agentes.
 def texto(valor: object) -> str | None:
     if valor is None:
         return None
-    resultado = str(valor).strip()
+    linhas = [linha.rstrip() for linha in str(valor).strip().splitlines()]
+    resultado = "\n".join(linhas).strip()
     return resultado or None
 
 
@@ -69,9 +70,30 @@ def main() -> None:
     dataframe = dataframe.drop_duplicates(subset=["id"], keep="last")
     dataframe = dataframe.sort_values("id", kind="stable").reset_index(drop=True)
 
+    for coluna in ["data_criacao", "data_atualizacao"]:
+        dataframe[coluna] = pd.to_datetime(dataframe[coluna], errors="coerce")
+
+    datas_invalidas = dataframe[["data_criacao", "data_atualizacao"]].isna().sum()
+    atualizacoes_inconsistentes = (
+        dataframe["data_criacao"].notna()
+        & dataframe["data_atualizacao"].notna()
+        & (dataframe["data_atualizacao"] < dataframe["data_criacao"])
+    ).sum()
+
     args.output.parent.mkdir(parents=True, exist_ok=True)
-    dataframe.to_csv(args.output, index=False, encoding="utf-8")
+    dataframe.to_csv(
+        args.output,
+        index=False,
+        encoding="utf-8",
+        date_format="%Y-%m-%d %H:%M:%S",
+    )
     print(f"{len(dataframe)} registros limpos salvos em {args.output}")
+    print(
+        "Datas ausentes ou invalidas: "
+        f"criacao={datas_invalidas['data_criacao']}, "
+        f"atualizacao={datas_invalidas['data_atualizacao']}"
+    )
+    print(f"Atualizacoes anteriores a criacao: {atualizacoes_inconsistentes}")
 
 
 if __name__ == "__main__":

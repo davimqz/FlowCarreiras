@@ -38,7 +38,12 @@ def baixar_pagina(page: int, limit: int) -> tuple[list[dict], str]:
     return payload, url
 
 
-def baixar_dados(limit: int, pagina_inicial: int, todas_paginas: bool) -> tuple[list[dict], list[str]]:
+def baixar_dados(
+    limit: int,
+    pagina_inicial: int,
+    total_registros: int | None,
+    todas_paginas: bool,
+) -> tuple[list[dict], list[str]]:
     registros: list[dict] = []
     urls: list[str] = []
     pagina = pagina_inicial
@@ -48,7 +53,10 @@ def baixar_dados(limit: int, pagina_inicial: int, todas_paginas: bool) -> tuple[
         registros.extend(pagina_dados)
         urls.append(url)
 
-        if not todas_paginas or len(pagina_dados) < limit:
+        if total_registros is not None and len(registros) >= total_registros:
+            registros = registros[:total_registros]
+            break
+        if len(pagina_dados) < limit:
             break
         pagina += 1
 
@@ -61,20 +69,33 @@ def main() -> None:
     parser.add_argument("--limit", type=int, default=100)
     parser.add_argument("--page", type=int, default=1)
     parser.add_argument(
+        "--total-registros",
+        type=int,
+        default=1000,
+        help="Quantidade maxima de registros a baixar. Padrao: 1000.",
+    )
+    parser.add_argument(
         "--todas-paginas",
         action="store_true",
-        help="Continua buscando paginas ate a API retornar menos registros que o limite.",
+        help="Ignora o limite total e continua ate a ultima pagina da API.",
     )
     parser.add_argument("--output", type=Path, default=DEFAULT_OUTPUT)
     args = parser.parse_args()
 
-    dados, urls = baixar_dados(args.limit, args.page, args.todas_paginas)
+    total_registros = None if args.todas_paginas else args.total_registros
+    dados, urls = baixar_dados(
+        args.limit,
+        args.page,
+        total_registros,
+        args.todas_paginas,
+    )
     documento = {
         "fonte": API_URL,
         "consulta": {
             "@select": SELECT_FIELDS,
             "@limit": args.limit,
             "@page": args.page,
+            "total_registros": total_registros,
             "todas_paginas": args.todas_paginas,
         },
         "urls_consultadas": urls,
