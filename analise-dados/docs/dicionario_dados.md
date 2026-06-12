@@ -2,7 +2,9 @@
 
 ## Mapa Cultural de Pernambuco
 
-Arquivo tratado: `data/processed/mapa_cultural_pe_agentes.csv`
+Arquivo documentado: `data/processed/mapa_cultural_pe_agentes_enriquecido.csv`
+
+As doze primeiras colunas também estão presentes na base limpa `data/processed/mapa_cultural_pe_agentes.csv`. As demais são variáveis derivadas adicionadas somente à versão enriquecida.
 
 | Coluna | Tipo | Descrição |
 | --- | --- | --- |
@@ -30,7 +32,9 @@ Arquivo tratado: `data/processed/mapa_cultural_pe_agentes.csv`
 
 ## contempArt
 
-Arquivo tratado: `data/processed/contempart_artists.csv`
+Arquivo documentado: `data/processed/contempart_artists_enriquecido.csv`
+
+As vinte e cinco primeiras colunas também estão presentes na base limpa `data/processed/contempart_artists.csv`. As demais são variáveis derivadas adicionadas somente à versão enriquecida.
 
 | Coluna | Tipo | Descrição |
 | --- | --- | --- |

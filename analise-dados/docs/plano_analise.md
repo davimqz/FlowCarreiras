@@ -1,105 +1,148 @@
 # Plano de Análise
 
-## Direcionamento
+## Estratégia principal
 
-A análise deve apoiar decisões do FlowCarreiras, uma plataforma voltada à organização profissional, construção de portfólio, exposição justa, mentoria e acesso a oportunidades para artistas emergentes.
+A entrega principal utiliza somente duas bases abertas e reais:
 
-Os datasets externos não representam usuários reais do aplicativo e não medem diretamente dores como dificuldade de conseguir mentoria ou acessar editais. Eles serão usados para investigar sinais observáveis relacionados a essas dores e orientar hipóteses de produto.
+- **Mapa Cultural de Pernambuco:** perfis individuais com área artística/criativa declarada;
+- **contempArt:** artistas em início de carreira e seus sinais de presença digital.
 
-As duas bases serão analisadas separadamente:
+Essas bases não medem o uso real do FlowCarreiras. Elas permitem investigar problemas relacionados ao produto e apoiar decisões sobre perfil, portfólio, categorias, filtros e exposição justa.
 
-- **Mapa Cultural de Pernambuco:** ajuda a estudar como artistas individuais estruturam sua apresentação profissional por meio de descrição, áreas e tags.
-- **contempArt:** ajuda a estudar presença digital, volume de publicações e imagens registradas e desigualdade de visibilidade entre artistas em início de carreira.
+## Pergunta central
 
-## Objetivos da comunicação visual
+Como dados reais disponíveis podem orientar o FlowCarreiras na organização profissional, construção de portfólio, estruturação de filtros e promoção de exposição mais justa para artistas?
 
-1. Mostrar quantos artistas possuem informações suficientes para se apresentar profissionalmente e quantos poderiam se beneficiar de um onboarding guiado.
-2. Identificar quais áreas e tags devem compor a estrutura inicial de oportunidades, mentorias e filtros, sem excluir áreas menos frequentes.
-3. Evidenciar artistas com maior volume de publicações ou imagens registradas, mas pouca visibilidade digital, público relacionado à proposta de exposição justa.
-4. Demonstrar por que quantidade de seguidores, curtidas ou publicações não deve ser usada isoladamente para definir relevância artística.
-5. Transformar os achados em decisões e hipóteses testáveis para funcionalidades do aplicativo.
-6. Definir indicadores futuros para avaliar se o FlowCarreiras realmente melhora organização, descoberta, mentoria e acesso a oportunidades.
+## Objetivos
 
-## Eixos de análise
+1. Identificar lacunas na apresentação profissional de perfis artísticos.
+2. Definir áreas, tags e combinações úteis para cadastros, filtros, oportunidades e mentorias.
+3. Investigar dependência de redes sociais e ausência de portfólio independente.
+4. Medir desigualdade de visibilidade digital sem tratá-la como qualidade artística.
+5. Identificar perfis com volume registrado relevante e baixa visibilidade.
+6. Traduzir resultados reais em decisões e hipóteses para o FlowCarreiras.
 
-### 1. Organização profissional e portfólio
+## Perguntas respondidas pelo Mapa Cultural PE
 
-Dor relacionada: artistas produzem, mas encontram dificuldade para organizar e apresentar profissionalmente seus trabalhos.
+### Perfil e onboarding
 
-#### Mapa Cultural de Pernambuco
+1. Qual percentual possui descrição, área, tags, funções e subáreas preenchidas?
+2. Quais campos apresentam mais ausências e deveriam receber maior apoio no onboarding?
+3. Quantos perfis podem ser considerados minimamente estruturados?
+4. Quantos artistas declaram atuação em mais de uma área?
+5. Perfis multidisciplinares apresentam estrutura de preenchimento diferente?
 
-Unidade de análise: um perfil individual que atende ao critério artístico/criativo documentado.
+### Taxonomia e filtros
 
-Perguntas:
+1. Quais áreas, tags, funções e subáreas aparecem com maior frequência?
+2. Quais áreas e tags aparecem juntas com maior frequência?
+3. Quais categorias devem compor filtros iniciais do aplicativo?
+4. Quais categorias menos frequentes precisam ser preservadas para evitar exclusão?
+5. Quais grupos de perfis surgem quando artistas são aproximados por áreas e tags compartilhadas?
+6. Quais perfis conectam diferentes grupos de interesses culturais?
 
-1. Quantos perfis possuem uma apresentação profissional minimamente estruturada, considerando descrição, área e tags ou funções preenchidas?
-2. Quais informações profissionais ficam ausentes com maior frequência e deveriam receber mais apoio durante o onboarding?
-3. Quantos artistas atuam em múltiplas áreas, indicando que o FlowCarreiras não deve limitar o perfil a uma única forma de atuação?
-4. Quais áreas, subáreas e tags devem compor a taxonomia inicial dos cadastros, filtros e recomendações do aplicativo?
-5. Existem combinações recorrentes de áreas e tags que podem ajudar a sugerir categorias relacionadas durante o cadastro?
+### Atualização do perfil
 
-#### contempArt
+1. Como os registros se distribuem por ano de criação?
+2. Quantos perfis foram atualizados após sua criação?
+3. Perfis atualizados possuem maior preenchimento?
 
-Unidade de análise: um artista em início de carreira.
+## Perguntas respondidas pelo contempArt
 
-Perguntas:
+### Portfólio e presença digital
 
-1. Quantos artistas não possuem website informado e poderiam se beneficiar de um portfólio público próprio no FlowCarreiras?
-2. Quantos possuem somente o Instagram informado como presença digital identificável?
-3. Quantos possuem imagens registradas na base, mas não possuem website ou Instagram informado?
-4. Quais sinais permitem separar presença digital de organização profissional, evitando tratar seguidores como sinônimo de carreira estruturada?
+1. Quantos artistas possuem website informado?
+2. Quantos possuem somente Instagram como presença digital identificável?
+3. Quantos não possuem Instagram nem website informados?
+4. Artistas com maior volume de imagens ou publicações possuem mais frequentemente website?
 
-### 2. Visibilidade justa e dependência de plataformas
+### Exposição e visibilidade
 
-Dor relacionada: artistas dependem de algoritmos de engajamento, nos quais alcance não representa necessariamente qualidade, produção ou evolução profissional.
+1. Como seguidores, publicações, imagens, curtidas e comentários estão distribuídos?
+2. A quantidade de publicações ou imagens registradas possui relação com seguidores?
+3. Artistas com volumes registrados semelhantes apresentam visibilidades muito diferentes?
+4. Existem artistas com volume registrado acima da mediana e visibilidade abaixo da mediana?
+5. Quanto da visibilidade está concentrado nos 10% e 20% maiores perfis?
+6. Quais variáveis apresentam maior associação com o nível de visibilidade?
 
-Perguntas para o contempArt:
+### Agrupamento por similaridade
 
-1. A quantidade de publicações ou imagens registradas possui relação forte com seguidores e engajamento?
-2. Existem artistas com volume de publicações ou imagens registradas acima da mediana, mas visibilidade abaixo da mediana?
-3. Qual parcela dos seguidores e do engajamento está concentrada nos artistas de maior alcance?
-4. Artistas com volume registrado semelhante apresentam níveis muito diferentes de visibilidade?
-5. Quais perfis seriam pouco descobertos caso uma plataforma recomendasse artistas somente por seguidores ou curtidas?
-6. Que indicadores podem apoiar uma fila de descoberta equilibrada sem criar um ranking de popularidade?
+1. Quais grupos de artistas surgem a partir de características digitais semelhantes?
+2. Como os grupos diferem em publicações, imagens, presença de website, tipo de conta e contas seguidas?
+3. Os grupos encontrados também apresentam diferenças de visibilidade?
+4. Existem perfis isolados ou muito diferentes dos demais?
 
-### 3. Mentoria e acesso a oportunidades
+## Perguntas gerais sobre o FlowCarreiras apoiadas pelos dados reais
 
-Dor relacionada: artistas não sabem qual o próximo passo da carreira e encontram oportunidades dispersas.
+1. Quais campos e orientações devem ser priorizados no cadastro progressivo?
+2. O perfil deve permitir múltiplas áreas e combinações de tags?
+3. Quais categorias devem orientar filtros de obras, oportunidades e mentorias?
+4. Qual parcela dos artistas poderia se beneficiar de um portfólio público independente?
+5. Por que descoberta e recomendação não devem usar somente seguidores ou engajamento?
+6. Quais critérios observáveis podem ajudar a destacar perfis estruturados com baixa visibilidade?
+7. Que indicadores deverão ser coletados futuramente para avaliar o aplicativo de verdade?
 
-Perguntas para o Mapa Cultural de Pernambuco:
+## EDA principal
 
-1. Quais áreas e tags reúnem mais artistas no recorte e podem orientar a cobertura inicial de mentores e oportunidades?
-2. Quais áreas possuem presença menor no recorte e precisam de cuidado para não desaparecer dos filtros e recomendações?
-3. Quais combinações de áreas, funções e tags podem apoiar compatibilidade entre necessidades, expertise, mentores e oportunidades?
-4. Quais perfis possuem pouca informação profissional para receber recomendações confiáveis, reforçando a importância de completar o onboarding?
+- qualidade e lacunas de preenchimento dos perfis;
+- diversidade e coocorrência de áreas e tags;
+- rede de similaridade por interesses declarados;
+- presença digital e disponibilidade de website;
+- distribuições e valores atípicos das métricas digitais;
+- concentração e desigualdade de visibilidade;
+- quadrantes entre volume registrado e visibilidade.
+- agrupamentos de artistas por características digitais.
 
-As bases externas não informam quem busca mentoria, quais oportunidades foram acessadas ou quais necessidades cada artista possui. Portanto, essas perguntas orientam a estrutura do produto, mas não avaliam o sucesso real do match.
+## Agrupamento não supervisionado recomendado
 
-## Perguntas futuras com dados próprios do FlowCarreiras
+### Rede de interesses - Mapa Cultural PE
 
-Estas perguntas avaliam o aplicativo em si e deverão ser respondidas quando houver dados reais de uso:
+Construir uma rede em que cada nó representa um perfil e cada conexão representa similaridade entre áreas e tags declaradas. A similaridade pode ser calculada por Jaccard ou cosseno após transformar os termos em variáveis binárias.
 
-1. Em quais etapas os artistas abandonam ou pulam o onboarding?
-2. Completar bio, área, tags, foto e links aumenta a criação e o compartilhamento do portfólio?
-3. Quanto tempo um novo usuário leva para publicar sua primeira obra?
-4. Quais áreas e tags possuem maior procura por mentoria e menor oferta de mentores?
-5. Os matches com maior compatibilidade de tags resultam em mentorias iniciadas e concluídas?
-6. Quais tipos de oportunidade recebem mais visualizações e acessos por área artística?
-7. As notificações por área e tags aumentam o acesso a oportunidades relevantes?
-8. A fila de descoberta distribui exposição entre artistas novos e antigos sem concentrar visualizações nos mesmos perfis?
-9. Artistas com pouca presença em redes sociais conseguem receber descoberta, contatos ou oportunidades dentro da plataforma?
-10. O uso contínuo do FlowCarreiras aumenta completude do perfil, quantidade de obras organizadas e conexões profissionais?
+Para manter o gráfico legível, devem ser exibidas somente conexões acima de um limite de similaridade e, quando necessário, uma amostra ou os maiores componentes da rede.
 
-Parte desses indicadores ainda exige instrumentação de eventos no aplicativo, como registrar visualizações, compartilhamentos, acessos externos, aparições na fila de descoberta e abandono de etapas.
+Pergunta: quais comunidades de interesses podem orientar filtros, recomendações e descoberta dentro do FlowCarreiras?
 
-## Uso conjunto sem integração
+### Agrupamento de características - contempArt
 
-Os resultados podem aparecer na mesma narrativa porque apoiam partes diferentes do FlowCarreiras. Cada gráfico, métrica e conclusão deve indicar claramente qual dataset foi usado.
+Padronizar características como `posts_count`, `img_count`, `following_count`, presença de website, tipo de conta e características médias das imagens. Aplicar agrupamento, como K-Means ou hierárquico, e usar PCA apenas para projeção visual.
 
-Não haverá junção linha a linha, identificação de correspondências entre pessoas ou comparação direta entre Pernambuco e Alemanha.
+`follower_count` não deve definir os grupos principais; ele pode ser usado depois para caracterizar como a visibilidade se distribui entre os grupos.
+
+Pergunta: artistas com características digitais semelhantes recebem níveis diferentes de visibilidade?
+
+## Modelagem principal com dados reais
+
+### Regressão
+
+Investigar a relação entre `posts_count`, `img_count`, `following_count` e `follower_count`, usando transformações logarítmicas quando necessário.
+
+Pergunta: volume registrado e atividade digital explicam parte da variação de seguidores?
+
+### Classificação
+
+Classificar `nivel_visibilidade` com variáveis disponíveis antes de observar o número de seguidores, como publicações, imagens, website, tipo de conta e quantidade de contas seguidas.
+
+Pergunta: quais características observáveis estão associadas a níveis distintos de visibilidade?
+
+O alvo e as variáveis devem ser revisados para evitar vazamento de dados. Os modelos são exploratórios e não devem ser usados para ranquear artistas.
+
+## Perguntas futuras que exigem dados reais do aplicativo
+
+1. Onde usuários abandonam o onboarding?
+2. Quanto tempo levam para publicar a primeira obra?
+3. Quais oportunidades geram visualizações, acessos e candidaturas?
+4. Quais matches resultam em mentorias concluídas?
+5. A descoberta interna distribui exposição de forma equilibrada?
+6. O uso contínuo melhora organização, portfólio e acesso a oportunidades?
+
+Essas perguntas fazem parte do plano de instrumentação e não serão respondidas com dados inventados.
 
 ## Regra de interpretação
 
-Os dados externos identificam sinais e sustentam decisões de design, mas não comprovam sozinhos as dores declaradas pelos artistas nem a eficácia do FlowCarreiras. Afirmações sobre impacto do aplicativo dependerão dos dados próprios definidos neste plano.
-
-A matriz completa de cobertura está em `docs/matriz_cobertura_analitica.md`, e os dados próprios necessários estão definidos em `docs/plano_instrumentacao.md`.
+- Cada resultado deve indicar a fonte utilizada.
+- As duas bases reais serão analisadas separadamente.
+- Ausência de campo é sinal observável, não prova de uma dor individual.
+- Seguidores, curtidas e comentários não representam talento ou qualidade.
+- Associações e modelos não demonstram causalidade.
+- Grupos calculados representam similaridade nas colunas selecionadas, não amizades, identidade artística ou qualidade.

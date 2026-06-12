@@ -2,30 +2,30 @@
 
 ## Mapa Cultural de Pernambuco
 
-- A extração incorporada seleciona os primeiros 1.000 perfis individuais que atendem ao critério artístico/criativo documentado, não os mais de 61 mil agentes cadastrados.
-- Como a API pode ordenar por identificador, o recorte não deve ser tratado como amostra aleatória representativa de todo o estado.
-- A API não possui um campo que comprove que a pessoa é artista. O uso de áreas artísticas/criativas declaradas é uma aproximação reproduzível e ainda pode incluir profissionais relacionados ao setor.
-- Os campos selecionados não incluem município, localização ou contato.
-- O preenchimento depende do que cada agente informou na plataforma.
-- Listas de termos podem conter categorias pouco frequentes ou variações de escrita.
+- O recorte contém 1.000 perfis, não todos os agentes cadastrados.
+- A seleção não é uma amostra aleatória representativa de Pernambuco.
+- A API não comprova que cada agente individual seja artista.
+- O recorte atual não contém município, coordenadas ou localização válida e não permite análise territorial.
+- Ausência de campos pode refletir falta de preenchimento, não falta de experiência profissional.
+- Áreas e tags podem conter variações de escrita.
 
 ## contempArt
 
-- O recorte representa 15 escolas de arte alemãs e não todos os artistas da Alemanha.
-- Os artistas estavam em início de carreira no período de coleta, entre 2018 e 2020.
-- A base inclui somente pinturas e desenhos; não representa música, teatro, dança, escultura, vídeo ou performance.
-- As imagens foram coletadas manualmente de websites e perfis do Instagram. `img_count` representa imagens incluídas no dataset, não toda a produção do artista.
-- Dados de Instagram e demográficos não estão preenchidos para todos os registros.
-- Métricas de redes sociais representam o período da coleta e não valores atuais.
+- O recorte representa artistas ligados a 15 escolas de arte alemãs.
+- A coleta ocorreu entre 2018 e 2020.
+- A base contempla pinturas e desenhos, não todas as linguagens artísticas.
+- Métricas digitais possuem valores ausentes e não representam valores atuais.
+- Seguidores e engajamento não representam qualidade artística.
 
-## Entre as bases
+## Entre as bases reais
 
-As populações, períodos, países, objetivos de coleta e unidades de análise são diferentes. Portanto, os datasets não permitem comparação direta de desempenho nem integração registro a registro.
+- Países, períodos, objetivos e unidades de análise são diferentes.
+- As bases não devem ser unidas ou somadas como uma única população.
+- Resultados não devem ser comparados diretamente como desempenho entre Pernambuco e Alemanha.
 
 ## Em relação ao FlowCarreiras
 
-- Nenhuma das bases contém usuários reais do FlowCarreiras.
-- As bases não registram procura por mentoria, acesso a oportunidades, organização de obras dentro da plataforma ou satisfação dos artistas.
-- Ausência de website, descrição ou tags é tratada apenas como sinal observável de possível necessidade de organização, não como prova de uma dor individual.
-- Produção alta com poucos seguidores indica desigualdade de visibilidade digital, mas não mede qualidade artística.
-- O impacto real do aplicativo somente poderá ser avaliado com indicadores próprios de onboarding, portfólio, mentoria, oportunidades, exposição e retenção.
+- As bases reais não contêm usuários do aplicativo.
+- Elas não medem onboarding, publicação interna, candidaturas, mentorias, satisfação ou impacto.
+- Os resultados apoiam decisões e hipóteses de produto, mas não comprovam eficácia.
+- A avaliação real depende do plano de instrumentação e de uso futuro.

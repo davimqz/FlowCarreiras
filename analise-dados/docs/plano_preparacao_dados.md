@@ -48,7 +48,7 @@ Scripts:
 
 ## Regras gerais
 
-- Não unir os datasets.
+- Não unir os datasets registro a registro.
 - Não traduzir ou substituir categorias originais durante a limpeza.
 - Não preencher dados ausentes com médias, zeros ou categorias inventadas.
 - Preservar uma cópia bruta para auditoria e reprodução.

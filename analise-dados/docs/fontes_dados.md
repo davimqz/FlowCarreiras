@@ -1,62 +1,40 @@
 # Fontes dos Dados
 
-As análises usam duas fontes abertas e reais. Não há base simulada.
+## Fontes obrigatórias
 
-## Mapa Cultural de Pernambuco
+A entrega principal utiliza duas fontes abertas e reais. Elas possuem contextos e unidades de análise diferentes e não serão unidas linha a linha.
+
+### Mapa Cultural de Pernambuco
 
 - Fonte: API pública do Mapa Cultural de Pernambuco.
-- Recurso: agentes culturais individuais com área artística/criativa declarada.
-- Endpoint: `https://www.mapacultural.pe.gov.br/api/agent/find`
-- Consulta utilizada:
+- Endpoint: `https://www.mapacultural.pe.gov.br/api/agent/find`.
+- Recorte: 1.000 agentes individuais com área artística ou criativa declarada.
+- Arquivos: `data/raw/mapa_cultural_pe_agentes.json`, `data/processed/mapa_cultural_pe_agentes.csv` e versão enriquecida.
+- Papel: analisar estrutura de perfis, áreas, tags, funções e atualização.
 
-```text
-@select=id,name,shortDescription,type,terms,createTimestamp,updateTimestamp
-type=EQ(1) (somente agentes individuais)
-@limit=100 por página
-total_registros=1000
-```
+A API não confirma diretamente que cada agente seja artista. O critério adotado aproxima o recorte do público do FlowCarreiras e permanece documentado e reproduzível.
+O recorte extraído atualmente não possui município, coordenadas ou localização válida. Portanto, ele não será utilizado para análises territoriais ou mapas geográficos.
 
-- Data da extração incorporada ao projeto: 9 de junho de 2026.
-- Registros obtidos no recorte do projeto: 1.000 agentes individuais.
-- JSON bruto: `data/raw/mapa_cultural_pe_agentes.json`.
-- CSV tratado: `data/processed/mapa_cultural_pe_agentes.csv`.
-- CSV enriquecido: `data/processed/mapa_cultural_pe_agentes_enriquecido.csv`.
+### contempArt
 
-O JSON guarda os perfis selecionados, junto com a URL consultada, o horário da extração e os parâmetros usados. O CSV achata objetos aninhados para facilitar a análise tabular.
+- Fonte: repositório público `georgeblck/contempart`.
+- Repositório: `https://github.com/georgeblck/contempart`.
+- Recorte: 441 artistas em início de carreira ligados a 15 escolas de arte alemãs.
+- Arquivos: `data/raw/contempart_artists.csv`, `data/processed/contempart_artists.csv` e versão enriquecida.
+- Papel: analisar presença digital, volume registrado e desigualdade de visibilidade.
 
-Como a API não possui um campo direto que confirme se uma pessoa é artista, foi adotado um critério operacional reproduzível: aceitar somente perfis `Individual` que tenham ao menos uma área artística ou criativa declarada e excluir registros com marcadores evidentes de teste ou administração. Esse filtro aproxima o recorte do público do FlowCarreiras, mas não comprova a profissão de cada pessoa.
+As imagens e métricas foram coletadas entre 2018 e 2020. `img_count` representa imagens presentes na base, não toda a produção artística.
 
-## contempArt
+## Complementaridade das bases reais
 
-- Fonte principal: repositório público `georgeblck/contempart` no GitHub.
-- Repositório: `https://github.com/georgeblck/contempart`
-- Site do projeto: `https://contempart.org/`
-- Arquivo utilizado: `data/artists.csv` do repositório.
-- Registros: 441 artistas.
-- CSV bruto: `data/raw/contempart_artists.csv`.
-- CSV tratado: `data/processed/contempart_artists.csv`.
-- CSV enriquecido: `data/processed/contempart_artists_enriquecido.csv`.
+| Fonte | Responde melhor sobre | Não comprova |
+| --- | --- | --- |
+| Mapa Cultural PE | Estrutura, diversidade e taxonomia de perfis culturais em Pernambuco | Dores ou comportamento dentro do FlowCarreiras |
+| contempArt | Presença digital e desigualdade de visibilidade | Realidade brasileira ou qualidade artística |
 
-O contempArt é uma base científica multimodal de arte contemporânea. O recorte usado neste projeto contém artistas em início de carreira ligados a 15 escolas de arte alemãs. A base inclui informações institucionais e demográficas e, quando disponíveis, métricas públicas de Instagram e características médias das imagens.
+## Regra de uso
 
-O dataset foi apresentado por Nikolai Huckle, Noa Garcia e Yuta Nakashima em trabalho publicado no contexto do ECCV Workshop de 2020.
-
-Segundo a documentação original, as imagens foram coletadas manualmente de websites e Instagram entre 2018 e 2020 e incluem somente pinturas e desenhos. Por isso, `img_count` representa imagens presentes no dataset, não toda a produção artística da pessoa.
-
-O conjunto completo também possui `images.csv` e `edgelist.csv`, mas o recorte atual utiliza somente `artists.csv`. Essa decisão mantém a análise compatível com o tempo e a experiência da equipe, sem impedir uma expansão futura.
-
-Referências:
-
-- Repositório oficial: `https://github.com/georgeblck/contempart`
-- Artigo: `https://arxiv.org/abs/2009.14545`
-- Documentação do Mapas Culturais: `https://docs.mapasculturais.org/mc_config_api/`
-- Manual de agentes: `https://manual.rededasartes.funarte.gov.br/docs/devs/api/agents`
-
-## Complementaridade
-
-Os datasets abordam partes diferentes do ecossistema artístico:
-
-- o Mapa Cultural descreve agentes culturais cadastrados em uma plataforma pública de Pernambuco;
-- o contempArt descreve artistas vinculados a instituições de ensino artístico da Alemanha.
-
-Eles são complementares no tema geral de carreira e atuação cultural, mas não devem ser unidos. Não existe chave comum confiável, os países e contextos institucionais são diferentes e as unidades de análise não são equivalentes.
+- Identificar a fonte de cada resultado.
+- Não somar as bases como uma única população.
+- Não comparar Pernambuco e Alemanha como universos equivalentes.
+- Usar os resultados para orientar hipóteses de produto, não para afirmar impacto real do aplicativo.

@@ -8,3 +8,5 @@ plotly
 openpyxl
 jupyter
 ipykernel
+networkx
+joblib

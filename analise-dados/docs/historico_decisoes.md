@@ -2,6 +2,9 @@
 
 ## 12 de junho de 2026
 
+- Definido que a entrega principal deve funcionar integralmente somente com Mapa Cultural PE e contempArt.
+- Definidas regressão e classificação principais exclusivamente com variáveis reais do contempArt.
+- Incorporada a sugestão docente de agrupamento por interesses e similaridade, usando rede de áreas/tags no Mapa Cultural PE e clusters de características no contempArt.
 - Reorientadas as perguntas de análise para as dores dos artistas e as funcionalidades reais do FlowCarreiras.
 - Escolas, gênero e distribuição geográfica deixaram de ser objetivos centrais e passaram a ser apenas recortes auxiliares.
 - Definidas perguntas futuras e indicadores próprios para avaliar onboarding, portfólio, mentoria, oportunidades e exposição justa.
@@ -10,6 +13,9 @@
 - Criado um plano de instrumentação para avaliar o funcionamento real do FlowCarreiras.
 - Corrigida a interpretação de `img_count`: volume de imagens incluídas no contempArt, não produção artística total.
 - Criadas variáveis derivadas orientadas ao produto para apoiar onboarding, portfólio, presença digital e exposição justa.
+- Explicitado que o recorte atual do Mapa Cultural PE não permite análise territorial por não conter município ou coordenadas.
+- Ampliadas as justificativas das visualizações com princípios de percepção, comparação, contraste e hierarquia visual.
+- Corrigido o dicionário para diferenciar bases limpas e arquivos enriquecidos com variáveis derivadas.
 
 ## 9 de junho de 2026
 

@@ -1,55 +1,63 @@
 # Métricas
 
-As métricas foram escolhidas para apoiar decisões do FlowCarreiras. Escolas, gênero e região podem ser usados como recortes auxiliares na EDA, mas não são objetivos centrais da análise.
+Todas as métricas obrigatórias são calculadas exclusivamente com as duas bases reais.
 
 ## Mapa Cultural de Pernambuco
 
-| Métrica | Cálculo | Relação com o FlowCarreiras |
+| Métrica | Cálculo | Decisão apoiada |
 | --- | --- | --- |
-| Total de perfis artísticos individuais | Contagem de `id` únicos após aplicação do critério artístico/criativo | Dimensionar o recorte analisado |
-| Cobertura da descrição | Percentual com `descricao_curta` preenchida | Indicar necessidade de apoio para criação de bio profissional |
-| Cobertura de tags | Percentual com `termos_tags` preenchida | Avaliar disponibilidade de informações para recomendações e matches |
-| Cobertura de funções | Percentual com `termos_funcoes` preenchida | Avaliar clareza sobre atuação profissional |
-| Perfil minimamente estruturado | Percentual com descrição, ao menos uma área e tags ou funções preenchidas | Aproximar a necessidade de onboarding guiado |
-| Lacunas por campo | Percentual ausente em descrição, tags, funções e subáreas | Priorizar etapas e mensagens do onboarding |
-| Frequência de áreas, tags e funções | Explosão das listas e contagem de ocorrências | Informar a taxonomia inicial de categorias, filtros, mentorias e oportunidades |
-| Diversidade de atuação | Média, mediana e distribuição de `quantidade_areas` | Decidir como representar artistas multidisciplinares |
-| Combinações recorrentes | Contagem de pares de áreas ou área-tag dentro do mesmo perfil | Apoiar sugestões e compatibilidade |
-| Atualização do perfil | Tempo desde `data_atualizacao` e percentual atualizado após criação | Investigar necessidade de lembretes para manter o perfil atual |
+| Total de perfis individuais | Contagem de `id` únicos | Dimensionar o recorte |
+| Cobertura de descrição | Percentual com `descricao_curta` preenchida | Priorizar apoio para bio |
+| Cobertura de áreas | Percentual com `termos_areas` preenchida | Avaliar capacidade de categorização |
+| Cobertura de tags | Percentual com `termos_tags` preenchida | Avaliar informação para filtros e recomendações |
+| Cobertura de funções | Percentual com `termos_funcoes` preenchida | Avaliar clareza profissional |
+| Cobertura de subáreas | Percentual com `termos_subareas` preenchida | Avaliar detalhamento |
+| Perfil minimamente estruturado | Descrição e área preenchidas, além de tags ou funções | Aproximar necessidade de onboarding |
+| Diversidade de atuação | Distribuição de `quantidade_areas` | Apoiar perfis multidisciplinares |
+| Frequência de categorias | Contagem após explodir áreas, tags e funções | Estruturar taxonomia e filtros |
+| Coocorrência | Contagem de pares de áreas e tags no mesmo perfil | Apoiar sugestões relacionadas |
+| Similaridade por interesses | Índice de Jaccard ou cosseno entre conjuntos de áreas e tags | Identificar grupos e recomendações possíveis |
+| Comunidades de interesses | Comunidades detectadas na rede após limitar conexões fracas | Explorar agrupamentos culturais |
+| Perfis conectores | Centralidade de intermediação ou grau na rede filtrada | Identificar combinações que conectam interesses distintos |
+| Atualização posterior | Percentual de `atualizacao_posterior = true` | Investigar manutenção do perfil |
 
 ## contempArt
 
-| Métrica | Cálculo | Relação com o FlowCarreiras |
+| Métrica | Cálculo | Decisão apoiada |
 | --- | --- | --- |
-| Total de artistas | Contagem de `artist_id` únicos | Dimensionar o recorte analisado |
-| Cobertura de Instagram | Percentual com `instagram_handle` preenchido | Medir presença em rede social |
-| Cobertura de website | Percentual com `website` preenchido | Aproximar disponibilidade de portfólio independente |
-| Somente Instagram informado | Instagram preenchido e website ausente | Identificar presença digital concentrada em uma plataforma social |
-| Sem presença digital informada | Instagram e website ausentes | Identificar perfis que poderiam se beneficiar de portfólio próprio |
-| Volume registrado | Distribuição de `posts_count` e `img_count` | Representar publicações do Instagram e imagens incluídas no dataset, sem tratar como produção artística total |
-| Visibilidade digital | Distribuição e mediana de `follower_count` | Medir alcance sem tratá-lo como qualidade |
-| Engajamento calculável | Distribuição de `taxa_engajamento` somente entre registros válidos | Analisar interação sem imputar ausentes |
-| Volume registrado alto e visibilidade baixa | `posts_count` ou `img_count` acima da mediana e seguidores abaixo da mediana | Identificar público relacionado à exposição justa |
-| Concentração de visibilidade | Participação dos 10% e 20% maiores perfis no total de seguidores e interações | Demonstrar desigualdade de alcance |
-| Relação volume-visibilidade | Correlação e regressão entre posts/imagens registradas e seguidores/engajamento | Verificar limites de rankings por popularidade |
-| Dispersão entre volumes semelhantes | Variação de seguidores entre faixas semelhantes de posts ou imagens registradas | Mostrar que volumes registrados semelhantes podem receber alcance desigual |
+| Total de artistas | Contagem de `artist_id` únicos | Dimensionar o recorte |
+| Cobertura de Instagram | Percentual de `possui_instagram = true` | Medir presença em rede social |
+| Cobertura de website | Percentual de `possui_website = true` | Aproximar presença de portfólio independente |
+| Somente Instagram informado | Instagram preenchido e website ausente | Investigar dependência de plataforma social |
+| Sem presença digital informada | Instagram e website ausentes | Identificar possível utilidade do portfólio público |
+| Distribuição de volume | Distribuições de `posts_count` e `img_count` | Entender atividade e volume registrado |
+| Distribuição de visibilidade | Distribuição de `follower_count` | Entender desigualdade de alcance |
+| Engajamento calculável | Distribuição de `taxa_engajamento` apenas em registros válidos | Analisar interação sem imputar ausentes |
+| Alto volume e baixa visibilidade | Quadrante com volume acima e seguidores abaixo das medianas | Apoiar exposição justa |
+| Concentração de visibilidade | Participação dos 10% e 20% maiores no total de seguidores | Demonstrar concentração |
+| Relação volume-visibilidade | Correlação e regressão entre volume registrado e seguidores | Testar limites de recomendações por popularidade |
+| Nível de visibilidade | Faixas derivadas dos percentis válidos de seguidores | Apoiar classificação exploratória |
+| Qualidade do agrupamento | Silhouette score e comparação entre quantidades de clusters | Selecionar agrupamento sem definir grupos arbitrariamente |
+| Perfil dos clusters | Médias, medianas e proporções por cluster | Interpretar características de cada grupo |
 
-## Indicadores futuros do próprio FlowCarreiras
+## Métricas futuras do aplicativo
 
-| Eixo | Indicadores |
-| --- | --- |
-| Onboarding e organização | Taxa de conclusão, abandono por etapa, percentual de completude, tempo até completar perfil |
-| Portfólio | Tempo até primeira obra, obras publicadas por artista, percentual com portfólio público, compartilhamentos |
-| Mentoria | Demanda e oferta por tag, compatibilidade média, matches iniciados, mentorias concluídas |
-| Oportunidades | Visualizações, acessos externos, notificações abertas e oportunidades acessadas por área/tag |
-| Exposição justa | Distribuição de aparições na fila, artistas distintos exibidos, concentração de visualizações e descoberta de perfis novos |
-| Retenção e evolução | Retorno à plataforma, atualização do perfil e crescimento de obras organizadas ao longo do tempo |
+Estas métricas não fazem parte dos resultados atuais:
 
-Os indicadores futuros devem ser acompanhados por um plano de instrumentação, pois nem todos são registrados atualmente pelo aplicativo.
+- abandono e conclusão do onboarding;
+- tempo até primeira obra;
+- visualizações e compartilhamentos de portfólio;
+- acessos e candidaturas a oportunidades;
+- demanda, oferta e conclusão de mentorias;
+- distribuição interna de aparições e visualizações;
+- retenção e evolução profissional.
 
-## Regras de cálculo
+## Regras
 
-- Informar o universo válido e os dados ausentes em cada resultado.
-- Não usar seguidores, likes ou comentários como medida de talento ou qualidade artística.
-- Não misturar métricas das duas bases em um único cálculo.
-- Tratar métricas externas como evidências para decisões de produto, não como medição de impacto do aplicativo.
+- Informar o universo válido e os ausentes em cada cálculo.
+- Não substituir ausentes por zero sem justificativa.
+- Não misturar registros das duas bases reais.
+- Não usar popularidade como medida de mérito.
+- Não apresentar métricas futuras ou opcionais como resultados observados.
+- Não interpretar centralidade como importância artística.
+- Documentar as features utilizadas e padronizá-las antes do agrupamento.
