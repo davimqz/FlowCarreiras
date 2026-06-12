@@ -11,6 +11,8 @@ As duas fontes são abertas e reais, mas possuem unidades de análise diferentes
 
 Os datasets são complementares para estudar o ecossistema artístico e cultural, mas não são integrados nem unidos por chave.
 
+A análise é orientada às decisões do FlowCarreiras: apoiar organização profissional e portfólio, estruturar categorias para mentoria e oportunidades e investigar desigualdade de visibilidade. Os dados externos geram hipóteses de produto; o impacto real do aplicativo deverá ser medido futuramente com dados próprios de uso.
+
 ## Estrutura
 
 ```text
@@ -35,3 +37,8 @@ python analise-dados/src/features/criar_variaveis_derivadas.py
 ```
 
 O download padrão do Mapa Cultural pagina a API até obter 1.000 perfis individuais que atendam ao critério artístico documentado em `docs/fontes_dados.md`.
+
+Consulte também:
+
+- `docs/matriz_cobertura_analitica.md`: mostra o que pode ser respondido diretamente, por aproximação ou somente com dados próprios.
+- `docs/plano_instrumentacao.md`: define os eventos e indicadores futuros necessários para avaliar o aplicativo.

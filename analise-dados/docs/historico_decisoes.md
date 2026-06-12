@@ -1,5 +1,16 @@
 # Histórico de Decisões
 
+## 12 de junho de 2026
+
+- Reorientadas as perguntas de análise para as dores dos artistas e as funcionalidades reais do FlowCarreiras.
+- Escolas, gênero e distribuição geográfica deixaram de ser objetivos centrais e passaram a ser apenas recortes auxiliares.
+- Definidas perguntas futuras e indicadores próprios para avaliar onboarding, portfólio, mentoria, oportunidades e exposição justa.
+- Registrado que as bases externas apoiam hipóteses de produto, mas não medem diretamente a eficácia do aplicativo.
+- Criada uma matriz de cobertura separando respostas diretas, aproximações e perguntas dependentes de dados próprios.
+- Criado um plano de instrumentação para avaliar o funcionamento real do FlowCarreiras.
+- Corrigida a interpretação de `img_count`: volume de imagens incluídas no contempArt, não produção artística total.
+- Criadas variáveis derivadas orientadas ao produto para apoiar onboarding, portfólio, presença digital e exposição justa.
+
 ## 9 de junho de 2026
 
 - Ampliado o recorte do Mapa Cultural PE de 100 para 1.000 registros paginados.

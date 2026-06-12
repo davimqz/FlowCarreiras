@@ -33,7 +33,16 @@ def enriquecer_mapa(dataframe: pd.DataFrame) -> pd.DataFrame:
     resultado["data_criacao"] = pd.to_datetime(resultado["data_criacao"], errors="coerce")
     resultado["data_atualizacao"] = pd.to_datetime(resultado["data_atualizacao"], errors="coerce")
     resultado["possui_descricao"] = preenchido(resultado["descricao_curta"])
+    resultado["possui_tags"] = preenchido(resultado["termos_tags"])
+    resultado["possui_funcoes"] = preenchido(resultado["termos_funcoes"])
+    resultado["possui_subareas"] = preenchido(resultado["termos_subareas"])
     resultado["quantidade_areas"] = contar_lista(resultado["termos_areas"])
+    resultado["perfil_multidisciplinar"] = resultado["quantidade_areas"] > 1
+    resultado["perfil_minimamente_estruturado"] = (
+        resultado["possui_descricao"]
+        & preenchido(resultado["termos_areas"])
+        & (resultado["possui_tags"] | resultado["possui_funcoes"])
+    )
     resultado["ano_criacao"] = resultado["data_criacao"].dt.year.astype("Int64")
     resultado["atualizacao_posterior"] = (
         resultado["data_criacao"].notna()
@@ -47,6 +56,12 @@ def enriquecer_contempart(dataframe: pd.DataFrame) -> pd.DataFrame:
     resultado = dataframe.copy()
     resultado["possui_instagram"] = preenchido(resultado["instagram_handle"])
     resultado["possui_website"] = preenchido(resultado["website"])
+    resultado["somente_instagram_informado"] = (
+        resultado["possui_instagram"] & ~resultado["possui_website"]
+    )
+    resultado["sem_presenca_digital_informada"] = (
+        ~resultado["possui_instagram"] & ~resultado["possui_website"]
+    )
 
     seguidores = pd.to_numeric(resultado["follower_count"], errors="coerce")
     likes = pd.to_numeric(resultado["avg_likes"], errors="coerce")
@@ -57,6 +72,7 @@ def enriquecer_contempart(dataframe: pd.DataFrame) -> pd.DataFrame:
         ((likes + comentarios) / seguidores) * 100,
         np.nan,
     )
+    resultado["metricas_engajamento_disponiveis"] = engajamento_calculavel
 
     validos = seguidores.dropna()
     limite_baixo = validos.quantile(0.33)
@@ -66,6 +82,26 @@ def enriquecer_contempart(dataframe: pd.DataFrame) -> pd.DataFrame:
         bins=[-np.inf, limite_baixo, limite_alto, np.inf],
         labels=["baixo", "medio", "alto"],
         include_lowest=True,
+    )
+
+    mediana_imagens = pd.to_numeric(resultado["img_count"], errors="coerce").median()
+    mediana_seguidores = seguidores.median()
+    volume_alto = pd.to_numeric(resultado["img_count"], errors="coerce") >= mediana_imagens
+    visibilidade_alta = seguidores >= mediana_seguidores
+    resultado["quadrante_imagens_visibilidade"] = np.select(
+        [
+            volume_alto & visibilidade_alta,
+            volume_alto & ~visibilidade_alta & seguidores.notna(),
+            ~volume_alto & visibilidade_alta,
+            ~volume_alto & ~visibilidade_alta & seguidores.notna(),
+        ],
+        [
+            "volume_alto_visibilidade_alta",
+            "volume_alto_visibilidade_baixa",
+            "volume_baixo_visibilidade_alta",
+            "volume_baixo_visibilidade_baixa",
+        ],
+        default=None,
     )
     return resultado
 

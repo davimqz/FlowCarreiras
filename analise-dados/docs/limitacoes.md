@@ -13,9 +13,19 @@
 
 - O recorte representa 15 escolas de arte alemãs e não todos os artistas da Alemanha.
 - Os artistas estavam em início de carreira no período de coleta, entre 2018 e 2020.
+- A base inclui somente pinturas e desenhos; não representa música, teatro, dança, escultura, vídeo ou performance.
+- As imagens foram coletadas manualmente de websites e perfis do Instagram. `img_count` representa imagens incluídas no dataset, não toda a produção do artista.
 - Dados de Instagram e demográficos não estão preenchidos para todos os registros.
 - Métricas de redes sociais representam o período da coleta e não valores atuais.
 
 ## Entre as bases
 
 As populações, períodos, países, objetivos de coleta e unidades de análise são diferentes. Portanto, os datasets não permitem comparação direta de desempenho nem integração registro a registro.
+
+## Em relação ao FlowCarreiras
+
+- Nenhuma das bases contém usuários reais do FlowCarreiras.
+- As bases não registram procura por mentoria, acesso a oportunidades, organização de obras dentro da plataforma ou satisfação dos artistas.
+- Ausência de website, descrição ou tags é tratada apenas como sinal observável de possível necessidade de organização, não como prova de uma dor individual.
+- Produção alta com poucos seguidores indica desigualdade de visibilidade digital, mas não mede qualidade artística.
+- O impacto real do aplicativo somente poderá ser avaliado com indicadores próprios de onboarding, portfólio, mentoria, oportunidades, exposição e retenção.

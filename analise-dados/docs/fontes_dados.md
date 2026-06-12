@@ -41,6 +41,17 @@ O contempArt é uma base científica multimodal de arte contemporânea. O recort
 
 O dataset foi apresentado por Nikolai Huckle, Noa Garcia e Yuta Nakashima em trabalho publicado no contexto do ECCV Workshop de 2020.
 
+Segundo a documentação original, as imagens foram coletadas manualmente de websites e Instagram entre 2018 e 2020 e incluem somente pinturas e desenhos. Por isso, `img_count` representa imagens presentes no dataset, não toda a produção artística da pessoa.
+
+O conjunto completo também possui `images.csv` e `edgelist.csv`, mas o recorte atual utiliza somente `artists.csv`. Essa decisão mantém a análise compatível com o tempo e a experiência da equipe, sem impedir uma expansão futura.
+
+Referências:
+
+- Repositório oficial: `https://github.com/georgeblck/contempart`
+- Artigo: `https://arxiv.org/abs/2009.14545`
+- Documentação do Mapas Culturais: `https://docs.mapasculturais.org/mc_config_api/`
+- Manual de agentes: `https://manual.rededasartes.funarte.gov.br/docs/devs/api/agents`
+
 ## Complementaridade
 
 Os datasets abordam partes diferentes do ecossistema artístico:

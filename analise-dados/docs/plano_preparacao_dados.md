@@ -58,7 +58,7 @@ Scripts:
 
 O script `src/features/criar_variaveis_derivadas.py` gera arquivos enriquecidos sem substituir as bases limpas originais.
 
-- Mapa Cultural PE: `possui_descricao`, `quantidade_areas`, `ano_criacao` e `atualizacao_posterior`.
-- contempArt: `possui_instagram`, `possui_website`, `taxa_engajamento` e `nivel_visibilidade`.
+- Mapa Cultural PE: indicadores de preenchimento, `quantidade_areas`, `perfil_multidisciplinar`, `perfil_minimamente_estruturado`, `ano_criacao` e `atualizacao_posterior`.
+- contempArt: indicadores de presença digital, disponibilidade de métricas, `taxa_engajamento`, `nivel_visibilidade` e `quadrante_imagens_visibilidade`.
 
-O `nivel_visibilidade` usa três faixas baseadas nos percentis 33% e 67% dos seguidores preenchidos. A taxa de engajamento é calculada por `(média de likes + média de comentários) / seguidores * 100`.
+O `nivel_visibilidade` usa três faixas baseadas nos percentis 33% e 67% dos seguidores preenchidos. A taxa de engajamento é calculada por `(média de likes + média de comentários) / seguidores * 100` somente quando os três valores estão disponíveis. O quadrante compara `img_count` e seguidores com suas medianas válidas e deve ser interpretado como volume registrado, não produção artística total.

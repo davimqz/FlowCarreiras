@@ -19,7 +19,12 @@ Arquivo tratado: `data/processed/mapa_cultural_pe_agentes.csv`
 | `data_criacao` | Data/hora | Data de criação do registro |
 | `data_atualizacao` | Data/hora | Data da atualização mais recente |
 | `possui_descricao` | Booleano derivado | Indica se `descricao_curta` está preenchida |
+| `possui_tags` | Booleano derivado | Indica se o perfil possui tags informadas |
+| `possui_funcoes` | Booleano derivado | Indica se o perfil possui funções informadas |
+| `possui_subareas` | Booleano derivado | Indica se o perfil possui subáreas informadas |
 | `quantidade_areas` | Inteiro derivado | Quantidade de áreas culturais associadas ao agente |
+| `perfil_multidisciplinar` | Booleano derivado | Indica se o perfil possui mais de uma área declarada |
+| `perfil_minimamente_estruturado` | Booleano derivado | Indica descrição e área preenchidas, além de tags ou funções |
 | `ano_criacao` | Inteiro derivado | Ano extraído de `data_criacao` |
 | `atualizacao_posterior` | Booleano derivado | Indica atualização posterior à criação |
 
@@ -56,5 +61,9 @@ Arquivo tratado: `data/processed/contempart_artists.csv`
 | `avg_aspect_ratio` | Número | Proporção média entre largura e altura |
 | `possui_instagram` | Booleano derivado | Indica se o identificador do Instagram está preenchido |
 | `possui_website` | Booleano derivado | Indica se o website está preenchido |
+| `somente_instagram_informado` | Booleano derivado | Indica Instagram preenchido e website ausente |
+| `sem_presenca_digital_informada` | Booleano derivado | Indica Instagram e website ausentes |
 | `taxa_engajamento` | Número derivado | Percentual calculado por `(avg_likes + avg_comments) / follower_count * 100` somente quando os três valores estão disponíveis e seguidores é maior que zero |
+| `metricas_engajamento_disponiveis` | Booleano derivado | Indica se a taxa de engajamento pode ser calculada |
 | `nivel_visibilidade` | Categoria derivada | Faixa baixa, média ou alta baseada nos percentis de seguidores |
+| `quadrante_imagens_visibilidade` | Categoria derivada | Combinação entre `img_count` e seguidores acima ou abaixo de suas medianas válidas |
