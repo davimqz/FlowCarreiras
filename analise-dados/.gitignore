@@ -7,6 +7,3 @@ __pycache__/
 !models/classificacao/classificador_nivel_visibilidade.joblib
 *.pyc
 venv/
-
-# Experimentos locais opcionais; a entrega principal usa somente bases reais.
-data/external/*
