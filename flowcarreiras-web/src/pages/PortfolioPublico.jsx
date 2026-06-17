@@ -4,6 +4,7 @@ import api from '../api/client'
 import GridPortfolio from '../components/GridPortfolio'
 import InternalHeader from '../components/InternalHeader'
 import { useAuth } from '../context/AuthContext'
+import { obterStatusSeguidores, seguir, deixarDeSeguir } from '../api/seguidores'
 
 const GRADIENTES = [
   'from-violet-900 via-purple-800 to-indigo-900',
@@ -26,8 +27,12 @@ export default function PortfolioPublico() {
   const [carregando, setCarregando] = useState(true)
   const [erro, setErro] = useState(null)
   const [copiado, setCopiado] = useState(false)
+  const [seguidores, setSeguidores] = useState(null)
+  const [enviandoSeguir, setEnviandoSeguir] = useState(false)
 
   const isProprioPortfolio = usuario?.urlPublica === urlPublica
+  // Só faz sentido seguir o perfil de outra pessoa
+  const podeSeguir = artista?.usuarioId && artista.usuarioId !== usuario?.usuarioId
 
   useEffect(() => {
     async function carregar() {
@@ -43,6 +48,37 @@ export default function PortfolioPublico() {
     }
     carregar()
   }, [urlPublica])
+
+  // Carrega contagens de seguidores assim que soubermos o id do artista
+  useEffect(() => {
+    if (!artista?.usuarioId) return
+    let ativo = true
+    obterStatusSeguidores(artista.usuarioId)
+      .then(status => { if (ativo) setSeguidores(status) })
+      .catch(() => { /* falha silenciosa: hero continua utilizável sem as contagens */ })
+    return () => { ativo = false }
+  }, [artista?.usuarioId])
+
+  async function toggleSeguir() {
+    if (!usuario) {
+      navigate('/login')
+      return
+    }
+    if (!artista?.usuarioId || enviandoSeguir) return
+
+    const seguindoAgora = seguidores?.seguindoPeloUsuario
+    setEnviandoSeguir(true)
+    try {
+      const status = seguindoAgora
+        ? await deixarDeSeguir(artista.usuarioId)
+        : await seguir(artista.usuarioId)
+      setSeguidores(status)
+    } catch {
+      /* mantém o estado anterior em caso de erro */
+    } finally {
+      setEnviandoSeguir(false)
+    }
+  }
 
   function copiarUrl() {
     navigator.clipboard.writeText(window.location.href)
@@ -118,13 +154,26 @@ export default function PortfolioPublico() {
                 )}
               </div>
 
-              {/* Badges de status */}
-              <div className="flex flex-wrap gap-2">
+              {/* Badges de status + ação de seguir */}
+              <div className="flex flex-wrap items-center gap-2">
                 {artista?.disponivelParaMentorar && (
                   <span className="inline-flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-full bg-emerald-900/50 text-emerald-400 border border-emerald-700/50">
                     <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
                     Disponível para mentorar
                   </span>
+                )}
+                {podeSeguir && (
+                  <button
+                    onClick={toggleSeguir}
+                    disabled={enviandoSeguir}
+                    className={`text-xs font-semibold px-4 py-1.5 rounded-full transition-colors disabled:opacity-70 ${
+                      seguidores?.seguindoPeloUsuario
+                        ? 'bg-card border border-gray-600 text-gray-200 hover:border-red-500 hover:text-red-400'
+                        : 'btn-primary'
+                    }`}
+                  >
+                    {seguidores?.seguindoPeloUsuario ? 'Seguindo' : '+ Seguir'}
+                  </button>
                 )}
               </div>
             </div>
@@ -136,6 +185,19 @@ export default function PortfolioPublico() {
             )}
             {artista?.cidade && (
               <p className="text-gray-400 text-sm mt-1">📍 {artista.cidade}</p>
+            )}
+
+            {/* Contagens de seguidores */}
+            {seguidores && (
+              <div className="flex gap-5 mt-3 text-sm">
+                <span className="text-gray-300">
+                  <strong className="text-white tabular-nums">{seguidores.totalSeguidores}</strong>{' '}
+                  {seguidores.totalSeguidores === 1 ? 'seguidor' : 'seguidores'}
+                </span>
+                <span className="text-gray-300">
+                  <strong className="text-white tabular-nums">{seguidores.totalSeguindo}</strong> seguindo
+                </span>
+              </div>
             )}
 
             {/* Bio */}

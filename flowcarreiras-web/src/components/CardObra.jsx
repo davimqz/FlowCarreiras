@@ -1,7 +1,9 @@
-import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { useState, useEffect } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 import { HeartIcon } from './StateIcons'
 import ComentariosModal from './ComentariosModal'
+import { useAuth } from '../context/AuthContext'
+import { obterStatusCurtida, curtir, descurtir } from '../api/curtidas'
 
 const ICONES_TIPO = {
   IMAGEM: '🖼️',
@@ -88,23 +90,53 @@ function Thumbnail({ obra }) {
 }
 
 export default function CardObra({ obra, modoEdicao, onRemover }) {
+  const { token } = useAuth()
+  const navigate = useNavigate()
   const [comentariosAbertos, setComentariosAbertos] = useState(false)
-  const [curtido, setCurtido] = useState(() => {
-    try { return JSON.parse(localStorage.getItem('fc_curtidas') || '[]').includes(obra.id) } catch { return false }
-  })
+  const [curtido, setCurtido] = useState(false)
+  const [totalCurtidas, setTotalCurtidas] = useState(0)
+  const [enviandoCurtida, setEnviandoCurtida] = useState(false)
 
-  function toggleCurtir(e) {
+  // Carrega o estado real de curtidas (contagem + se o usuário logado curtiu)
+  useEffect(() => {
+    let ativo = true
+    obterStatusCurtida(obra.id)
+      .then(status => {
+        if (!ativo) return
+        setTotalCurtidas(status.total)
+        setCurtido(status.curtidoPeloUsuario)
+      })
+      .catch(() => { /* falha silenciosa: card continua utilizável sem o contador */ })
+    return () => { ativo = false }
+  }, [obra.id])
+
+  async function toggleCurtir(e) {
     e.preventDefault()
     e.stopPropagation()
-    setCurtido(prev => {
-      const next = !prev
-      try {
-        const set = new Set(JSON.parse(localStorage.getItem('fc_curtidas') || '[]'))
-        next ? set.add(obra.id) : set.delete(obra.id)
-        localStorage.setItem('fc_curtidas', JSON.stringify([...set]))
-      } catch { /* ignora indisponibilidade do storage */ }
-      return next
-    })
+
+    // Sem login não há como persistir a curtida — leva ao login
+    if (!token) {
+      navigate('/login')
+      return
+    }
+    if (enviandoCurtida) return
+
+    // Atualização otimista, revertida em caso de erro
+    const anterior = { curtido, total: totalCurtidas }
+    const proximo = !curtido
+    setCurtido(proximo)
+    setTotalCurtidas(t => t + (proximo ? 1 : -1))
+    setEnviandoCurtida(true)
+    try {
+      const status = proximo ? await curtir(obra.id) : await descurtir(obra.id)
+      setTotalCurtidas(status.total)
+      setCurtido(status.curtidoPeloUsuario)
+    } catch {
+      setCurtido(anterior.curtido)
+      setTotalCurtidas(anterior.total)
+    } finally {
+      setEnviandoCurtida(false)
+    }
   }
 
   return (
@@ -114,11 +146,15 @@ export default function CardObra({ obra, modoEdicao, onRemover }) {
       {!modoEdicao && (
         <button
           onClick={toggleCurtir}
+          disabled={enviandoCurtida}
           aria-label={curtido ? 'Descurtir' : 'Curtir'}
           aria-pressed={curtido}
-          className="absolute right-2 top-2 z-10 flex h-9 w-9 items-center justify-center rounded-full bg-black/40 text-white backdrop-blur-sm transition-colors hover:bg-black/60"
+          className="absolute right-2 top-2 z-10 flex h-9 items-center gap-1 rounded-full bg-black/40 px-2.5 text-white backdrop-blur-sm transition-colors hover:bg-black/60 disabled:opacity-70"
         >
           <HeartIcon filled={curtido} size={20} />
+          {totalCurtidas > 0 && (
+            <span className="text-xs font-semibold tabular-nums">{totalCurtidas}</span>
+          )}
         </button>
       )}
 

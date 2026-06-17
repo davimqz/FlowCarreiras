@@ -19,6 +19,7 @@ public class PortfolioPublicoDTO {
     @Builder
     public static class ArtistaResumoDTO {
         private UUID id;
+        private UUID usuarioId;
         private String nome;
         private String bio;
         private String cidade;
@@ -32,6 +33,7 @@ public class PortfolioPublicoDTO {
         public static ArtistaResumoDTO from(PerfilArtista perfil) {
             return ArtistaResumoDTO.builder()
                     .id(perfil.getId())
+                    .usuarioId(perfil.getUsuario().getId())
                     .nome(perfil.getUsuario().getNome())
                     .bio(perfil.getBio())
                     .cidade(perfil.getCidade())
