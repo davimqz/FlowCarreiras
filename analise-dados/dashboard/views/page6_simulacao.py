@@ -9,14 +9,16 @@ if 'df_simulado' not in st.session_state:
 df_sim = st.session_state['df_simulado']
 
 st.markdown("## Página 5 - Cenário simulado de uso do FlowCarreiras")
-st.warning(
-    "Nota de escopo: Esta página utiliza dados puramente simulados e hipotéticos. "
-    "O objetivo desta secção é demonstrar visualmente como a plataforma FlowCarreiras "
-    "poderá medir e acompanhar os indicadores de evolução de carreira dos seus próprios "
-    "utilizadores no futuro."
-)
 
-st.divider()
+st.markdown(
+    """
+    <div style="background-color: #1c1d26; padding: 15px; border-left: 5px solid #00cc96; border-radius: 4px; margin-bottom: 20px;">
+        <span style="color: #ffffff; font-weight: bold; display: block;">Base de dados consultada</span>
+        <span style="color: #00cc96; font-size: 0.9em;">Dataset: Base interna simulada (Métricas de log geradas pelo fluxo do aplicativo)</span>
+    </div>
+    """, 
+    unsafe_allow_html=True
+)
 
 st.subheader("Indicadores gerais de operação futura")
 
@@ -37,9 +39,8 @@ st.divider()
 
 st.subheader("Como a recorrência de uso da plataforma impacta as chances de o artista se candidatar?")
 st.markdown(
-    "Justificativa visual: O gráfico de barras comparativo isola a variável de atividade "
-    "e calcula a média de ações afirmativas de carreira. Isso demonstra de forma nítida se a recorrência "
-    "de uso da plataforma está se traduzindo em maior engajamento com oportunidades de mercado."
+    "Justificativa visual: O gráfico de barras comparativo isola a atividade e contrasta o roxo da marca "
+    "com a inatividade, evidenciando o valor gerado pela retenção de utilizadores."
 )
 
 if total_usuarios > 0:
@@ -58,10 +59,10 @@ if total_usuarios > 0:
             'candidaturas_oportunidades_90d': 'Média de candidaturas (Últimos 90 dias)'
         },
         color='estado_atividade',
-        color_discrete_sequence=['#00cc96', '#636efa']
+        color_discrete_map={'Utilizador ativo': '#ab63fa', 'Utilizador inativo': '#1c1d26'}
     )
     fig_uso.update_traces(texttemplate='%{text:.2f}', textposition='outside')
-    fig_uso.update_layout(coloraxis_showscale=False, height=400, showlegend=False)
+    fig_uso.update_layout(height=400, showlegend=False)
     st.plotly_chart(fig_uso, use_container_width=True)
 
 st.divider()
@@ -82,17 +83,17 @@ if total_usuarios > 0:
             'nivel_visibilidade_no_app': 'Nível de visibilidade no aplicativo',
             'total_obras': 'Total de obras no portfólio'
         },
-        color_discrete_sequence=['#19d3f3', '#ab63fa', '#ef553b']
+        color_discrete_sequence=['#ab63fa', '#19d3f3', '#00cc96']
     )
     fig_sim_box.update_layout(height=400, showlegend=False)
     st.plotly_chart(fig_sim_box, use_container_width=True)
 
 st.divider()
 
-st.subheader("Qual é a concentração da integridade dos dados cadastrados pelos utilizadores?")
+st.subheader("Qual é a concentração da integridade os dados cadastrados pelos utilizadores?")
 st.markdown(
     "Justificativa visual: O histograma fatia a escala contínua de integridade do perfil em intervalos regulares, "
-    "tornando nítido o volume absoluto de usuários que completaram ou abandonaram o preenchimento cadastral."
+    "utilizando a cor primária da marca para expor a volumetria absoluta de preenchimento cadastral."
 )
 
 if total_usuarios > 0:
@@ -101,7 +102,7 @@ if total_usuarios > 0:
         x='percentual_completude_perfil',
         nbins=20,
         labels={'percentual_completude_perfil': 'Percentual de completude do perfil (%)'},
-        color_discrete_sequence=['#1c1d26']
+        color_discrete_sequence=['#ab63fa']
     )
     fig_sim_hist.update_layout(
         yaxis_title="Quantidade de artistas",

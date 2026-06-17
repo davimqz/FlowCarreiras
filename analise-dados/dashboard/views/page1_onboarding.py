@@ -3,22 +3,24 @@ import plotly.express as px
 import pandas as pd
 
 if 'df_mapa_filtrado' not in st.session_state:
-    st.error("Dados nao inicializados. Execute o dashboard a partir do arquivo app.py.")
+    st.error("Dados não inicializados. Execute o dashboard a partir do arquivo app.py.")
     st.stop()
 
 df_mapa = st.session_state['df_mapa_filtrado']
 
-st.markdown("## Pagina 1 - Organizacao Profissional e Diagnostico de Campos")
+st.markdown("## Página 1 - Organização profissional e diagnóstico de campos")
+
 st.markdown(
-    "Esta secao apresenta o nivel de preenchimento dos registros contidos no dataset do Mapa Cultural "
-    "de Pernambuco. O objetivo e mensurar estatisticamente quais dados estruturais estao ausentes na "
-    "apresentacao publica dos agentes culturais analisados."
+    """
+    <div style="background-color: #1c1d26; padding: 15px; border-left: 5px solid #ab63fa; border-radius: 4px; margin-bottom: 20px;">
+        <span style="color: #ffffff; font-weight: bold; display: block;">Base de dados consultada</span>
+        <span style="color: #a3a8b4; font-size: 0.9em;">Dataset: Mapa Cultural de Pernambuco (Recorte territorial de agentes culturais)</span>
+    </div>
+    """, 
+    unsafe_allow_html=True
 )
 
-st.divider()
-
-# METRICAS PRINCIPAIS
-st.subheader("Indicadores de Estruturacao do Dataset")
+st.subheader("Indicadores de estruturação do ecossistema")
 
 total_agentes = len(df_mapa)
 if total_agentes > 0:
@@ -26,28 +28,27 @@ if total_agentes > 0:
     pct_multidisciplinar = (df_mapa['perfil_multidisciplinar'].sum() / total_agentes) * 100
     media_areas = df_mapa['quantidade_areas'].mean()
 else:
-    pct_estruturado = pct_multidisciplinar = media_areas = 0
+    pct_estruturado = pct_multidisciplinar = media_areas = 0.0
 
 col1, col2, col3 = st.columns(3)
-col1.metric(label="Total de Agentes Analisados", value=f"{total_agentes:,}")
-col2.metric(label="Perfis Minimamente Estruturados (Contem descricao e area + tags ou funcoes)", value=f"{pct_estruturado:.1f}%")
-col3.metric(label="Agentes com Atuacao Multidisciplinar", value=f"{pct_multidisciplinar:.1f}%")
+col1.metric(label="Total de agentes analisados", value=f"{total_agentes:,}")
+col2.metric(label="Perfis estruturados profissionalmente", value=f"{pct_estruturado:.1f}%")
+col3.metric(label="Agentes com atuação multidisciplinar", value=f"{pct_multidisciplinar:.1f}%")
 
 st.divider()
 
-# GRAFICO 1: BARRAS DE COBERTURA
-st.subheader("Analise de Cobertura por Campo Declarado")
+st.subheader("Quais etapas do perfil precisam de maior apoio no onboarding de utilizadores?")
 st.markdown(
-    "Justificativa visual: O uso do comprimento de barras horizontais em escala comum de 0 a 100% "
-    "permite a comparacao direta e precisa entre os indices de preenchimento de cada variavel."
+    "Justificativa visual: O comprimento das barras horizontais em uma escala comum de 0 a 100% "
+    "permite comparar percentuais com precisão e identificar os campos mais negligenciados."
 )
 
 if total_agentes > 0:
     campos = {
-        "Descricao Curta": df_mapa['possui_descricao'].mean() * 100,
-        "Tags de Interesse": df_mapa['possui_tags'].mean() * 100,
-        "Funcoes Culturais": df_mapa['possui_funcoes'].mean() * 100,
-        "Subareas Artisticas": df_mapa['possui_subareas'].mean() * 100
+        "Descrição curta": df_mapa['possui_descricao'].mean() * 100,
+        "Tags de interesse": df_mapa['possui_tags'].mean() * 100,
+        "Funções culturais": df_mapa['possui_funcoes'].mean() * 100,
+        "Subáreas artísticas": df_mapa['possui_subareas'].mean() * 100
     }
     
     df_cobertura = pd.DataFrame(list(campos.items()), columns=['Campo', 'Percentual']).sort_values(by='Percentual', ascending=True)
@@ -60,7 +61,7 @@ if total_agentes > 0:
         text='Percentual',
         labels={'Percentual': 'Preenchimento (%)'},
         color='Percentual',
-        color_continuous_scale=px.colors.sequential.Viridis
+        color_continuous_scale=['#1c1d26', '#ab63fa']
     )
     
     fig_cobertura.update_traces(texttemplate='%{text:.1f}%', textposition='outside')
@@ -68,21 +69,16 @@ if total_agentes > 0:
         xaxis=dict(range=[0, 110]), 
         yaxis_title=None,
         coloraxis_showscale=False,
-        height=300,
-        margin=dict(l=0, r=50, t=10, b=10)
+        height=300
     )
-    
     st.plotly_chart(fig_cobertura, use_container_width=True)
-else:
-    st.warning("Nenhum registro encontrado para os filtros selecionados.")
 
 st.divider()
 
-# GRAFICO 2: HISTOGRAMA DE MULTIDISCIPLINARIDADE
-st.subheader("Distribuicao da Quantidade de Areas Declaradas")
+st.subheader("Como a diversidade de atuação e a multidisciplinaridade se manifestam no ecossistema?")
 st.markdown(
-    "Justificativa visual: O histograma agrupa a variavel discreta em intervalos unitarios, explicitando "
-    "graficamente a concentracao e a dispersao da atuacao multipla sem resumir o comportamento a uma media simples."
+    "Justificativa visual: O histograma agrupa a variável discreta de quantidade de áreas, "
+    "expondo graficamente a concentração da atuação múltipla sem resumir o comportamento a uma média."
 )
 
 if total_agentes > 0:
@@ -90,27 +86,23 @@ if total_agentes > 0:
         df_mapa,
         x='quantidade_areas',
         nbins=int(df_mapa['quantidade_areas'].max() - df_mapa['quantidade_areas'].min() + 1),
-        labels={'quantidade_areas': 'Quantidade de Areas', 'count': 'Numero de Agentes'},
-        color_discrete_sequence=[px.colors.sequential.Viridis[4]]
+        labels={'quantidade_areas': 'Quantidade de áreas declaradas', 'count': 'Número de agentes'},
+        color_discrete_sequence=['#ab63fa']
     )
     
     fig_histograma.update_layout(
-        yaxis_title="Numero de Agentes",
+        yaxis_title="Quantidade de artistas",
         xaxis=dict(tickmode='linear', tick0=1, dtick=1),
-        height=300,
-        margin=dict(l=0, r=10, t=10, b=10)
+        height=300
     )
-    
     st.plotly_chart(fig_histograma, use_container_width=True)
 
 st.divider()
 
-# INFEENCIAS E INSIGHTS PARA O PRODUTO
-st.markdown("### Implicacoes para o Modelo de Dados do Aplicativo")
+st.subheader("Implicações práticas para o modelo de carreira")
 st.text(
-    "1. Demanda por preenchimento guiado: O dataset aponta que dados subjetivos (tags e funcoes) possuem baixissima "
-    "taxa de preenchimento espontaneo (apenas 28.2% possuem tags e 10.6% possuem funcoes), sugerindo a necessidade "
-    "de etapas obrigatorias ou assistidas no onboarding do produto.\n"
-    "2. Flexibilidade cadastral: Dado que a maioria expressiva (63.5%) dos agentes declara mais de uma area de atuacao, "
-    "o mapeamento de requisitos deve prever suporte a perfis multidisciplinares, evitando categorizacoes unicas e restritivas."
+    "1. Demanda por preenchimento guiado: O ecossistema aponta que dados subjetivos e refinados possuem \n"
+    "   baixíssima taxa de preenchimento espontâneo, sugerindo a necessidade de fluxos assistidos no produto.\n"
+    "2. Flexibilidade cadastral: Como a maioria dos agentes atua em múltiplos nichos simultaneamente, \n"
+    "   restringir o cadastro a um único rótulo profissional geraria uma limitação artificial prejudicial."
 )

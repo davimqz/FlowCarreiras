@@ -4,20 +4,24 @@ import pandas as pd
 import numpy as np
 
 if 'df_contempart_filtrado' not in st.session_state:
-    st.error("Dados nao inicializados. Execute o dashboard a partir do arquivo app.py.")
+    st.error("Dados não inicializados. Execute o dashboard a partir do arquivo app.py.")
     st.stop()
 
 df_art = st.session_state['df_contempart_filtrado']
 
-st.markdown("## Pagina 4 - Visibilidade e Exposicao Justa")
+st.markdown("## Página 4 - Visibilidade e exposição justa")
+
 st.markdown(
-    "Esta secao investiga a distribuicao de alcance do dataset contempArt, avaliando a assimetria "
-    "nas metricas de seguidores, a relacao entre volume e engajamento e a concentracao de visibilidade."
+    """
+    <div style="background-color: #1c1d26; padding: 15px; border-left: 5px solid #ab63fa; border-radius: 4px; margin-bottom: 20px;">
+        <span style="color: #ffffff; font-weight: bold; display: block;">Base de dados consultada</span>
+        <span style="color: #a3a8b4; font-size: 0.9em;">Dataset: contempArt (Métricas digitais de visibilidade e canais externos)</span>
+    </div>
+    """, 
+    unsafe_allow_html=True
 )
 
-st.divider()
-
-st.subheader("Indicadores de Concentracao")
+st.subheader("Indicadores de desigualdade de alcance digital")
 
 total_artistas = len(df_art)
 if total_artistas > 0 and 'follower_count' in df_art.columns:
@@ -25,28 +29,24 @@ if total_artistas > 0 and 'follower_count' in df_art.columns:
     total_seguidores = seguidores_ordenados.sum()
     
     top_10_corte = int(np.ceil(0.10 * len(seguidores_ordenados)))
-    top_20_corte = int(np.ceil(0.20 * len(seguidores_ordenados)))
-    
-    pct_top10 = (seguidores_ordenados.head(top_10_corte).sum() / total_seguidores) * 100 if total_seguidores > 0 else 0
-    pct_top20 = (seguidores_ordenados.head(top_20_corte).sum() / total_seguidores) * 100 if total_seguidores > 0 else 0
+    pct_top10 = (seguidores_ordenados.head(top_10_corte).sum() / total_seguidores) * 100 if total_seguidores > 0 else 0.0
     
     mediana_seguidores = df_art['follower_count'].median()
     total_estagnados = df_art['risco_estagnacao'].sum()
 else:
-    pct_top10 = pct_top20 = mediana_seguidores = total_estagnados = 0
+    pct_top10 = mediana_seguidores = total_estagnados = 0.0
 
-col1, col2, col3, col4 = st.columns(4)
-col1.metric(label="Mediana de Seguidores", value=f"{mediana_seguidores:,.0f}")
-col2.metric(label="Concentracao nos 10% Maiores", value=f"{pct_top10:.1f}%")
-col3.metric(label="Concentracao nos 20% Maiores", value=f"{pct_top20:.1f}%")
-col4.metric(label="Perfis com Alto Volume e Baixa Visibilidade", value=f"{total_estagnados}")
+col1, col2, col3 = st.columns(3)
+col1.metric(label="Mediana de seguidores externos", value=f"{mediana_seguidores:,.0f}")
+col2.metric(label="Concentração de alcance nos 10% maiores", value=f"{pct_top10:.1f}%")
+col3.metric(label="Criativos com alto volume e baixa visibilidade", value=f"{total_estagnados}")
 
 st.divider()
 
-st.subheader("Distribuicao de Seguidores em Escala Logaritmica")
+st.subheader("Qual é o nível de assimetria na distribuição de alcance do ecossistema?")
 st.markdown(
-    "Justificativa visual: A escala logaritmica reduz a distorcao causada por poucos perfis com contagens "
-    "extremamente altas, permitindo visualizar a forma da distribuicao real da maioria dos artistas."
+    "Justificativa visual: A transformação para escala logarítmica achata os valores extremos de grandes contas, "
+    "permitindo enxergar com clareza o formato e a distribuição real da maioria esmagadora dos perfis menores."
 )
 
 if total_artistas > 0 and df_art['follower_count'].notna().sum() > 0:
@@ -56,41 +56,18 @@ if total_artistas > 0 and df_art['follower_count'].notna().sum() > 0:
     fig_hist_log = px.histogram(
         df_log,
         x='follower_count_log',
-        labels={'follower_count_log': 'Seguidores (Escala Log10)', 'count': 'Numero de Artistas'},
-        color_discrete_sequence=[px.colors.sequential.Viridis[2]]
+        labels={'follower_count_log': 'Seguidores externos (Escala Log10)', 'count': 'Frequência de perfis'},
+        color_discrete_sequence=['#ab63fa']
     )
-    fig_hist_log.update_layout(yaxis_title="Numero de Artistas", height=300)
+    fig_hist_log.update_layout(yaxis_title="Quantidade de artistas", height=300)
     st.plotly_chart(fig_hist_log, use_container_width=True)
 
 st.divider()
 
-st.subheader("Scatterplot com Tendencia: Volume Registrado vs Visibilidade")
+st.subheader("Como se comportam os perfis no cruzamento entre volume de acervo documentado e alcance?")
 st.markdown(
-    "Justificativa visual: A posicao bivariada evidencia associacoes e dispersao. A linha de tendencia "
-    "linear resume o comportamento geral sem ocultar a variacao individual dos registros."
-)
-
-if total_artistas > 0:
-    df_clean = df_art.dropna(subset=['posts_count', 'follower_count'])
-    if len(df_clean) > 0:
-        fig_scatter_trend = px.scatter(
-            df_clean,
-            x='posts_count',
-            y='follower_count',
-            trendline='ols',
-            labels={'posts_count': 'Quantidade de Posts', 'follower_count': 'Quantidade de Seguidores'},
-            color_discrete_sequence=[px.colors.sequential.Viridis[4]],
-            opacity=0.6
-        )
-        fig_scatter_trend.update_layout(height=400)
-        st.plotly_chart(fig_scatter_trend, use_container_width=True)
-
-st.divider()
-
-st.subheader("Quadrantes de Visibilidade e Volume de Acervo")
-st.markdown(
-    "Justificativa visual: A segmentacao por quadrantes divide duas medidas continuas com base em suas medianas, "
-    "tornando imediatamente identificaveis os subgrupos subexpostos ou superexpostos."
+    "Justificativa visual: A divisão do espaço bivariado com linhas pontilhadas baseadas nas medianas "
+    "isola visualmente o quadrante de interesse, contrastando o roxo da marca com as demais categorias."
 )
 
 if total_artistas > 0:
@@ -101,13 +78,13 @@ if total_artistas > 0:
     
     def rotular_quadrante(row):
         if row['img_count'] >= med_img and row['follower_count'] >= med_fol:
-            return 'Alto Volume / Alta Visibilidade'
+            return 'Alto volume / Alta visibilidade'
         elif row['img_count'] >= med_img and row['follower_count'] < med_fol:
-            return 'Alto Volume / Baixa Visibilidade'
+            return 'Alto volume / Baixa visibilidade (Foco FlowCarreiras)'
         elif row['img_count'] < med_img and row['follower_count'] >= med_fol:
-            return 'Baixo Volume / Alta Visibilidade'
+            return 'Baixo volume / Alta visibilidade'
         else:
-            return 'Baixo Volume / Baixa Visibilidade'
+            return 'Baixo volume / Baixa visibilidade'
             
     df_quadrantes['Quadrante'] = df_quadrantes.apply(rotular_quadrante, axis=1)
     
@@ -116,12 +93,12 @@ if total_artistas > 0:
         x='img_count',
         y='follower_count',
         color='Quadrante',
-        labels={'img_count': 'Volume de Imagens', 'follower_count': 'Seguidores'},
+        labels={'img_count': 'Volume de acervo catalogado', 'follower_count': 'Seguidores externos'},
         color_discrete_map={
-            'Alto Volume / Alta Visibilidade': px.colors.sequential.Viridis[0],
-            'Alto Volume / Baixa Visibilidade': px.colors.sequential.Viridis[3],
-            'Baixo Volume / Alta Visibilidade': px.colors.sequential.Viridis[5],
-            'Baixo Volume / Baixa Visibilidade': px.colors.sequential.Viridis[8]
+            'Alto volume / Alta visibilidade': '#00cc96',
+            'Alto volume / Baixa visibilidade (Foco FlowCarreiras)': '#ab63fa',
+            'Baixo volume / Alta visibilidade': '#19d3f3',
+            'Baixo volume / Baixa visibilidade': '#ef553b'
         },
         opacity=0.7
     )
@@ -132,11 +109,10 @@ if total_artistas > 0:
 
 st.divider()
 
-st.markdown("### Observacoes de Distribuicao")
+st.subheader("Análise de oportunidade de exposição")
 st.text(
-    "1. Assimetria e desigualdade: Os calculos demonstram uma acentuada concentracao de audiencia, onde "
-    "os 10% maiores perfis detem 44.6% do alcance acumulado, enquanto a mediana geral e de apenas 302 seguidores.\n"
-    "2. Oportunidade de descoberta: O quadrante Alto Volume e Baixa Visibilidade isola com precisao os artistas "
-    "que possuem densidade de portfolio documental, mas nao encontram correspondencia em termos de alcance algoritmico "
-    "nas redes externas."
+    "1. Falha de distribuição orgânica: Quase metade do alcance total acumulado está concentrada em apenas \n"
+    "   10% das contas, demonstrando que depender de redes abertas perpetua um cenário de exclusão crônica.\n"
+    "2. Isolamento de talentos: O quadrante destacado em roxo revela criativos com consistência e volume \n"
+    "   de acervo consolidados, mas subexpostos pelo algoritmo comercial, legitimando a proposta de exposição justa."
 )
