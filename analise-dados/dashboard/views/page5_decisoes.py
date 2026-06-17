@@ -1,51 +1,43 @@
 import streamlit as st
 
-if 'df_contempart_filtrado' not in st.session_state or 'df_mapa_filtrado' not in st.session_state:
-    st.error("Dados nao inicializados. Execute o dashboard a partir do arquivo app.py.")
-    st.stop()
-
-st.markdown("## Pagina 5 - Aplicacao no Produto e Limites da Analise")
+st.markdown("## Página 6 - Aplicação Prática no Produto e Limitações")
 st.markdown(
-    "Esta secao consolida as tomadas de decisao estrategicas derivadas das analises dos datasets publicos, "
-    "mapeia os limites estatisticos observados e propoem indicadores futuros para o ecossistema."
+    "Esta secção consolida as decisões estratégicas de engenharia e regras de negócio "
+    "que a equipa do FlowCarreiras deve adotar com base nas evidências geradas pelos dados públicos e simulados."
 )
 
 st.divider()
 
-st.subheader("Decisoes de Produto Apoiadas pelos Dados")
+st.subheader("Decisões de Engenharia de Produto Recomendadas")
 st.text(
-    "1. Mecanismo de Onboarding: Implementacao de fluxos assistidos para o preenchimento de tags, funcoes "
-    "e subareas, combatendo a lacuna de definicao de perfil identificada no dataset do Mapa Cultural PE.\n"
-    "2. Arquitetura Multidisciplinar: Suporte nativo a selecao de multiplas areas concomitantes no cadastro, "
-    "respeitando a taxa de 63.5% de agentes multidisciplinares mensurada na base.\n"
-    "3. Exposicao Justa: Desenvolvimento de algoritmos de recomendacao e busca que considerem o preenchimento "
-    "estrutural do perfil e o volume de acervo documentado, em detrimento de metricas de popularidade externa "
-    "(seguidores e curtidas), mitigando a concentracao de alcance observada no dataset contempArt.\n"
-    "4. Independencia de Portfolio: Oferta de uma pagina publica de portfolio unificada, reduzindo a "
-    "dependencia exclusiva de plataformas de terceiros para 42.6% dos artistas que nao possuem website."
+    "1. Flexibilidade de Cadastro: Permitir a seleção e persistência de múltiplas áreas artísticas \n"
+    "   simultâneas nos perfis, respeitando o índice de 63.5% de multidisciplinaridade mapeado na base real.\n"
+    "2. Gamificação do Onboarding: Adotar o preenchimento assistido e obrigatório para tags refinadas e \n"
+    "   subáreas artísticas, impedindo perfis incompletos de avançarem sem estruturação profissional básica.\n"
+    "3. Portfólio Independente: Desenvolver e priorizar a funcionalidade de uma página pública de portfólio \n"
+    "   gerada internamente, provendo autonomia para os 42.6% de artistas dependentes de redes externas.\n"
+    "4. Algoritmo de Exposição Justa: Estruturar os mecanismos de descoberta e busca baseando-se em tags de \n"
+    "   interesse e volume de obras documentadas. O sistema não deve utilizar contagem de seguidores ou \n"
+    "   curtidas de redes externas para ordenar ou ranquear os criativos na plataforma."
 )
 
 st.divider()
 
-st.subheader("Limitacoes Mapeadas dos Datasets")
+st.subheader("Limitações Estatísticas dos Dados Analisados")
 st.text(
-    "1. Desconexao de Contexto: As bases de dados representam realidades e recortes geograficos totalmente "
-    "distintos (Agentes culturais de Pernambuco versus artistas vinculados a escolas de arte alemas). As bases "
-    "foram analisadas separadamente e nao devem ser fundidas.\n"
-    "2. Ausencia de Variaveis Comportamentais: O dataset do Mapa Cultural PE nao expoem variaveis sobre localizacao municipal "
-    "especifica no recorte utilizado, demandas por mentoria ou interacao real entre usuarios.\n"
-    "3. Restricao de Escopo do contempArt: Os dados de redes sociais refletem um nicho europeu especifico e nao "
-    "mapeiam o comportamento de engajamento do mercado de arte brasileiro.\n"
-    "4. Natureza das Conexoes: Graficos de rede ou calculos de similaridade representam proximidade matematica "
-    "por metadados compartilhados, nao correspondendo a lacos sociais reais ou classificacao de qualidade artistica."
+    "1. Base Territorial PE: O dataset do Mapa Cultural de Pernambuco exibe o mapeamento estrutural de \n"
+    "   agentes reais, porém não possui metadados de dor, interações dentro de aplicações ou buscas por mentoria.\n"
+    "2. Base de Audiência contempArt: O conjunto de dados de redes digitais reflete métricas de um ecossistema \n"
+    "   específico ligado a escolas alemãs, não mapeando a realidade comportamental do mercado brasileiro.\n"
+    "3. Cenário Simulado: O arquivo de simulação de uso do FlowCarreiras é um modelo puramente hipotético \n"
+    "   e sintético, servindo estritamente como guia de visualização para arquiteturas futuras de logs."
 )
 
 st.divider()
 
-st.subheader("Indicadores Futuros de Acompanhamento")
+st.subheader("Indicadores Críticos para Acompanhamento em Produção")
 st.text(
-    "1. Taxa de completude media dos perfis ativos na plataforma.\n"
-    "2. Percentual de usuarios em risco de estagnacao (alto volume de obras cadastradas com zero interacoes).\n"
-    "3. Proporcao de sessoes de mentoria iniciadas por meio de correspondencia de tags de subareas.\n"
-    "4. Indice de Gini ou curva de concentracao de visualizacoes dentro do catalogo para afericao de exposicao justa."
+    "1. Índice de Gini interno para monitorizar e combater a concentração de visualizações no catálogo.\n"
+    "2. Percentual de utilizadores ativos que migraram do estado 'Incompleto' para 'Pronto para Oportunidades'.\n"
+    "3. Taxa de rejeição ou abandono nas etapas específicas do fluxo de onboarding."
 )
