@@ -56,7 +56,6 @@ services:
     dockerfilePath: ./dashboard/Dockerfile.render
     dockerContext: .
     healthCheckPath: /dashboard/_stcore/health
-    initialDeployHook: python /seed-scripts/setup_demo_prod.py
     envVars:
       - key: DB_HOST
         fromDatabase:
