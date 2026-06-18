@@ -10,6 +10,7 @@ A aplicação web (Frontend) está buildada e disponível publicamente:
 
 ---
 
+
 ### Usuário de teste padrão
 
 | Campo  | Valor             |
@@ -18,6 +19,18 @@ A aplicação web (Frontend) está buildada e disponível publicamente:
 | Senha  | `senha123`        |
 
 ---
+
+## Localização dos Dashboards de AVD
+
+Os dashboards desenvolvidos para atender aos requisitos de Análise e Visualização de Dados (AVD) estão integrados diretamente à aplicação principal.
+
+Após realizar o login, os avaliadores podem acessar os recursos analíticos através das seguintes seções do sistema:
+
+* **Métricas**: dashboard com visualizações e indicadores relacionados ao desempenho e engajamento pessoal dos perfis.
+* **Métricas Globais**: dashboard consolidado com análises agregadas, segmentações e indicadores gerais da plataforma.
+
+Toda a solução analítica foi incorporada à interface web, não sendo necessário executar aplicações adicionais para visualizar os dashboards.
+
 
 ## Estrutura e entregaveis para projetos 5
 
