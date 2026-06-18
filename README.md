@@ -26,7 +26,14 @@ mkdir uploads -ErrorAction SilentlyContinue
 docker compose up -d
 ```
 
-Acesse em: **[http://localhost](http://localhost)**
+Acesse em: **[http://localhost](http://localhost)**  
+Dashboard analitico: **[http://localhost/dashboard](http://localhost/dashboard)**
+
+Na primeira subida com Docker, a stack:
+
+- cria o schema pelo backend;
+- popula automaticamente a base analitica com `SIM_USERS=400` perfis simulados;
+- publica o dashboard agregado em `/dashboard`.
 
 Usuário de teste: `marina@test.com` / `senha123`
 

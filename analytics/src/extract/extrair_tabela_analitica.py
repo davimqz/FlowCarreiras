@@ -1,14 +1,16 @@
-"""
+﻿"""
 Extração da tabela analítica `perfil_features` (uma linha por perfil).
 
-Implementa a transformação descrita no CC2: parte das tabelas relacionais
+Implementa a transformação descrita na documentação de preparação dos dados: parte das tabelas relacionais
 (normalizadas) do sistema e produz uma tabela achatada por perfil, via
 agregações (JOIN + GROUP BY) e engenharia de atributos derivados.
 
 Filtra apenas os perfis SIMULADOS (e-mail @sim.flowcarreiras.dev).
 
 Logs vão para STDERR; o CSV é escrito em STDOUT:
-    docker compose exec -T dashboard python - < extrair_dados.py > dados/perfil_features.csv
+    docker compose exec -T dashboard python - \
+      < analytics/src/extract/extrair_tabela_analitica.py \
+      > analytics/data/processed/perfil_features.csv
 """
 
 import os
@@ -115,3 +117,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+

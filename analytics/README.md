@@ -1,26 +1,109 @@
-# FlowCarreiras — Trilha de Análise e Visualização de Dados
+﻿# Análise e Visualização de Dados - FlowCarreiras
 
-Solução analítica sobre as **métricas de perfil** dos artistas do FlowCarreiras.
-Unidade de análise: **o perfil** (uma linha por usuário). Fonte: banco PostgreSQL
-do sistema, populado com dataset **simulado** (400 perfis) — ver CC2.
+Esta pasta reúne a trilha acadêmica de Análise e Visualização de Dados (AVD) do
+FlowCarreiras. A unidade de análise é o **perfil de artista**: uma linha por
+usuário, extraída do PostgreSQL do sistema e materializada em um CSV
+reprodutível.
 
-## Entregáveis (CCs)
+## Fonte e escopo
 
-| CC | Entregável | Status |
+- **Fonte:** banco PostgreSQL do próprio FlowCarreiras.
+- **Base atual:** 400 perfis simulados pelo `scripts/seed_simulado.py`.
+- **Arquivo analítico preservado:** `data/processed/perfil_features.csv`.
+- **Objetivo:** estudar completude, portfólio, engajamento, rede, mentoria,
+  oportunidades, segmentos e entrada na fila de descoberta.
+
+Os dados simulados permitem desenvolver e validar a trilha técnica, mas não
+representam impacto real em usuários de produção.
+
+## Estrutura
+
+```text
+analytics/
+├── README.md
+├── requirements.txt
+├── data/
+│   └── processed/
+│       └── perfil_features.csv
+├── notebooks/
+│   ├── analise_exploratoria.ipynb
+│   ├── regressao_engajamento.ipynb
+│   └── classificacao_fila_descoberta.ipynb
+├── docs/
+│   ├── plano_analise_perfis_artistas.md
+│   ├── preparacao_dicionario_dados.md
+│   ├── proposta_integracao_dashboard.md
+│   ├── dashboard_consolidado.md
+│   ├── validacao_funcional_analytics.md
+│   └── documentacao_final_analytics.md
+├── reports/
+│   ├── resumo_insights.md
+│   └── resultados_modelos.md
+├── src/
+│   └── extract/
+│       └── extrair_tabela_analitica.py
+└── scripts/
+    └── build/
+        ├── build_analise_exploratoria.py
+        ├── build_regressao_engajamento.py
+        └── build_classificacao_fila_descoberta.py
+```
+
+O dashboard Streamlit permanece em `../dashboard/` porque é uma aplicação
+publicável, com Docker e dependências próprias.
+
+## Entregáveis
+
+| Entregável | Arquivo | Status |
 |---|---|---|
-| 1 | [Plano de análise](CC1_plano_de_analise.md) | ✅ |
-| 2 | [Plano de preparação dos dados](CC2_plano_de_preparacao_dos_dados.md) | ✅ |
-| 3 | [EDA (notebook)](CC3_eda.ipynb) | ✅ |
-| 4 | [Regressão (notebook)](CC4_regressao.ipynb) | ✅ |
-| 5 | [Classificação (notebook)](CC5_classificacao.ipynb) | ✅ |
-| 6 | Dashboard interativo v1 (Streamlit) — `dashboard/app.py` (modo analítico) | ✅ |
-| 7 | [Proposta de integração + ferramenta](CC7_proposta_integracao.md) | ✅ |
-| 8 | [Dashboard consolidado](CC8_dashboard_consolidado.md) | ✅ |
-| 9 | Versão quase final | ⏳ a fazer |
-| 10 | Documentação final | ⏳ a fazer |
+| Plano de análise | `docs/plano_analise_perfis_artistas.md` | Concluído |
+| Preparação e dicionário dos dados | `docs/preparacao_dicionario_dados.md` | Concluído |
+| Análise exploratória | `notebooks/analise_exploratoria.ipynb` | Concluído |
+| Regressão de engajamento | `notebooks/regressao_engajamento.ipynb` | Concluído |
+| Classificação da fila de descoberta | `notebooks/classificacao_fila_descoberta.ipynb` | Concluído |
+| Dashboard interativo inicial | `../dashboard/app.py` | Concluído |
+| Proposta de integração e publicação | `docs/proposta_integracao_dashboard.md` | Concluído |
+| Dashboard consolidado | `docs/dashboard_consolidado.md` | Concluído |
+| Validação funcional | `docs/validacao_funcional_analytics.md` | Documentado |
+| Documentação final | `docs/documentacao_final_analytics.md` | Documentado |
 
-## Stack
+## Como executar os notebooks
 
-- **Dados:** PostgreSQL (sistema) + `scripts/seed_simulado.py` (geração simulada)
-- **Análise:** Python (pandas, scikit-learn, matplotlib/plotly) em notebooks
-- **Publicação:** **Streamlit**, embutido no app em `/metricas` (ver `dashboard/`)
+```bash
+pip install -r analytics/requirements.txt
+cd analytics/notebooks
+jupyter notebook
+```
+
+Execute na ordem:
+
+1. `analise_exploratoria.ipynb`
+2. `regressao_engajamento.ipynb`
+3. `classificacao_fila_descoberta.ipynb`
+
+## Como executar o dashboard
+
+Com a infraestrutura do sistema:
+
+```bash
+docker compose up --build
+```
+
+O dashboard analítico fica disponível na rota `/dashboard` configurada pelo
+projeto. Ele consulta o PostgreSQL, portanto depende do banco e dos perfis
+simulados carregados.
+
+## Reproduzir a tabela analítica
+
+O script `src/extract/extrair_tabela_analitica.py` agrega as tabelas
+normalizadas em uma linha por perfil. O CSV versionado permite abrir os
+notebooks mesmo sem o banco em execução.
+
+## Leitura responsável
+
+- Correlação não prova causalidade.
+- Os clusters descrevem semelhança estatística, não qualidade artística.
+- O classificador prevê uma regra simulada de entrada na fila; não deve ser
+  usado como ranking ou decisão automática sobre artistas reais.
+- Métricas altas no cenário simulado precisam ser reavaliadas quando houver
+  dados reais de uso.

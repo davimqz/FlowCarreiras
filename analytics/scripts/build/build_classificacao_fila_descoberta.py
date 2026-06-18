@@ -1,5 +1,10 @@
-"""Gera o notebook CC5_classificacao.ipynb (classificadores) com nbformat."""
+﻿"""Gera o notebook classificacao_fila_descoberta.ipynb com nbformat."""
+from pathlib import Path
+
 import nbformat as nbf
+
+ANALYTICS_DIR = Path(__file__).resolve().parents[2]
+OUTPUT_PATH = ANALYTICS_DIR / "notebooks" / "classificacao_fila_descoberta.ipynb"
 
 nb = nbf.v4.new_notebook()
 cells = []
@@ -7,12 +12,12 @@ def md(s): cells.append(nbf.v4.new_markdown_cell(s.strip("\n")))
 def code(s): cells.append(nbf.v4.new_code_cell(s.strip("\n")))
 
 md(r"""
-# CC5 — Avaliação de Classificadores
+# Classificação da Fila de Descoberta
 
 **Projeto:** FlowCarreiras — métricas de perfil
-**Base:** `dados/perfil_features.csv` (400 perfis simulados)
+**Base:** `../data/processed/perfil_features.csv` (400 perfis simulados)
 
-Objetivo (CC5): treinar **classificadores simples** para prever se um artista
+Objetivo: treinar **classificadores simples** para prever se um artista
 **entrou na fila de descoberta** (`entrou_fila`) e avaliá-los com **matriz de confusão,
 acurácia, precisão, recall, F1, curva ROC e precision-recall**, interpretando as
 métricas e suas **implicações práticas**.
@@ -38,7 +43,7 @@ sns.set_theme(style='whitegrid')
 plt.rcParams['figure.dpi'] = 90
 ROXO = '#7c3aed'
 
-df = pd.read_csv('dados/perfil_features.csv')
+df = pd.read_csv('../data/processed/perfil_features.csv')
 alvo = 'entrou_fila'
 feats = ['percentual_completude', 'n_obras', 'n_obras_publicadas', 'curtidas_recebidas',
          'comentarios_recebidos', 'seguidores', 'n_tags_expertise', 'n_tags_necessidade',
@@ -145,8 +150,8 @@ plt.tight_layout(); plt.show()
 """)
 
 md(r"""
-**Interpretação das métricas.** A **acurácia** supera a base de ~70% (acerta acima do "chute"
-na classe majoritária). A **precisão** responde "dos que o modelo apontou como prováveis na
+**Interpretação das métricas.** A **acurácia** supera o baseline impresso acima (o resultado de
+sempre escolher a classe majoritária). A **precisão** responde "dos que o modelo apontou como prováveis na
 fila, quantos realmente entraram?", e o **recall** responde "dos que de fato entraram, quantos
 o modelo encontrou?". A **AUC-ROC** mede a capacidade de **ranquear** um positivo acima de um
 negativo (0,5 = aleatório, 1,0 = perfeito). A **AP** (área da curva precision-recall) é mais
@@ -195,8 +200,11 @@ md(r"""
   completo.
 - O **limiar de decisão** é a alavanca prática para equilibrar "não perder bons artistas"
   (recall) vs. "não destacar quem não merece" (precisão), conforme a estratégia de descoberta.
-- Logística e árvore simples chegam a desempenho semelhante, confirmando que o **sinal está nos
-  dados** (coerente com a EDA e a regressão dos CCs anteriores).
+- Logística e árvore simples chegam a desempenho semelhante, confirmando que o **sinal da regra
+  simulada está nos dados**.
+- Como o alvo foi gerado por uma regra ligada a produção e engajamento, o desempenho alto não
+  deve ser interpretado como capacidade comprovada em usuários reais. A validação deve ser
+  refeita quando houver dados de produção.
 """)
 
 nb.cells = cells
@@ -204,5 +212,6 @@ nb.metadata = {
     'kernelspec': {'name': 'python3', 'display_name': 'Python 3', 'language': 'python'},
     'language_info': {'name': 'python'},
 }
-nbf.write(nb, 'CC5_classificacao.ipynb')
-print('CC5_classificacao.ipynb gerado com', len(cells), 'células.')
+nbf.write(nb, OUTPUT_PATH)
+print(OUTPUT_PATH, 'gerado com', len(cells), 'células.')
+

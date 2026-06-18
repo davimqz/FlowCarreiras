@@ -1,5 +1,10 @@
-"""Gera o notebook CC4_regressao.ipynb (regressão) com nbformat."""
+﻿"""Gera o notebook regressao_engajamento.ipynb com nbformat."""
+from pathlib import Path
+
 import nbformat as nbf
+
+ANALYTICS_DIR = Path(__file__).resolve().parents[2]
+OUTPUT_PATH = ANALYTICS_DIR / "notebooks" / "regressao_engajamento.ipynb"
 
 nb = nbf.v4.new_notebook()
 cells = []
@@ -7,12 +12,12 @@ def md(s): cells.append(nbf.v4.new_markdown_cell(s.strip("\n")))
 def code(s): cells.append(nbf.v4.new_code_cell(s.strip("\n")))
 
 md(r"""
-# CC4 — Modelos de Regressão (tendências entre variáveis)
+# Regressão de Engajamento
 
 **Projeto:** FlowCarreiras — métricas de perfil
-**Base:** `dados/perfil_features.csv` (400 perfis simulados)
+**Base:** `../data/processed/perfil_features.csv` (400 perfis simulados)
 
-Objetivo (CC4): usar **regressão simples** como ferramenta de **representação de
+Objetivo: usar **regressão simples** como ferramenta de **representação de
 tendências**, com **gráficos de dispersão, linha de tendência e análise de resíduos**,
 explicando visualmente a relação entre os atributos do perfil e o engajamento recebido
 (`curtidas_recebidas`).
@@ -33,7 +38,7 @@ sns.set_theme(style='whitegrid')
 plt.rcParams['figure.dpi'] = 90
 ROXO = '#7c3aed'
 
-df = pd.read_csv('dados/perfil_features.csv')
+df = pd.read_csv('../data/processed/perfil_features.csv')
 alvo = 'curtidas_recebidas'
 print('Perfis:', len(df))
 df[[alvo, 'n_obras_publicadas', 'seguidores', 'percentual_completude']].describe().round(1)
@@ -185,7 +190,7 @@ md(r"""
 - A regressão simples confirma a tendência (R² alto com um só preditor); o modelo múltiplo
   na **escala log** melhora o ajuste e **generaliza bem**.
 - **Obras publicadas** e **seguidores** são os preditores dominantes; completude e antiguidade
-  contribuem pouco — consistente com a EDA (CC3).
+  contribuem pouco — consistente com a análise exploratória.
 - A **análise de resíduos** evidenciou heterocedasticidade na escala original e a sua correção
   via `log1p`, com resíduos finais aproximadamente normais e sem padrão — validando o uso do
   modelo como ferramenta de leitura de tendências.
@@ -196,5 +201,6 @@ nb.metadata = {
     'kernelspec': {'name': 'python3', 'display_name': 'Python 3', 'language': 'python'},
     'language_info': {'name': 'python'},
 }
-nbf.write(nb, 'CC4_regressao.ipynb')
-print('CC4_regressao.ipynb gerado com', len(cells), 'células.')
+nbf.write(nb, OUTPUT_PATH)
+print(OUTPUT_PATH, 'gerado com', len(cells), 'células.')
+

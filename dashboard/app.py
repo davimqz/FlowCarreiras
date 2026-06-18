@@ -1,4 +1,4 @@
-"""
+﻿"""
 FlowCarreiras — Dashboard Streamlit.
 
 Dois modos no mesmo serviço:
@@ -14,14 +14,19 @@ KPIs e blocos agrupados em containers (Região comum/Fechamento) e um helper
 """
 
 import base64
+import html
 import os
+from pathlib import Path
 
-import jwt
 import numpy as np
 import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
 import streamlit as st
+from lib.similarity import (default_reference_index, ego_network_layout,
+                            make_profile_label,
+                            prepare_similarity_data, similarity_subset,
+                            similarity_table)
 from sklearn.cluster import KMeans
 from sklearn.decomposition import PCA
 from sklearn.linear_model import LogisticRegression
@@ -31,6 +36,11 @@ from sklearn.metrics import (accuracy_score, confusion_matrix, f1_score,
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 from sqlalchemy import create_engine, text
+
+try:
+    import jwt
+except ModuleNotFoundError:
+    jwt = None
 
 st.set_page_config(page_title="Métricas — FlowCarreiras", page_icon="📊", layout="wide")
 
@@ -55,6 +65,121 @@ FONTE = "Inter, system-ui, -apple-system, sans-serif"
 COR_TEXTO = "#cbd5e1"
 COR_TITULO = "#f1f5f9"
 COR_GRID = "rgba(148,163,184,0.12)"
+BASE_DIR = Path(__file__).resolve().parent
+ANALYTICS_CSV = BASE_DIR.parent / "analytics" / "data" / "processed" / "perfil_features.csv"
+
+
+def injetar_estilos_globais():
+    """Aplica um acabamento visual leve sem alterar a lógica do dashboard."""
+    st.markdown("""
+    <style>
+      .stApp {
+        background:
+          radial-gradient(circle at top right, rgba(124,58,237,0.18), transparent 28%),
+          radial-gradient(circle at top left, rgba(34,211,238,0.12), transparent 22%),
+          linear-gradient(180deg, #08111f 0%, #0b1220 48%, #0f172a 100%);
+      }
+      [data-testid="stHeader"] {
+        background: rgba(8, 17, 31, 0);
+      }
+      [data-testid="stSidebar"] {
+        background:
+          linear-gradient(180deg, rgba(15,23,42,0.96) 0%, rgba(10,15,28,0.96) 100%);
+        border-right: 1px solid rgba(148, 163, 184, 0.18);
+      }
+      [data-testid="stMetric"] {
+        background: linear-gradient(180deg, rgba(15,23,42,0.88), rgba(15,23,42,0.62));
+        border: 1px solid rgba(148,163,184,0.16);
+        border-radius: 18px;
+        padding: 0.9rem 1rem;
+        box-shadow: 0 10px 30px rgba(2, 6, 23, 0.18);
+      }
+      [data-testid="stMetricLabel"] {
+        color: #94a3b8;
+      }
+      div[data-testid="stTabs"] button[role="tab"] {
+        border-radius: 999px;
+        padding: 0.5rem 0.9rem;
+        border: 1px solid rgba(148,163,184,0.16);
+        background: rgba(15,23,42,0.45);
+      }
+      div[data-testid="stTabs"] button[aria-selected="true"] {
+        background: linear-gradient(90deg, rgba(124,58,237,0.26), rgba(34,211,238,0.18));
+        border-color: rgba(124,58,237,0.5);
+      }
+      .fc-hero {
+        padding: 1.4rem 1.5rem;
+        border-radius: 24px;
+        border: 1px solid rgba(148,163,184,0.16);
+        background:
+          linear-gradient(135deg, rgba(17,24,39,0.92) 0%, rgba(30,41,59,0.82) 100%);
+        box-shadow: 0 18px 40px rgba(2, 6, 23, 0.22);
+        margin-bottom: 1rem;
+      }
+      .fc-hero h1 {
+        margin: 0 0 0.35rem 0;
+        color: #f8fafc;
+        font-size: 2rem;
+        line-height: 1.1;
+        letter-spacing: -0.03em;
+      }
+      .fc-hero p {
+        margin: 0;
+        color: #cbd5e1;
+        font-size: 1rem;
+        max-width: 62rem;
+      }
+      .fc-chip-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.55rem;
+        margin-top: 0.95rem;
+      }
+      .fc-chip {
+        display: inline-flex;
+        align-items: center;
+        padding: 0.38rem 0.72rem;
+        border-radius: 999px;
+        font-size: 0.86rem;
+        color: #e2e8f0;
+        background: rgba(15,23,42,0.72);
+        border: 1px solid rgba(148,163,184,0.18);
+      }
+      .fc-note {
+        padding: 0.9rem 1rem;
+        border-radius: 18px;
+        border: 1px solid rgba(124,58,237,0.16);
+        background: linear-gradient(180deg, rgba(124,58,237,0.11), rgba(15,23,42,0.28));
+        color: #dbeafe;
+        margin: 0.75rem 0 1rem 0;
+      }
+      .fc-note strong {
+        color: #f8fafc;
+      }
+    </style>
+    """, unsafe_allow_html=True)
+
+
+def render_hero(titulo, subtitulo, chips=None):
+    """Renderiza um topo mais editorial para as páginas principais."""
+    chips_html = ""
+    if chips:
+        chips_html = '<div class="fc-chip-row">' + "".join(
+            f'<span class="fc-chip">{html.escape(str(chip))}</span>' for chip in chips
+        ) + "</div>"
+    st.markdown(
+        f"""
+        <section class="fc-hero">
+          <h1>{html.escape(titulo)}</h1>
+          <p>{html.escape(subtitulo)}</p>
+          {chips_html}
+        </section>
+        """,
+        unsafe_allow_html=True,
+    )
+
+
+injetar_estilos_globais()
 
 
 def estilizar(fig, altura=None, grid_y=False):
@@ -95,6 +220,8 @@ def scalar(sql, **params):
 
 
 def email_do_token(token):
+    if jwt is None:
+        return None
     try:
         key = base64.b64decode(os.getenv("JWT_SECRET", ""))
         return jwt.decode(token, key, algorithms=["HS256"],
@@ -103,67 +230,90 @@ def email_do_token(token):
         return None
 
 
+def carregar_perfis_processados():
+    if not ANALYTICS_CSV.exists():
+        return pd.DataFrame()
+
+    df = pd.read_csv(ANALYTICS_CSV)
+    df["area_artistica"] = df["area_artistica"].fillna("Nao informado")
+    df["cidade"] = df["cidade"].fillna("Nao informado")
+    df["entrou_fila"] = df["entrou_fila"].fillna(0).astype(int)
+    df["nome"] = df.apply(make_profile_label, axis=1)
+    df.attrs["source"] = "csv_fallback"
+    return df
+
+
 # =====================================================================
 # Carga da tabela analítica (1 linha por perfil simulado)
 # =====================================================================
 @st.cache_data(ttl=300)
 def carregar_perfis():
-    base = q("""SELECT p.id AS perfil_id, u.id AS usuario_id, u.nome, u.data_criacao,
-                       p.percentual_completude, p.cidade,
-                       p.area_artistica_principal AS area_artistica,
-                       (p.data_entrada_fila IS NOT NULL) AS entrou_fila,
-                       p.bio, p.foto_perfil
-                FROM perfis_artistas p JOIN usuarios u ON u.id = p.usuario_id
-                WHERE u.email LIKE :s""", s="%@sim.flowcarreiras.dev")
-    if base.empty:
-        return base
+    try:
+        base = q("""SELECT p.id AS perfil_id, u.id AS usuario_id, u.nome, u.data_criacao,
+                           p.percentual_completude, p.cidade,
+                           p.area_artistica_principal AS area_artistica,
+                           (p.data_entrada_fila IS NOT NULL) AS entrou_fila,
+                           p.bio, p.foto_perfil
+                    FROM perfis_artistas p JOIN usuarios u ON u.id = p.usuario_id
+                    WHERE u.email LIKE :s""", s="%@sim.flowcarreiras.dev")
+        if base.empty:
+            return base
 
-    aggs = {
-        "obras": ("""SELECT artista_id AS perfil_id, count(*) AS n_obras,
-                     count(*) FILTER (WHERE status='PUBLICADA') AS n_obras_publicadas
-                     FROM obras GROUP BY artista_id""", "perfil_id"),
-        "curt": ("""SELECT o.artista_id AS perfil_id, count(*) AS curtidas_recebidas
-                    FROM curtidas c JOIN obras o ON o.id=c.obra_id GROUP BY o.artista_id""", "perfil_id"),
-        "com": ("""SELECT o.artista_id AS perfil_id, count(*) AS comentarios_recebidos
-                   FROM comentarios cm JOIN obras o ON o.id=cm.obra_id GROUP BY o.artista_id""", "perfil_id"),
-        "texp": ("SELECT perfil_id, count(*) AS n_tags_expertise FROM perfil_tags_expertise GROUP BY perfil_id", "perfil_id"),
-        "tnec": ("SELECT perfil_id, count(*) AS n_tags_necessidade FROM perfil_tags_necessidade GROUP BY perfil_id", "perfil_id"),
-        "seg": ("SELECT seguido_id AS usuario_id, count(*) AS seguidores FROM seguidores GROUP BY seguido_id", "usuario_id"),
-        "sego": ("SELECT seguidor_id AS usuario_id, count(*) AS seguindo FROM seguidores GROUP BY seguidor_id", "usuario_id"),
-    }
-    df = base
-    for sql, key in aggs.values():
-        df = df.merge(q(sql), on=key, how="left")
+        aggs = {
+            "obras": ("""SELECT artista_id AS perfil_id, count(*) AS n_obras,
+                         count(*) FILTER (WHERE status='PUBLICADA') AS n_obras_publicadas
+                         FROM obras GROUP BY artista_id""", "perfil_id"),
+            "curt": ("""SELECT o.artista_id AS perfil_id, count(*) AS curtidas_recebidas
+                        FROM curtidas c JOIN obras o ON o.id=c.obra_id GROUP BY o.artista_id""", "perfil_id"),
+            "com": ("""SELECT o.artista_id AS perfil_id, count(*) AS comentarios_recebidos
+                       FROM comentarios cm JOIN obras o ON o.id=cm.obra_id GROUP BY o.artista_id""", "perfil_id"),
+            "texp": ("SELECT perfil_id, count(*) AS n_tags_expertise FROM perfil_tags_expertise GROUP BY perfil_id", "perfil_id"),
+            "tnec": ("SELECT perfil_id, count(*) AS n_tags_necessidade FROM perfil_tags_necessidade GROUP BY perfil_id", "perfil_id"),
+            "seg": ("SELECT seguido_id AS usuario_id, count(*) AS seguidores FROM seguidores GROUP BY seguido_id", "usuario_id"),
+            "sego": ("SELECT seguidor_id AS usuario_id, count(*) AS seguindo FROM seguidores GROUP BY seguidor_id", "usuario_id"),
+        }
+        df = base
+        for sql, key in aggs.values():
+            df = df.merge(q(sql), on=key, how="left")
 
-    cont = ["n_obras", "n_obras_publicadas", "curtidas_recebidas", "comentarios_recebidos",
-            "n_tags_expertise", "n_tags_necessidade", "seguidores", "seguindo"]
-    df[cont] = df[cont].fillna(0).astype(int)
-    df["tem_bio"] = (df["bio"].fillna("").astype(str).str.len() > 0).astype(int)
-    df["tem_foto"] = (df["foto_perfil"].fillna("").astype(str).str.len() > 0).astype(int)
-    df["idade_conta_dias"] = (pd.Timestamp.now() - pd.to_datetime(df["data_criacao"])).dt.days
-    df["entrou_fila"] = df["entrou_fila"].astype(int)
-    df["area_artistica"] = df["area_artistica"].fillna("Não informado")
-    df["cidade"] = df["cidade"].fillna("Não informado")
-    return df.drop(columns=["bio", "foto_perfil", "data_criacao"])
+        cont = ["n_obras", "n_obras_publicadas", "curtidas_recebidas", "comentarios_recebidos",
+                "n_tags_expertise", "n_tags_necessidade", "seguidores", "seguindo"]
+        df[cont] = df[cont].fillna(0).astype(int)
+        df["tem_bio"] = (df["bio"].fillna("").astype(str).str.len() > 0).astype(int)
+        df["tem_foto"] = (df["foto_perfil"].fillna("").astype(str).str.len() > 0).astype(int)
+        df["idade_conta_dias"] = (pd.Timestamp.now() - pd.to_datetime(df["data_criacao"])).dt.days
+        df["entrou_fila"] = df["entrou_fila"].astype(int)
+        df["area_artistica"] = df["area_artistica"].fillna("Nao informado")
+        df["cidade"] = df["cidade"].fillna("Nao informado")
+        df = df.drop(columns=["bio", "foto_perfil", "data_criacao"])
+        df.attrs["source"] = "database"
+        return df
+    except Exception:
+        return carregar_perfis_processados()
 
 
 @st.cache_data(ttl=300)
 def carregar_eventos():
     """Eventos com timestamp para as séries temporais (cadastros, curtidas, seguidores)."""
-    s = "%@sim.flowcarreiras.dev"
-    cad = q("SELECT id AS usuario_id, data_criacao FROM usuarios WHERE email LIKE :s", s=s)
-    curt = q("""SELECT o.artista_id AS perfil_id, c.data_criacao
-                FROM curtidas c JOIN obras o ON o.id=c.obra_id
-                JOIN perfis_artistas p ON p.id=o.artista_id JOIN usuarios u ON u.id=p.usuario_id
-                WHERE u.email LIKE :s""", s=s)
-    com = q("""SELECT o.artista_id AS perfil_id, cm.data_criacao
-               FROM comentarios cm JOIN obras o ON o.id=cm.obra_id
-               JOIN perfis_artistas p ON p.id=o.artista_id JOIN usuarios u ON u.id=p.usuario_id
-               WHERE u.email LIKE :s""", s=s)
-    seg = q("""SELECT s.seguido_id AS usuario_id, s.data_criacao
-               FROM seguidores s JOIN usuarios u ON u.id=s.seguido_id
-               WHERE u.email LIKE :s""", s=s)
-    return cad, curt, com, seg
+    try:
+        s = "%@sim.flowcarreiras.dev"
+        cad = q("SELECT id AS usuario_id, data_criacao FROM usuarios WHERE email LIKE :s", s=s)
+        curt = q("""SELECT o.artista_id AS perfil_id, c.data_criacao
+                    FROM curtidas c JOIN obras o ON o.id=c.obra_id
+                    JOIN perfis_artistas p ON p.id=o.artista_id JOIN usuarios u ON u.id=p.usuario_id
+                    WHERE u.email LIKE :s""", s=s)
+        com = q("""SELECT o.artista_id AS perfil_id, cm.data_criacao
+                   FROM comentarios cm JOIN obras o ON o.id=cm.obra_id
+                   JOIN perfis_artistas p ON p.id=o.artista_id JOIN usuarios u ON u.id=p.usuario_id
+                   WHERE u.email LIKE :s""", s=s)
+        seg = q("""SELECT s.seguido_id AS usuario_id, s.data_criacao
+                   FROM seguidores s JOIN usuarios u ON u.id=s.seguido_id
+                   WHERE u.email LIKE :s""", s=s)
+        return cad, curt, com, seg
+    except Exception:
+        vazio_cad = pd.DataFrame(columns=["usuario_id", "data_criacao"])
+        vazio_perfil = pd.DataFrame(columns=["perfil_id", "data_criacao"])
+        return vazio_cad, vazio_perfil.copy(), vazio_perfil, vazio_cad.copy()
 
 
 # =====================================================================
@@ -177,10 +327,21 @@ def pagina_usuario(usuario):
 
     info = q("SELECT nome, email, data_criacao, ativo FROM usuarios WHERE id = :uid", uid=uid).iloc[0]
     dias = (pd.Timestamp.now() - pd.to_datetime(info["data_criacao"])).days
-    st.title(f"📊 Métricas de {info['nome']}")
+    render_hero(
+        f"Métricas de {info['nome']}",
+        "Visão individual do perfil no FlowCarreiras, com foco em portfólio, "
+        "engajamento, rede e participação na plataforma.",
+        chips=[
+            info["email"],
+            f"conta há {dias} dias",
+            "visão individual",
+        ],
+    )
     cab = st.columns([3, 1])
-    cab[0].caption(f"✉️ {info['email']} · conta há {dias} dias · "
-                   f"{'🟢 ativa' if info['ativo'] else '🔴 inativa'}")
+    cab[0].caption(
+        f"✉️ {info['email']} · "
+        f"{'🟢 ativa' if info['ativo'] else '🔴 inativa'}"
+    )
     if perfil is not None and perfil.get("url_publica"):
         cab[1].caption(f"🔗 /portfolio/{perfil['url_publica']}")
     if perfil is None:
@@ -446,9 +607,35 @@ def coeficientes_modelo(df):
     return pd.DataFrame({"variavel": FEATS_MODELO, "coef": clf.coef_[0].round(3)})
 
 
+@st.cache_data(ttl=300)
+def preparar_similaridade(df):
+    return prepare_similarity_data(df)
+
+
 def dashboard_analitico(df):
-    st.title("🎨 FlowCarreiras — Dashboard Analítico")
-    st.caption(f"{len(df)} perfis · visão agregada da coordenação · dados simulados")
+    render_hero(
+        "FlowCarreiras — Dashboard Analítico",
+        "Leitura agregada da base simulada para entender produção, engajamento, "
+        "rede, segmentos e entrada na fila de descoberta.",
+        chips=[
+            f"{len(df)} perfis",
+            "visão agregada da coordenação",
+            "dados simulados",
+        ],
+    )
+    st.markdown(
+        "<div class='fc-note'><strong>Leitura responsável.</strong> Esta visão "
+        "analisa uma base simulada do sistema. Os padrões são úteis para validar "
+        "a trilha analítica, mas não devem ser tratados como comportamento real "
+        "de produção sem nova validação.</div>",
+        unsafe_allow_html=True,
+    )
+    if df.attrs.get("source") == "csv_fallback":
+        st.caption(
+            "Fonte ativa: tabela processada versionada em `analytics/data/processed/perfil_features.csv`."
+        )
+    else:
+        st.caption("Fonte ativa: PostgreSQL do sistema.")
 
     # ---- Filtros (sidebar) ----
     with st.sidebar:
@@ -723,6 +910,128 @@ def dashboard_analitico(df):
             "formas, concentra-se nos perfis mais ativos.")
         st.markdown("---")
 
+        # --- Similaridade entre perfis ---
+        st.markdown("##### Similaridade entre perfis")
+        st.caption(
+            "Leitura inspirada em descoberta por afinidade: em vez de olhar só médias, "
+            "aqui vemos quais perfis parecem pertencer à mesma vizinhança analítica."
+        )
+        work_sim, sim = preparar_similaridade(f)
+        ref_default = default_reference_index(sim)
+        ref_label = st.selectbox(
+            "Perfil de referência",
+            work_sim["perfil_label"].tolist(),
+            index=ref_default,
+            help="Como a base analítica não guarda nomes no CSV, cada perfil é identificado por área, cidade e prefixo do ID.",
+        )
+        ref_idx = int(work_sim.index[work_sim["perfil_label"] == ref_label][0])
+        sub_sim, sim_sub, _ = similarity_subset(work_sim, sim, ref_idx, top_k=8)
+        heat_sim = px.imshow(
+            sim_sub.round(2),
+            x=sub_sim["perfil_label"],
+            y=sub_sim["perfil_label"],
+            text_auto=".2f",
+            aspect="auto",
+            color_continuous_scale="Tealgrn",
+            zmin=0,
+            zmax=1,
+            title="Mapa de similaridade do ego e seus perfis mais próximos",
+        )
+        heat_sim.update_xaxes(tickangle=-35, showgrid=False)
+        heat_sim.update_yaxes(showgrid=False)
+        st.plotly_chart(estilizar(heat_sim, altura=620), use_container_width=True)
+        st.dataframe(
+            similarity_table(work_sim, sim, ref_idx, top_k=8),
+            use_container_width=True,
+            hide_index=True,
+        )
+        st.markdown(
+            "**Interpretação.** Este mapa mostra o artista de referência e seus vizinhos mais parecidos "
+            "quando combinamos produção, engajamento, rede, tags e contexto. É uma visão útil para "
+            "descoberta por afinidade, no estilo “perfis semelhantes a este”."
+        )
+        st.markdown("---")
+
+        # --- Ego network por similaridade ---
+        st.markdown("##### Ego network por similaridade")
+        nodes_df, edges = ego_network_layout(work_sim, sim, ref_idx, top_k=8, peer_threshold=0.82)
+        node_lookup = {int(row["node_idx"]): row for _, row in nodes_df.iterrows()}
+        edge_x_ego, edge_y_ego, edge_x_peer, edge_y_peer = [], [], [], []
+        for src, dst, score, kind in edges:
+            x0, y0 = node_lookup[src]["x"], node_lookup[src]["y"]
+            x1, y1 = node_lookup[dst]["x"], node_lookup[dst]["y"]
+            if kind == "ego":
+                edge_x_ego.extend([x0, x1, None])
+                edge_y_ego.extend([y0, y1, None])
+            else:
+                edge_x_peer.extend([x0, x1, None])
+                edge_y_peer.extend([y0, y1, None])
+
+        fig_ego = go.Figure()
+        fig_ego.add_trace(go.Scatter(
+            x=edge_x_peer, y=edge_y_peer, mode="lines",
+            line=dict(color="rgba(203,213,225,0.28)", width=1.2, dash="dot"),
+            hoverinfo="skip", name="vizinhos entre si"
+        ))
+        fig_ego.add_trace(go.Scatter(
+            x=edge_x_ego, y=edge_y_ego, mode="lines",
+            line=dict(color="rgba(148,163,184,0.65)", width=2.4),
+            hoverinfo="skip", name="ego → vizinhos"
+        ))
+
+        node_colors = []
+        node_sizes = []
+        node_text = []
+        for _, row in nodes_df.iterrows():
+            if row["tipo"] == "ego":
+                node_colors.append(COR_DESTAQUE)
+            else:
+                node_colors.append("#10b981" if int(row["entrou_fila"]) == 1 else "#94a3b8")
+            node_sizes.append(24 + 9 * np.log1p(row["curtidas_recebidas"]))
+            partes = str(row["perfil_label"]).split(" · ")
+            node_text.append(f"{partes[0]}<br>{partes[-1]}")
+
+        fig_ego.add_trace(go.Scatter(
+            x=nodes_df["x"],
+            y=nodes_df["y"],
+            mode="markers+text",
+            text=node_text,
+            textposition="top center",
+            marker=dict(
+                size=node_sizes,
+                color=node_colors,
+                line=dict(color="#e2e8f0", width=1.2),
+                opacity=0.95,
+            ),
+            customdata=np.stack([
+                nodes_df["perfil_label"],
+                nodes_df["similaridade_ego"].round(3),
+                nodes_df["curtidas_recebidas"],
+                nodes_df["seguidores"] if "seguidores" in nodes_df else np.zeros(len(nodes_df)),
+            ], axis=1),
+            hovertemplate=(
+                "<b>%{customdata[0]}</b><br>"
+                "similaridade com o ego: %{customdata[1]}<br>"
+                "curtidas: %{customdata[2]}<br>"
+                "seguidores: %{customdata[3]}<extra></extra>"
+            ),
+            name="perfis",
+        ))
+        fig_ego.update_layout(
+            title="Ego network analítica",
+            xaxis=dict(visible=False),
+            yaxis=dict(visible=False, scaleanchor="x", scaleratio=1),
+            showlegend=True,
+            margin=dict(t=60, b=20, l=20, r=20),
+        )
+        st.plotly_chart(estilizar(fig_ego, altura=620), use_container_width=True)
+        st.markdown(
+            "**Interpretação.** O nó central é o perfil de referência. Os nós ao redor são os perfis "
+            "mais parecidos com ele; as ligações tracejadas aparecem quando esses vizinhos também se "
+            "parecem entre si, sugerindo pequenas comunidades de afinidade."
+        )
+        st.markdown("---")
+
         # --- Segmentos ---
         st.markdown("##### Segmentos (clustering)")
         if len(f) < 20:
@@ -822,9 +1131,12 @@ def dashboard_analitico(df):
             "usuário) e de forma autônoma (esta visão agregada).")
         st.markdown(
             "**Entregáveis da análise (no repositório, pasta `analytics/`):**\n"
-            "- CC1 — Plano de análise · CC2 — Plano de preparação dos dados\n"
-            "- CC3 — EDA · CC4 — Regressão · CC5 — Classificação\n"
-            "- CC6/CC7/CC8 — Dashboard, proposta de integração e consolidação")
+            "- `docs/` — plano de análise, preparação dos dados e documentação de apoio\n"
+            "- `notebooks/` — análise exploratória, regressão e classificação\n"
+            "- `reports/` — resumo de insights, modelos e evidências\n"
+            "- `data/processed/` — tabela analítica versionada\n"
+            "- `src/` e `scripts/` — extração e reprodução dos notebooks\n"
+            "- `../dashboard/lib/` — helpers do dashboard, incluindo similaridade")
         st.markdown(
             "**Decisões visuais (Gestalt):** cor de marca única para destaque e **cores fixas por "
             "categoria** (Semelhança); fundo transparente e gridlines suaves só no eixo de valor "
@@ -857,3 +1169,4 @@ else:
         st.warning("Não há perfis simulados. Rode scripts/seed_simulado.py.")
     else:
         dashboard_analitico(dados)
+

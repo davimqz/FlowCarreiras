@@ -40,8 +40,8 @@ services:
     volumes:
       # Bind mount: uploads acessíveis no host em ./uploads/
       - ./uploads:/app/uploads
-    ports:
-      - "8080:8080"
+    expose:
+      - "8080"
     depends_on:
       db:
         condition: service_healthy
@@ -79,6 +79,30 @@ services:
       - flowcarreiras-net
 
   # ============================================================
+  # Seed analitico - popula 400 perfis simulados para AVD
+  # ============================================================
+  seed-analytics:
+    build:
+      context: ./dashboard
+      dockerfile: Dockerfile
+    command: ["python", "/seed-scripts/seed_simulado.py"]
+    environment:
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_NAME: ${POSTGRES_DB:-flowcarreiras}
+      DB_USER: ${POSTGRES_USER:-postgres}
+      DB_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+      SIM_USERS: ${SIM_USERS:-400}
+    volumes:
+      - ./scripts:/seed-scripts:ro
+    depends_on:
+      backend:
+        condition: service_healthy
+    restart: "no"
+    networks:
+      - flowcarreiras-net
+
+  # ============================================================
   # Frontend — React/Vite via Nginx
   # ============================================================
   frontend:
@@ -86,12 +110,14 @@ services:
       context: ./flowcarreiras-web
       dockerfile: Dockerfile
     ports:
-      - "80:80"
+      - "${FRONTEND_PORT:-80}:80"
     depends_on:
       backend:
         condition: service_healthy
       dashboard:
         condition: service_started
+      seed-analytics:
+        condition: service_completed_successfully
     restart: unless-stopped
     networks:
       - flowcarreiras-net

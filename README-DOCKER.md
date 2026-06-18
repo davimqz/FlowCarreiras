@@ -57,7 +57,14 @@ docker compose up -d
 
 Aguarde alguns minutos no primeiro start (Maven baixa dependências, Vite faz build).
 
-Acesse: **http://localhost**
+Acesse: **http://localhost**  
+Dashboard analitico: **http://localhost/dashboard**
+
+Na primeira subida, o Docker Compose principal:
+
+- cria o schema da aplicacao via backend;
+- roda automaticamente o seed analitico com `SIM_USERS=400`;
+- deixa a visao agregada pronta em `/dashboard`.
 
 ---
 

@@ -9,6 +9,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY .streamlit/ .streamlit/
 COPY app.py .
+COPY lib/ lib/
 
 EXPOSE 8501
 
