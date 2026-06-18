@@ -4,6 +4,7 @@ import InternalHeader from '../components/InternalHeader'
 import ChatMentoriaModal from '../components/ChatMentoriaModal'
 import { useAuth } from '../context/AuthContext'
 import { encerrarMentoria, listarMinhasMentorias } from '../api/mentorias'
+import { resolverUrlBackend } from '../config/runtime'
 
 function iniciais(nome) {
   return nome?.split(' ').map(n => n[0]).slice(0, 2).join('').toUpperCase() || '?'
@@ -19,7 +20,7 @@ function PessoaResumo({ perfil }) {
     <div className="flex items-center gap-3 min-w-0">
       <div className="w-12 h-12 rounded-full bg-brand/20 text-brand-light flex items-center justify-center font-bold overflow-hidden shrink-0">
         {perfil?.fotoPerfil ? (
-          <img src={perfil.fotoPerfil} alt={perfil.nome} className="w-full h-full object-cover" />
+          <img src={resolverUrlBackend(perfil.fotoPerfil)} alt={perfil.nome} className="w-full h-full object-cover" />
         ) : (
           iniciais(perfil?.nome)
         )}

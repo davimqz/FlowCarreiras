@@ -5,6 +5,7 @@ import { useAuth } from '../context/AuthContext'
 import { obterMeuPerfil, atualizarPerfil, atualizarFotoPerfil } from '../api/perfil'
 import { ativarMentoria, pausarMentoria } from '../api/mentorias'
 import SeletorTags from '../components/SeletorTags'
+import { resolverUrlBackend } from '../config/runtime'
 
 const GRADIENTES = [
   'from-violet-900 via-purple-800 to-indigo-900',
@@ -242,7 +243,7 @@ export default function MeuPerfil() {
                   title="Alterar foto de perfil"
                 >
                   {perfil?.fotoPerfil ? (
-                    <img src={perfil.fotoPerfil} alt={perfil.nome} className="w-full h-full object-cover" />
+                    <img src={resolverUrlBackend(perfil.fotoPerfil)} alt={perfil.nome} className="w-full h-full object-cover" />
                   ) : (
                     <div className={`w-full h-full flex items-center justify-center bg-gradient-to-br ${gradiente} text-white text-xl font-bold select-none`}>
                       {iniciais}

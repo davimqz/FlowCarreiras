@@ -1,4 +1,5 @@
 import InternalHeader from '../components/InternalHeader'
+import { dashboardBaseUrl } from '../config/runtime'
 
 /**
  * Seção de Métricas Globais — embute o dashboard analítico Streamlit (visão
@@ -6,7 +7,7 @@ import InternalHeader from '../components/InternalHeader'
  * o Streamlit renderiza o modo analítico (não o por-usuário).
  */
 export default function MetricasGlobais() {
-  const src = '/dashboard/?embed=true'
+  const src = `${dashboardBaseUrl}/?embed=true`
 
   return (
     <div className="min-h-screen">

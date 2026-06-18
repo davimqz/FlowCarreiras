@@ -1,7 +1,8 @@
 import axios from 'axios'
+import { apiBaseUrl } from '../config/runtime'
 
 const api = axios.create({
-  baseURL: '/api',
+  baseURL: apiBaseUrl,
   timeout: 30000,
 })
 

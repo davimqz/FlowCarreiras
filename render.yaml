@@ -1,0 +1,87 @@
+databases:
+  - name: flowcarreiras-db
+    databaseName: flowcarreiras
+    user: flowcarreiras
+    plan: free
+    region: virginia
+    postgresMajorVersion: "16"
+
+services:
+  - type: web
+    name: flowcarreiras-api
+    runtime: docker
+    plan: free
+    region: virginia
+    dockerfilePath: ./flowcarreiras-api/Dockerfile
+    dockerContext: ./flowcarreiras-api
+    dockerCommand: java -XX:MaxRAMPercentage=75.0 -jar app.jar
+    healthCheckPath: /api/tags
+    envVars:
+      - key: SPRING_PROFILES_ACTIVE
+        value: render
+      - key: DB_HOST
+        fromDatabase:
+          name: flowcarreiras-db
+          property: host
+      - key: DB_PORT
+        fromDatabase:
+          name: flowcarreiras-db
+          property: port
+      - key: DB_NAME
+        fromDatabase:
+          name: flowcarreiras-db
+          property: database
+      - key: DB_USER
+        fromDatabase:
+          name: flowcarreiras-db
+          property: user
+      - key: DB_PASSWORD
+        fromDatabase:
+          name: flowcarreiras-db
+          property: password
+      - key: JWT_SECRET
+        generateValue: true
+      - key: SEED_PASSWORD
+        value: senha123
+      - key: UPLOAD_DIR
+        value: /tmp/flowcarreiras-uploads
+      - key: CORS_ALLOWED_ORIGIN_PATTERNS
+        value: http://localhost:5173,http://localhost:4173,http://localhost:3000,https://*.vercel.app
+
+  - type: web
+    name: flowcarreiras-dashboard
+    runtime: docker
+    plan: free
+    region: virginia
+    dockerfilePath: ./dashboard/Dockerfile.render
+    dockerContext: .
+    healthCheckPath: /dashboard/_stcore/health
+    initialDeployHook: python /seed-scripts/setup_demo_prod.py
+    envVars:
+      - key: DB_HOST
+        fromDatabase:
+          name: flowcarreiras-db
+          property: host
+      - key: DB_PORT
+        fromDatabase:
+          name: flowcarreiras-db
+          property: port
+      - key: DB_NAME
+        fromDatabase:
+          name: flowcarreiras-db
+          property: database
+      - key: DB_USER
+        fromDatabase:
+          name: flowcarreiras-db
+          property: user
+      - key: DB_PASSWORD
+        fromDatabase:
+          name: flowcarreiras-db
+          property: password
+      - key: JWT_SECRET
+        fromService:
+          type: web
+          name: flowcarreiras-api
+          envVarKey: JWT_SECRET
+      - key: SIM_USERS
+        value: "400"

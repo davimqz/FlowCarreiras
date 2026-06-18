@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import InternalHeader from '../components/InternalHeader'
 import { useAuth } from '../context/AuthContext'
 import { listarMentores } from '../api/mentorias'
+import { resolverUrlBackend } from '../config/runtime'
 
 function iniciais(nome) {
   return nome?.split(' ').map(n => n[0]).slice(0, 2).join('').toUpperCase() || '?'
@@ -142,7 +143,7 @@ export default function Mentores() {
                 <div className="flex gap-3">
                   <div className="w-14 h-14 rounded-full bg-brand/20 text-brand-light flex items-center justify-center font-bold overflow-hidden shrink-0">
                     {mentor.fotoPerfil ? (
-                      <img src={mentor.fotoPerfil} alt={mentor.nome} className="w-full h-full object-cover" />
+                      <img src={resolverUrlBackend(mentor.fotoPerfil)} alt={mentor.nome} className="w-full h-full object-cover" />
                     ) : (
                       iniciais(mentor.nome)
                     )}

@@ -1,5 +1,6 @@
 import InternalHeader from '../components/InternalHeader'
 import { useAuth } from '../context/AuthContext'
+import { dashboardBaseUrl } from '../config/runtime'
 
 /**
  * Aba de métricas do perfil — embute o dashboard Streamlit (servido pelo Nginx
@@ -9,7 +10,7 @@ import { useAuth } from '../context/AuthContext'
 export default function MetricasPerfil() {
   const { token } = useAuth()
   // ?embed=true já remove menu, cabeçalho e rodapé do Streamlit
-  const src = `/dashboard/?embed=true&token=${encodeURIComponent(token ?? '')}`
+  const src = `${dashboardBaseUrl}/?embed=true&token=${encodeURIComponent(token ?? '')}`
 
   return (
     <div className="min-h-screen">

@@ -13,6 +13,7 @@ import {
   pularEtapa,
   concluirOnboarding,
 } from '../api/perfil'
+import { resolverUrlBackend } from '../config/runtime'
 
 const ETAPAS = [
   { id: 'area', label: 'Area artistica', required: true },
@@ -96,7 +97,7 @@ export default function Onboarding() {
         setCidade(s.cidade || '')
         setBio(s.bio || '')
         setTagsSelecionadas(s.tagsNecessidade || [])
-        setFotoPreview(s.fotoPerfil || null)
+        setFotoPreview(resolverUrlBackend(s.fotoPerfil) || null)
         setLinksExternos(s.linksExternos || [])
         if (modoRetomada) {
           const idx = ETAPAS.findIndex(e => e.id === etapaParam)

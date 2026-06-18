@@ -5,6 +5,7 @@ import GridPortfolio from '../components/GridPortfolio'
 import InternalHeader from '../components/InternalHeader'
 import { useAuth } from '../context/AuthContext'
 import { obterStatusSeguidores, seguir, deixarDeSeguir } from '../api/seguidores'
+import { resolverUrlBackend } from '../config/runtime'
 
 const GRADIENTES = [
   'from-violet-900 via-purple-800 to-indigo-900',
@@ -108,7 +109,7 @@ export default function PortfolioPublico() {
   }
 
   const gradiente = gradientePorNome(artista?.nome)
-  const fotoUrl = artista?.fotoPerfil ?? null
+  const fotoUrl = resolverUrlBackend(artista?.fotoPerfil) ?? null
 
   return (
     <div className="min-h-screen">

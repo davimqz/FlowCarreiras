@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { resolverUrlBackend } from '../config/runtime'
 
 const ICONES_TIPO = {
   IMAGEM: '🖼️',
@@ -24,8 +25,9 @@ export function urlEmbed(url) {
 export default function MidiaObra({ obra, grande = false }) {
   const [carregou, setCarregou] = useState(false)
   const [erro, setErro] = useState(false)
+  const urlMidia = resolverUrlBackend(obra.urlMidia)
 
-  if (obra.tipoMidia === 'IMAGEM' && obra.urlMidia) {
+  if (obra.tipoMidia === 'IMAGEM' && urlMidia) {
     if (grande) {
       return (
         <div className="flex w-full items-center justify-center bg-black/40">
@@ -33,7 +35,7 @@ export default function MidiaObra({ obra, grande = false }) {
             <div className="flex h-72 items-center justify-center text-6xl text-gray-500">🖼️</div>
           ) : (
             <img
-              src={obra.urlMidia}
+              src={urlMidia}
               alt={obra.titulo}
               onError={() => setErro(true)}
               className="max-h-[72vh] w-auto object-contain"
@@ -46,7 +48,7 @@ export default function MidiaObra({ obra, grande = false }) {
       <div className="relative w-full aspect-square bg-card">
         {!carregou && <div className="skeleton absolute inset-0" />}
         <img
-          src={obra.urlMidia}
+          src={urlMidia}
           alt={obra.titulo}
           loading="lazy"
           onLoad={() => setCarregou(true)}
@@ -60,19 +62,19 @@ export default function MidiaObra({ obra, grande = false }) {
     )
   }
 
-  if (obra.tipoMidia === 'VIDEO' && obra.urlMidia) {
+  if (obra.tipoMidia === 'VIDEO' && urlMidia) {
     return (
       <div className={`w-full bg-black ${grande ? 'aspect-video' : 'aspect-square'}`}>
-        <video src={obra.urlMidia} controls preload="metadata" className="w-full h-full object-contain" />
+        <video src={urlMidia} controls preload="metadata" className="w-full h-full object-contain" />
       </div>
     )
   }
 
-  if (obra.tipoMidia === 'AUDIO' && obra.urlMidia) {
+  if (obra.tipoMidia === 'AUDIO' && urlMidia) {
     return (
       <div className={`w-full bg-card flex flex-col items-center justify-center gap-4 ${grande ? 'py-12 px-6' : 'aspect-square p-4'}`}>
         <span className={grande ? 'text-7xl' : 'text-5xl'}>🎵</span>
-        <audio src={obra.urlMidia} controls preload="metadata" className="w-full max-w-md" />
+        <audio src={urlMidia} controls preload="metadata" className="w-full max-w-md" />
       </div>
     )
   }
