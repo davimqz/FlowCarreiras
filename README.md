@@ -12,7 +12,7 @@ A aplicação web (Frontend) está buildada e disponível publicamente:
 
 ## Screencast
 
-Assista à demonstração do projeto:
+Assista à demonstração do projeto (CLIQUE NO ICONE DE GOOGLE DRIVE):
 
 <a href="https://drive.google.com/file/d/1lajuxm-k1-BIunNM190CrSWOwqzTfACX/view?usp=sharing">
   <img src="https://img.shields.io/badge/Assistir%20Screencast-Google%20Drive-4285F4?style=for-the-badge&logo=googledrive&logoColor=white" alt="Assistir Screencast no Google Drive">
