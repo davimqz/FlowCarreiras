@@ -20,6 +20,16 @@ Assista à demonstração do projeto (CLIQUE NO ICONE DE GOOGLE DRIVE):
 
 ---
 
+
+### Usuário de teste padrão
+
+| Campo  | Valor            |
+| ------ | ---------------- |
+| E-mail | `tiago@test.com` |
+| Senha  | `senha123`       |
+
+---
+
 ## Stack utilizada
 
 ### Backend
@@ -88,15 +98,6 @@ Assista à demonstração do projeto (CLIQUE NO ICONE DE GOOGLE DRIVE):
 <img src="https://img.shields.io/badge/Render-46E3B7?style=for-the-badge&logo=render&logoColor=black" alt="Render">
 
 </div>
-
----
-
-### Usuário de teste padrão
-
-| Campo  | Valor            |
-| ------ | ---------------- |
-| E-mail | `tiago@test.com` |
-| Senha  | `senha123`       |
 
 ---
 
